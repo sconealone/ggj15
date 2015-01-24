@@ -1,4 +1,4 @@
-KeyMatching = function(game) {
+ButtonMashing = function(game) {
     this.game = game;
 
     this.displayOrder = [];
@@ -18,29 +18,39 @@ KeyMatching = function(game) {
     this.directionsSpriteSheet = 'directions';
     this.directionSpritesheetPath = 'assets/directions.png';
 
-    this.timeout = 2;
+    this.timeout = 10;
+
+    this.MIN_STROKE_BOUND = getRandomInt(10, 20);
 }
 
 
-KeyMatching.prototype = {
+ButtonMashing.prototype = {
     createAnswers: function() {
 
         //players 0-3
         this.players  = [
-            {
+            {   
+                id: 1,
                 keyFrame: 0,
+                strokeCount: 0,
                 answer: getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL)
             },
-            {
+            {   
+                id: 2,
                 keyFrame: 1,
+                strokeCount: 0,
                 answer: getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL)
             },
-            {
+            {   
+                id: 3,
                 keyFrame: 6,
+                strokeCount: 0,
                 answer: getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL)
             },
-            {
+            {   
+                id: 4,
                 keyFrame: 7,
+                strokeCount: 0,
                 answer: getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL)
             },         
         ];
@@ -49,56 +59,32 @@ KeyMatching.prototype = {
     },
 
     checkResponse: function() {
+
+        var p1 = this.players[0],
+            p2 = this.players[1],
+            p3 = this.players[2],
+            p4 = this.players[3];
+
         for (var i=0; i < 3 ; i++) {
-            if (!this.game.p1Resp.responded && this.game.p1Resp[i].isDown) {
-                this.game.p1Resp.responded = true;
-
-                if (i == this.players[0].answer) {
-                    console.log("p1 pass") 
-                    this.game.hud.setRight(0);
-                } else {
-                    console.log("p1 fail");
-                    this.game.hud.setWrong(0);
-                }
+            if (this.game.p1Resp[i].isDown && i != p1.answer) {
+                this.game.hud.setWrong(0);
             }
-
-            if (!this.game.p2Resp.responded && this.game.p2Resp[i].isDown) {
-                this.game.p2Resp.responded = true;
-
-                if (i == this.players[1].answer) {
-                    console.log("p2 pass") 
-                    this.game.hud.setRight(1);
-                } else {
-                    console.log("p2 fail");
-                    this.game.hud.setWrong(1);
-                }
+            else if (this.game.p2Resp[i].isDown && i != p2.answer) {
+                this.game.hud.setWrong(1);
             }
-
-            if (!this.game.p3Resp.responded && this.game.p3Resp[i].isDown) {
-                this.game.p3Resp.responded = true;
-
-                if (i == this.players[2].answer) {
-                    console.log("p3 pass") 
-                    this.game.hud.setRight(2);
-                } else {
-                    console.log("p3 fail");
-                    this.game.hud.setWrong(2);
-                }
+            else if (this.game.p3Resp[i].isDown && i != p3.answer) {
+                this.game.hud.setWrong(2);
             }
-
-            if (!this.game.p4Resp.responded && this.game.p4Resp[i].isDown) {
-                this.game.p4Resp.responded = true;
-
-                if (i == this.players[3].answer) {
-                    console.log("p4 pass") 
-                    this.game.hud.setRight(3);
-                } else {
-                    console.log("p4 fail");
-                    this.game.hud.setWrong(3);
-                }
-            }                                    
+            else if (this.game.p4Resp[i].isDown && i != p4.answer) {
+                this.game.hud.setWrong(3);
+            }
         }
 
+    },
+
+    incrementStroke: function(player) {
+        player.strokeCount >= this.MIN_STROKE_BOUND ? this.game.hud.setRight(player.id) : player.strokeCount += 1;
+        console.log(player);
     },
 
     preload: function() {
@@ -108,7 +94,7 @@ KeyMatching.prototype = {
     },
 
     create: function() {
-        console.log("creating multi player key matching");
+        console.log("creating multi player button mashing");
 
         // choose correct answer
         this.createAnswers();
@@ -121,9 +107,36 @@ KeyMatching.prototype = {
         var p = [0, 1, 2, 3];
         this.displayOrder = generateOrder(p);
 
+        var p1 = this.players[0],
+            p2 = this.players[1],
+            p3 = this.players[2],
+            p4 = this.players[3];
+
+        _this = this;
+
+        this.game.p1Resp[p1.answer].onDown.add(function() {
+            return _this.incrementStroke(p1);
+        }, null);
+
+        this.game.p2Resp[p2.answer].onDown.add(function() {
+            return _this.incrementStroke(p2);
+        }, null);
+
+        this.game.p3Resp[p3.answer].onDown.add(function() {
+            return _this.incrementStroke(p3);
+        }, null);
+
+        this.game.p4Resp[p4.answer].onDown.add(function() {
+            return _this.incrementStroke(p4);
+        }, null);
+
+
         // draw the shapes each type of shape matching mini game needs to know its own layout
         this.drawLayout();
-        this.game.timer.setTimeout(this.timeout, this.transition);
+        var _this = this;
+        this.game.timer.setTimeout(this.timeout, _this.transition, _this);
+
+
     },
 
     update: function() {
@@ -168,5 +181,20 @@ KeyMatching.prototype = {
         this.dir4Sprite.anchor.setTo(0.5, 0.5);
 
     },
+
+    transition: function(_this) {
+
+        for (var i=0; i < _this.players.length; i++) {
+            console.log(_this.players[i].strokeCount);
+            console.log(_this.MIN_STROKE_BOUND);
+
+            if (_this.players[i].strokeCount < _this.MIN_STROKE_BOUND) {
+                _this.game.hud.setWrong(i);
+                console.log(i + " didn't make it");
+            }
+        }
+
+        console.log("transition");
+    }
 
 }
