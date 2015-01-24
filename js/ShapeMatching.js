@@ -33,6 +33,8 @@ ShapeMatching = function(game) {
 
     this.answerSpriteX = 0.5*game.world.width;
     this.answerSpriteY = 0.5*game.world.height;
+
+    this.timeout = 1;
 }
 
 // helpers and sh1t
@@ -183,21 +185,14 @@ ShapeMatching.prototype = {
 
     update: function() {
         this.checkResponse();
+
+        // update timer
+        // time code may belong somewhere else
+        var dt = this.game.time.totalElapsedSeconds() - this.game.t0;
+        var percentTimedOut = dt/this.timeout;
+        this.game.hud.setTimer(Math.max(0, 1 - percentTimedOut));
     },
 
-    simpleKeyMatching: function() {
-        //present instructions - match the keys
-
-        //initiate correct response, statuses of each player
-
-        //present the keys
-
-        //start the timer
-
-        //
-
-
-    },
 
     drawLayout : function() {
         this.shapeSprite1 = this.game.add.sprite(this.shapeSpriteX1, this.shapeSpriteY1, this.spritesheet, this.shape1);

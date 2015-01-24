@@ -2,6 +2,7 @@ Game = function(game) {
 	this.game = game;
 	miniGame = null;
     this.hud = new Hud(this, 4);
+    this.t0 = 0;
 }
 
 Game.prototype = {
@@ -17,6 +18,7 @@ Game.prototype = {
 	create: function() {
 		miniGame.create();
         this.hud.create();
+        this.t0 = this.time.totalElapsedSeconds();
 	},
 
 	update: function() {
@@ -34,12 +36,6 @@ Hud = function(game, numPlayers) {
     this.RIGHT = 2;
 
     this.numPlayers = numPlayers;
-
-    // sprites
-    this.spritesheet = 'avatars'
-    this.spritesheetPath = 'assets/avatars.png'
-    this.frameWidth = 32;
-    this.frameHeight = 32;
 
     this.FRAME_APPLE_NO_ANSWER = 0;
     this.FRAME_APPLE_WRONG = 2;
@@ -63,24 +59,37 @@ Hud = function(game, numPlayers) {
     this.BLUEBERRY = 3;
 
     this.avatars = [];
+
+    this.timerFrame = null;
+    this.timerBar = null;
 }
 
 Hud.prototype = {
     preload : function() {
-        this.game.load.spritesheet(this.spritesheet, this.spritesheetPath, this.frameWidth, this.frameHeight)
+        this.game.load.spritesheet('avatars', 'assets/avatars.png', 32, 32);
+        this.game.load.spritesheet('timer', 'assets/timer.png', 256, 32);
     },
     create : function() {
         this.initialize();
     },
 
     initialize : function() {
+        // initialize avatars
         for (var i = 0; i < this.numPlayers; ++i) {
             var x = (1 + i) * 0.2 * this.game.world.width;
             var y = 0.9 * this.game.world.height;
 
-            this.avatars.push(this.game.add.sprite(x, y, this.spritesheet, this.frameForSprite(i)))
+            this.avatars.push(this.game.add.sprite(x, y, 'avatars', this.frameForSprite(i)))
             this.avatars[i].anchor.setTo(0.5, 0.5);
         }
+
+        // initialize timer
+        var x = 0.5 * (this.game.world.width - 256);
+        var y = 0.1 * this.game.world.height;
+        this.timerFrame = this.game.add.sprite(x, y, 'timer', 0);
+        this.timerBar = this.game.add.sprite(x, y, 'timer', 1);
+        this.timerFrame.anchor.setTo(0, 0.5);
+        this.timerBar.anchor.setTo(0, 0.5);
     },
 
     // This function is dumb. I'm dumb. If the avatar sprite sheet had some
@@ -103,6 +112,10 @@ Hud.prototype = {
 
     reset :function(player) {
         this.avatars[player].frame = this.frameForSprite(player);
+    },
+
+    setTimer : function(scale) {
+        this.timerBar.scale.set(scale, 1);
     },
     
 }
