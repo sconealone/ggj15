@@ -1,8 +1,6 @@
 ShapeMatching = function(game) {
     this.game = game;
 
-    this.keyboard = this.game.input.keyboard;
-
     this.shape1 = -1;
     this.shape2 = -1;
     this.shape3 = -1;
@@ -41,9 +39,6 @@ function getRandomInt(min, max) {
 }
 
 function generateOrder(o) {
-    //for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-    //return o;
-
     for (var i = o.length - 1; i >= 0; --i) {
         var randomIndex = getRandomInt(0, i);
         // swap
@@ -57,41 +52,10 @@ function generateOrder(o) {
 
 ShapeMatching.prototype = {
 
-    initializeKeys: function() {
-        this.p1Resp = {
-            0: this.keyboard.addKey(Phaser.Keyboard.Q),  
-            1: this.keyboard.addKey(Phaser.Keyboard.W), 
-            2: this.keyboard.addKey(Phaser.Keyboard.E),
-            responded: false
-        };
-
-        this.p2Resp = {
-            0: this.keyboard.addKey(Phaser.Keyboard.A),
-            1: this.keyboard.addKey(Phaser.Keyboard.S),
-            2: this.keyboard.addKey(Phaser.Keyboard.D),
-            responded: false
-        };
-
-        this.p3Resp = {
-            0: this.keyboard.addKey(Phaser.Keyboard.I),  
-            1: this.keyboard.addKey(Phaser.Keyboard.O), 
-             2: this.keyboard.addKey(Phaser.Keyboard.P),
-             responded: false
-         };
-
-        this.p4Resp = {
-            0: this.keyboard.addKey(Phaser.Keyboard.J),  
-            1: this.keyboard.addKey(Phaser.Keyboard.K), 
-            2: this.keyboard.addKey(Phaser.Keyboard.L),
-            responded: false
-        };
-
-    },
-
     checkResponse: function() {
         for (var i=0; i < 3 ; i++) {
-            if (!this.p1Resp.responded && this.p1Resp[i].isDown) {
-                this.p1Resp.responded = true;
+            if (!this.game.p1Resp.responded && this.game.p1Resp[i].isDown) {
+                this.game.p1Resp.responded = true;
 
                 if (this.order[i] == this.answer) {
                     console.log("p1 pass") 
@@ -102,8 +66,8 @@ ShapeMatching.prototype = {
                 }
             }
 
-            if (!this.p2Resp.responded && this.p2Resp[i].isDown) {
-                this.p2Resp.responded = true;
+            if (!this.game.p2Resp.responded && this.game.p2Resp[i].isDown) {
+                this.game.p2Resp.responded = true;
 
                 if (this.order[i] == this.answer) {
                     console.log("p2 pass") 
@@ -114,8 +78,8 @@ ShapeMatching.prototype = {
                 }
             }
 
-            if (!this.p3Resp.responded && this.p3Resp[i].isDown) {
-                this.p3Resp.responded = true;
+            if (!this.game.p3Resp.responded && this.game.p3Resp[i].isDown) {
+                this.game.p3Resp.responded = true;
 
                 if (this.order[i] == this.answer) {
                     console.log("p3 pass") 
@@ -126,8 +90,8 @@ ShapeMatching.prototype = {
                 }
             }
 
-            if (!this.p4Resp.responded && this.p4Resp[i].isDown) {
-                this.p4Resp.responded = true;
+            if (!this.game.p4Resp.responded && this.game.p4Resp[i].isDown) {
+                this.game.p4Resp.responded = true;
 
                 if (this.order[i] == this.answer) {
                     console.log("p4 pass") 
@@ -159,13 +123,10 @@ ShapeMatching.prototype = {
     },
 
     create: function() {
-        //initialize the keys for each player
-        this.initializeKeys();
-
         console.log("creating matching");
 
         // choose correct answer
-        this.answer = getRandomInt(0, 2);
+        this.answer = getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL);
         console.log(this.answer);
 
         // choose order of shapes

@@ -2,26 +2,63 @@ Game = function(game) {
 	this.game = game;
 	miniGame = null;
     this.hud = new Hud(this, 4);
+
+    this.MIN_KEY_VAL = 0;
+    this.MAX_KEY_VAL = 2;
+
 }
 
 Game.prototype = {
+    initializeKeys: function() {
+        this.p1Resp = {
+            0: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),  
+            1: this.game.input.keyboard.addKey(Phaser.Keyboard.W), 
+            2: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
+            responded: false
+        };
+
+        this.p2Resp = {
+            0: this.game.input.keyboard.addKey(Phaser.Keyboard.A),
+            1: this.game.input.keyboard.addKey(Phaser.Keyboard.S),
+            2: this.game.input.keyboard.addKey(Phaser.Keyboard.D),
+            responded: false
+        };
+
+        this.p3Resp = {
+            0: this.game.input.keyboard.addKey(Phaser.Keyboard.I),  
+            1: this.game.input.keyboard.addKey(Phaser.Keyboard.O), 
+             2: this.game.input.keyboard.addKey(Phaser.Keyboard.P),
+             responded: false
+         };
+
+        this.p4Resp = {
+            0: this.game.input.keyboard.addKey(Phaser.Keyboard.J),  
+            1: this.game.input.keyboard.addKey(Phaser.Keyboard.K), 
+            2: this.game.input.keyboard.addKey(Phaser.Keyboard.L),
+            responded: false
+        };
+    },
 
 	preload: function() {
 		_this = this;
-		miniGame = new ShapeMatching(_this);
+		// miniGame = new ShapeMatching(_this);
+        miniGame = new KeyMatching(_this);
 
 		miniGame.preload();
         this.hud.preload();
 	},
 
 	create: function() {
+        //initialize the keys for each player
+        this.initializeKeys();
+
 		miniGame.create();
         this.hud.create();
 	},
 
 	update: function() {
 		miniGame.update();
-	}
+	},
 }
 
 // Hud is the player avatars + time countdown
