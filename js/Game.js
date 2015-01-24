@@ -48,7 +48,6 @@ Game.prototype = {
 
         miniGame.preload();
         this.hud.preload();
-        this.lives.preload();
     },
 
     create: function() {
@@ -57,7 +56,6 @@ Game.prototype = {
 
         miniGame.create();
         this.hud.create();
-        this.lives.create();
     },
 
     update: function() {
@@ -103,10 +101,13 @@ Hud = function(game, numPlayers) {
 
     this.timerFrame = null;
     this.timerBar = null;
+
+    this.lifeCount = [];
 }
 
 Hud.prototype = {
     preload : function() {
+        this.game.load.image('life', 'assets/life.png');
         this.game.load.spritesheet('avatars', 'assets/avatars.png', 32, 32);
         this.game.load.spritesheet('timer', 'assets/timer.png', 256, 32);
         this.game.load.spritesheet('directions', 'assets/directions.png', 32*3, 32);
@@ -133,6 +134,15 @@ Hud.prototype = {
         this.timerBar = this.game.add.sprite(x, y, 'timer', 1);
         this.timerFrame.anchor.setTo(0, 0.5);
         this.timerBar.anchor.setTo(0, 0.5);
+
+        // initialize lives
+        for(var i = 0; i < this.game.lives.MAX_LIFE; ++i){
+            var x = (10 + i * 30);
+            var y = 0;
+            console.log("adding life " + i);
+            this.lifeCount.push(this.game.add.sprite(x, y, 'life'));
+
+        }
     },
 
     // This function is dumb. I'm dumb. If the avatar sprite sheet had some
@@ -213,16 +223,8 @@ Lives = function(game) {
 
 }
 Lives.prototype = {
-    preload : function(){
-        this.game.load.image('life', 'assets/life.png');
-    },
-    create : function(){
-        for(var i = 0; i < this.MAX_LIFE; ++i){
-            this.game.add.sprite(10+ i*33,0,'life');
-        }
-    },
-    update : function(){
 
+    update : function(){
 
     }
 }
