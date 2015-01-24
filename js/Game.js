@@ -2,7 +2,7 @@ Game = function(game) {
 	this.game = game;
 	miniGame = null;
     this.hud = new Hud(this, 4);
-    this.t0 = 0;
+    this.timer = new Timer(this);
 }
 
 Game.prototype = {
@@ -18,11 +18,11 @@ Game.prototype = {
 	create: function() {
 		miniGame.create();
         this.hud.create();
-        this.t0 = this.time.totalElapsedSeconds();
 	},
 
 	update: function() {
 		miniGame.update();
+        this.timer.update();
 	}
 }
 
@@ -117,5 +117,49 @@ Hud.prototype = {
     setTimer : function(scale) {
         this.timerBar.scale.set(scale, 1);
     },
+}
+
+Timer = function(game) {
+    this.game = game;
+    this.t0 = 0;
+    this.timeout = -1;
+    this.started = false;
+    this.callback = null;
+}
+Timer.prototype = {
+    dt : function() {
+        var dt = this.game.time.totalElapsedSeconds() - this.t0;
+        return dt;
+    },
+
+    update : function() {
+        if (this.started) {
+            if (this.dt() >= this.timeout) {
+                this.started = false;
+                if (this.callback) {
+                    this.callback();
+                }
+            }
+            this.game.hud.setTimer(Math.max(0, 1 - this.percentTimedOut()));
+        }
+    },
+
+    setTimeout : function(timeout, callback) {
+        if (!this.started) {
+            this.timeout = timeout;
+            this.callback = callback || null;
+            this.start();
+        }
+    },
+
+    start : function() {
+        if (!this.started) {
+            this.t0 = this.game.time.totalElapsedSeconds();
+            this.started = true;
+        }
+    },
     
+    percentTimedOut : function() {
+        return this.dt()/this.timeout;
+    }
 }

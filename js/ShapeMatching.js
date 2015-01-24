@@ -181,16 +181,13 @@ ShapeMatching.prototype = {
 
         // draw the shapes each type of shape matching mini game needs to know its own layout
         this.drawLayout();
+
+        // Start timer
+        this.game.timer.setTimeout(this.timeout, this.transition);
     },
 
     update: function() {
         this.checkResponse();
-
-        // update timer
-        // time code may belong somewhere else
-        var dt = this.game.time.totalElapsedSeconds() - this.game.t0;
-        var percentTimedOut = dt/this.timeout;
-        this.game.hud.setTimer(Math.max(0, 1 - percentTimedOut));
     },
 
 
@@ -205,6 +202,10 @@ ShapeMatching.prototype = {
         this.shapeSprite3.anchor.setTo(0.5, 0.5);
         this.answerSprite.anchor.setTo(0.5, 0.5);
         this.answerSprite.scale.set(2, 2);
+    },
+
+    transition: function() {
+        console.log("transition");
     },
 
 }
