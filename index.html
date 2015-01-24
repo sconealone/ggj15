@@ -5,6 +5,7 @@
 		<script type="text/javascript" src="js/phaser.js"></script>
 		<script type="text/javascript" src="js/Preloader.js"></script>
 		<script type="text/javascript" src="js/Game.js"></script>
+		<script type="text/javascript" src="js/ShapeMatching.js"></script>
 	    <style type="text/css">
 	        body {
 	        	margin: 0;
@@ -19,9 +20,6 @@
 
 	<body>
 		<script type="text/javascript">
-			// var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-
-
 		(function () {
 
 
@@ -30,6 +28,7 @@
 		    var game = new Phaser.Game(800, 600, Phaser.AUTO);
 		    game.state.add('preloader', Preloader, true);
 		    game.state.add('game', Game);
+		    game.state.start('game');
 
 		})();
 	
