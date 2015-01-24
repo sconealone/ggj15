@@ -31,6 +31,8 @@ ShapeMatching = function(game) {
 
     this.answerSpriteX = 0.5*game.world.width;
     this.answerSpriteY = 0.5*game.world.height;
+
+    this.timeout = 1;
 }
 
 // helpers and sh1t
@@ -140,25 +142,15 @@ ShapeMatching.prototype = {
 
         // draw the shapes each type of shape matching mini game needs to know its own layout
         this.drawLayout();
+
+        // Start timer
+        this.game.timer.setTimeout(this.timeout, this.transition);
     },
 
     update: function() {
         this.checkResponse();
     },
 
-    simpleKeyMatching: function() {
-        //present instructions - match the keys
-
-        //initiate correct response, statuses of each player
-
-        //present the keys
-
-        //start the timer
-
-        //
-
-
-    },
 
     drawLayout : function() {
         this.shapeSprite1 = this.game.add.sprite(this.shapeSpriteX1, this.shapeSpriteY1, this.spritesheet, this.shape1);
@@ -171,6 +163,10 @@ ShapeMatching.prototype = {
         this.shapeSprite3.anchor.setTo(0.5, 0.5);
         this.answerSprite.anchor.setTo(0.5, 0.5);
         this.answerSprite.scale.set(2, 2);
+    },
+
+    transition: function() {
+        console.log("transition");
     },
 
 }

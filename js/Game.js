@@ -2,10 +2,9 @@ Game = function(game) {
 	this.game = game;
 	miniGame = null;
     this.hud = new Hud(this, 4);
-
     this.MIN_KEY_VAL = 0;
     this.MAX_KEY_VAL = 2;
-
+    this.timer = new Timer(this);
 }
 
 Game.prototype = {
@@ -58,7 +57,8 @@ Game.prototype = {
 
 	update: function() {
 		miniGame.update();
-	},
+        this.timer.update();
+	}
 }
 
 // Hud is the player avatars + time countdown
@@ -71,12 +71,6 @@ Hud = function(game, numPlayers) {
     this.RIGHT = 2;
 
     this.numPlayers = numPlayers;
-
-    // sprites
-    this.spritesheet = 'avatars'
-    this.spritesheetPath = 'assets/avatars.png'
-    this.frameWidth = 32;
-    this.frameHeight = 32;
 
     this.FRAME_APPLE_NO_ANSWER = 0;
     this.FRAME_APPLE_WRONG = 2;
@@ -100,24 +94,37 @@ Hud = function(game, numPlayers) {
     this.BLUEBERRY = 3;
 
     this.avatars = [];
+
+    this.timerFrame = null;
+    this.timerBar = null;
 }
 
 Hud.prototype = {
     preload : function() {
-        this.game.load.spritesheet(this.spritesheet, this.spritesheetPath, this.frameWidth, this.frameHeight)
+        this.game.load.spritesheet('avatars', 'assets/avatars.png', 32, 32);
+        this.game.load.spritesheet('timer', 'assets/timer.png', 256, 32);
     },
     create : function() {
         this.initialize();
     },
 
     initialize : function() {
+        // initialize avatars
         for (var i = 0; i < this.numPlayers; ++i) {
             var x = (1 + i) * 0.2 * this.game.world.width;
             var y = 0.9 * this.game.world.height;
 
-            this.avatars.push(this.game.add.sprite(x, y, this.spritesheet, this.frameForSprite(i)))
+            this.avatars.push(this.game.add.sprite(x, y, 'avatars', this.frameForSprite(i)))
             this.avatars[i].anchor.setTo(0.5, 0.5);
         }
+
+        // initialize timer
+        var x = 0.5 * (this.game.world.width - 256);
+        var y = 0.1 * this.game.world.height;
+        this.timerFrame = this.game.add.sprite(x, y, 'timer', 0);
+        this.timerBar = this.game.add.sprite(x, y, 'timer', 1);
+        this.timerFrame.anchor.setTo(0, 0.5);
+        this.timerBar.anchor.setTo(0, 0.5);
     },
 
     // This function is dumb. I'm dumb. If the avatar sprite sheet had some
@@ -141,5 +148,53 @@ Hud.prototype = {
     reset :function(player) {
         this.avatars[player].frame = this.frameForSprite(player);
     },
+
+    setTimer : function(scale) {
+        this.timerBar.scale.set(scale, 1);
+    },
+}
+
+Timer = function(game) {
+    this.game = game;
+    this.t0 = 0;
+    this.timeout = -1;
+    this.started = false;
+    this.callback = null;
+}
+Timer.prototype = {
+    dt : function() {
+        var dt = this.game.time.totalElapsedSeconds() - this.t0;
+        return dt;
+    },
+
+    update : function() {
+        if (this.started) {
+            if (this.dt() >= this.timeout) {
+                this.started = false;
+                if (this.callback) {
+                    this.callback();
+                }
+            }
+            this.game.hud.setTimer(Math.max(0, 1 - this.percentTimedOut()));
+        }
+    },
+
+    setTimeout : function(timeout, callback) {
+        if (!this.started) {
+            this.timeout = timeout;
+            this.callback = callback || null;
+            this.start();
+        }
+    },
+
+    start : function() {
+        if (!this.started) {
+            this.t0 = this.game.time.totalElapsedSeconds();
+            this.started = true;
+        }
+    },
     
+    percentTimedOut : function() {
+        return this.dt()/this.timeout;
+    }
 }
