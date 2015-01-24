@@ -103,6 +103,8 @@ Hud.prototype = {
     preload : function() {
         this.game.load.spritesheet('avatars', 'assets/avatars.png', 32, 32);
         this.game.load.spritesheet('timer', 'assets/timer.png', 256, 32);
+        this.game.load.spritesheet('directions', 'assets/directions.png', 32*3, 32);
+        this.game.load.spritesheet('keys', 'assets/keys2.png', 256, 32);
     },
     create : function() {
         this.initialize();

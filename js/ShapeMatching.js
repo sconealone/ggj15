@@ -105,18 +105,6 @@ ShapeMatching.prototype = {
             }                                    
         }
 
-
-
-        // if (!timeout) {
-        //     //check if any of the response keys are pressed
-        //     if (answer == all of the response keys) {
-        //         //set those players to pass
-        //     } else {
-        //         //set the players with wrong responses to fail
-        //         //fail this round
-        //         //reduce collective lives
-        //     }
-        // }
     },
 
     preload: function() {

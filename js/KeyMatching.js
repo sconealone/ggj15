@@ -3,29 +3,10 @@ KeyMatching = function(game) {
 
     this.displayOrder = [];
 
-    this.p1AvatarSprite = null;
-    this.p2AvatarSprite = null;
-    this.p3AvatarSprite = null;
-    this.p4AvatarSprite = null;
-
-    this.answer1Sprite = null;
-    this.answer2Sprite = null;
-    this.answer3Sprite = null;
-
-    this.key1 = -1;
-    this.key2 = -1;
-    this.key3 = -1;
-    this.key4 = -1;
-
     this.avatarSpritesheet = 'avatars'
     this.spritesheetPath = 'assets/avatars.png'
     this.frameWidth = 32;
     this.frameHeight = 32;
-
-    this.FRAME_P1 = 0;
-    this.FRAME_P2 = 1;
-    this.FRAME_P3 = 6;
-    this.FRAME_P4 = 7;
 
     this.avatarsY = 0.25*game.world.height;
     this.directionsY = 0.5*game.world.height;
@@ -34,37 +15,10 @@ KeyMatching = function(game) {
     this.thirdPlayerX = 0.60,
     this.fourthPlayerX = 0.80;
 
-
-    this.keySprite1 = null;
-    this.keySprite2 = null;
-    this.keySprite3 = null;
-    this.keySprite4 = null;
-
     this.directionsSpriteSheet = 'directions';
     this.directionSpritesheetPath = 'assets/directions.png';
-    this.frameWidth = 32;
-    this.frameHeight = 32;
 
-    // this.directionSprites = [game.world.width*this.fourthPlayerX, this.avatarsY, this.avatarSpritesheet, this.shape4];
-
-
-    // this.p1SpriteX = 
-    // this.playerY = 0.25 * game.world.height;
-
-
-    // override these
-    // Actually it would be better if we could pass in a struct for each type of mini game
-    // this.shapeSpriteX1 = 0.25*game.world.width;
-    // this.shapeSpriteY1 = 0.5*game.world.height;
-
-    // this.shapeSpriteX2 = 0.5*game.world.width;
-    // this.shapeSpriteY2 = 0.25*game.world.height;
-
-    // this.shapeSpriteX3 = 0.75*game.world.width;
-    // this.shapeSpriteY3 = 0.5*game.world.height;
-
-    // this.answerSpriteX = 0.5*game.world.width;
-    // this.answerSpriteY = 0.5*game.world.height;
+    this.timeout = 2;
 }
 
 // helpers and sh1t
@@ -86,10 +40,28 @@ function generateOrder(o) {
 
 KeyMatching.prototype = {
     createAnswers: function() {
-        this.p1Answer = getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL);
-        this.p2Answer = getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL);
-        this.p3Answer = getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL);
-        this.p4Answer = getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL);
+
+        //players 0-3
+        this.players  = [
+            {
+                keyFrame: 0,
+                answer: getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL)
+            },
+            {
+                keyFrame: 1,
+                answer: getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL)
+            },
+            {
+                keyFrame: 6,
+                answer: getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL)
+            },
+            {
+                keyFrame: 7,
+                answer: getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL)
+            },         
+        ];
+
+
     },
 
     checkResponse: function() {
@@ -97,7 +69,7 @@ KeyMatching.prototype = {
             if (!this.game.p1Resp.responded && this.game.p1Resp[i].isDown) {
                 this.game.p1Resp.responded = true;
 
-                if (i == this.p1Answer) {
+                if (i == this.players[0].answer) {
                     console.log("p1 pass") 
                     this.game.hud.setRight(0);
                 } else {
@@ -109,7 +81,7 @@ KeyMatching.prototype = {
             if (!this.game.p2Resp.responded && this.game.p2Resp[i].isDown) {
                 this.game.p2Resp.responded = true;
 
-                if (i == this.p2Answer) {
+                if (i == this.players[1].answer) {
                     console.log("p2 pass") 
                     this.game.hud.setRight(1);
                 } else {
@@ -121,7 +93,7 @@ KeyMatching.prototype = {
             if (!this.game.p3Resp.responded && this.game.p3Resp[i].isDown) {
                 this.game.p3Resp.responded = true;
 
-                if (i == this.p3Answer) {
+                if (i == this.players[2].answer) {
                     console.log("p3 pass") 
                     this.game.hud.setRight(2);
                 } else {
@@ -133,7 +105,7 @@ KeyMatching.prototype = {
             if (!this.game.p4Resp.responded && this.game.p4Resp[i].isDown) {
                 this.game.p4Resp.responded = true;
 
-                if (i == this.p4Answer) {
+                if (i == this.players[3].answer) {
                     console.log("p4 pass") 
                     this.game.hud.setRight(3);
                 } else {
@@ -146,7 +118,8 @@ KeyMatching.prototype = {
     },
 
     preload: function() {
-        this.game.load.spritesheet(this.spritesheet, this.spritesheetPath, this.frameWidth, this.frameHeight)
+        this.game.load.spritesheet(this.avatarSpritesheet, this.spritesheetPath, this.frameWidth, this.frameHeight);
+        this.game.load.spritesheet(this.directionsSpriteSheet, this.directionSpritesheetPath, this.frameWidth, this.frameHeight);
 
     },
 
@@ -155,23 +128,18 @@ KeyMatching.prototype = {
 
         // choose correct answer
         this.createAnswers();
-        console.log("p1: " + this.p1Answer);
-        console.log("p2: " + this.p2Answer);
-        console.log("p3: " + this.p3Answer);
-        console.log("p4: " + this.p4Answer);
+        console.log("p1: " + this.players[0].answer);
+        console.log("p2: " + this.players[1].answer);
+        console.log("p3: " + this.players[2].answer);
+        console.log("p4: " + this.players[3].answer);
 
         // choose order of player iteration
-        var p = [this.FRAME_P1, this.FRAME_P2, this.FRAME_P3, this.FRAME_P4];
+        var p = [0, 1, 2, 3];
         this.displayOrder = generateOrder(p);
-        this.shape1 = this.displayOrder[0];
-        this.shape2 = this.displayOrder[1];
-        this.shape3 = this.displayOrder[2];
-        this.shape4 = this.displayOrder[3];
-
-        console.log(this.displayOrder);
 
         // draw the shapes each type of shape matching mini game needs to know its own layout
         this.drawLayout();
+        this.game.timer.setTimeout(this.timeout, this.transition);
     },
 
     update: function() {
@@ -179,6 +147,12 @@ KeyMatching.prototype = {
     },
 
     drawLayout : function() {
+
+        this.shape1 = this.players[this.displayOrder[0]].keyFrame;
+        this.shape2 = this.players[this.displayOrder[1]].keyFrame;
+        this.shape3 = this.players[this.displayOrder[2]].keyFrame;
+        this.shape4 = this.players[this.displayOrder[3]].keyFrame;
+
         this.p1AvatarSprite = this.game.add.sprite(this.game.world.width*this.firstPlayerX, this.avatarsY, this.avatarSpritesheet, this.shape1);
         this.p2AvatarSprite = this.game.add.sprite(this.game.world.width*this.secondPlayerX, this.avatarsY, this.avatarSpritesheet, this.shape2);
         this.p3AvatarSprite = this.game.add.sprite(this.game.world.width*this.thirdPlayerX, this.avatarsY, this.avatarSpritesheet, this.shape3);
@@ -188,6 +162,27 @@ KeyMatching.prototype = {
         this.p2AvatarSprite.anchor.setTo(0.5, 0.5);
         this.p3AvatarSprite.anchor.setTo(0.5, 0.5);
         this.p4AvatarSprite.anchor.setTo(0.5, 0.5);
+
+
+        //direction answer key
+        this.ans1 = this.players[this.displayOrder[0]].answer;
+        this.ans2 = this.players[this.displayOrder[1]].answer;
+        this.ans3 = this.players[this.displayOrder[2]].answer;
+        this.ans4 = this.players[this.displayOrder[3]].answer;
+
+        console.log([this.ans1, this.ans2, this.ans3, this.ans4]);
+
+
+        this.dir1Sprite = this.game.add.sprite(this.game.world.width*this.firstPlayerX, this.directionsY, this.directionsSpriteSheet, this.ans1);
+        this.dir2Sprite = this.game.add.sprite(this.game.world.width*this.secondPlayerX, this.directionsY, this.directionsSpriteSheet, this.ans2);
+        this.dir3Sprite = this.game.add.sprite(this.game.world.width*this.thirdPlayerX, this.directionsY, this.directionsSpriteSheet, this.ans3);
+        this.dir4Sprite = this.game.add.sprite(this.game.world.width*this.fourthPlayerX, this.directionsY, this.directionsSpriteSheet, this.ans4);
+
+        this.dir1Sprite.anchor.setTo(0.5, 0.5);
+        this.dir2Sprite.anchor.setTo(0.5, 0.5);
+        this.dir3Sprite.anchor.setTo(0.5, 0.5);
+        this.dir4Sprite.anchor.setTo(0.5, 0.5);
+
     },
 
 }
