@@ -1,7 +1,7 @@
 Game = function(game) {
 	this.game = game;
     var _this = this;
-	miniGame = null;
+	this.miniGame = null;
     this.hud = new Hud(_this, 4);
     this.MIN_KEY_VAL = 0;
     this.MAX_KEY_VAL = 2;
@@ -45,22 +45,22 @@ Game.prototype = {
 		_this = this;
 
 		// miniGame = new ShapeMatching(_this);
-        miniGame = new CollisionGame(_this);//KeyMatching(_this);
+        this.miniGame = new CollisionGame(_this);//KeyMatching(_this);
 
-        miniGame.preload();
+        this.miniGame.preload();
         this.hud.preload();
     },
 
     create: function() {
         //initialize the keys for each player
         this.initializeKeys();
-
-        miniGame.create();
         this.hud.create();
+
+        this.miniGame.create();
     },
 
     update: function() {
-        miniGame.update();
+        this.miniGame.update();
         this.timer.update();
         this.lives.update();
     }
@@ -112,7 +112,7 @@ Hud.prototype = {
         this.game.load.spritesheet('avatars', 'assets/avatars.png', 32, 32);
         this.game.load.spritesheet('timer', 'assets/timer.png', 256, 32);
         this.game.load.spritesheet('directions', 'assets/directions.png', 32*3, 32);
-        this.game.load.spritesheet('keys', 'assets/keys2.png', 256, 32);
+        this.game.load.spritesheet('keys', 'assets/keys2.png', 32, 32);
     },
     create : function() {
         this.initialize();
@@ -140,7 +140,6 @@ Hud.prototype = {
         for(var i = 0; i < this.game.lives.MAX_LIFE; ++i){
             var x = (10 + i * 30);
             var y = 0;
-            console.log("adding life " + i);
             this.lifeCount.push(this.game.add.sprite(x, y, 'life'));
 
         }
