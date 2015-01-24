@@ -1,17 +1,18 @@
 Game = function(game) {
-	this.game = game;
-	miniGame = null;
+    this.game = game;
+    miniGame = null;
     this.hud = new Hud(this, 4);
     this.MIN_KEY_VAL = 0;
     this.MAX_KEY_VAL = 2;
     this.timer = new Timer(this);
+    this.lives = new Lives(this);
 }
 
 Game.prototype = {
     initializeKeys: function() {
         this.p1Resp = {
-            0: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),  
-            1: this.game.input.keyboard.addKey(Phaser.Keyboard.W), 
+            0: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),
+            1: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
             2: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
             responded: false
         };
@@ -24,41 +25,46 @@ Game.prototype = {
         };
 
         this.p3Resp = {
-            0: this.game.input.keyboard.addKey(Phaser.Keyboard.I),  
-            1: this.game.input.keyboard.addKey(Phaser.Keyboard.O), 
-             2: this.game.input.keyboard.addKey(Phaser.Keyboard.P),
-             responded: false
-         };
+            0: this.game.input.keyboard.addKey(Phaser.Keyboard.I),
+            1: this.game.input.keyboard.addKey(Phaser.Keyboard.O),
+            2: this.game.input.keyboard.addKey(Phaser.Keyboard.P),
+            responded: false
+        };
 
         this.p4Resp = {
-            0: this.game.input.keyboard.addKey(Phaser.Keyboard.J),  
-            1: this.game.input.keyboard.addKey(Phaser.Keyboard.K), 
+            0: this.game.input.keyboard.addKey(Phaser.Keyboard.J),
+            1: this.game.input.keyboard.addKey(Phaser.Keyboard.K),
             2: this.game.input.keyboard.addKey(Phaser.Keyboard.L),
             responded: false
         };
     },
 
-	preload: function() {
-		_this = this;
-		// miniGame = new ShapeMatching(_this);
+    preload: function() {
+        _this = this;
+
+
+        // miniGame = new ShapeMatching(_this);
         miniGame = new KeyMatching(_this);
 
-		miniGame.preload();
+        miniGame.preload();
         this.hud.preload();
-	},
+        this.lives.preload();
+    },
 
-	create: function() {
+    create: function() {
         //initialize the keys for each player
         this.initializeKeys();
 
-		miniGame.create();
+        miniGame.create();
         this.hud.create();
-	},
+        this.lives.create();
+    },
 
-	update: function() {
-		miniGame.update();
+    update: function() {
+        miniGame.update();
         this.timer.update();
-	}
+        this.lives.update();
+    }
 }
 
 // Hud is the player avatars + time countdown
@@ -195,8 +201,28 @@ Timer.prototype = {
             this.started = true;
         }
     },
-    
+
     percentTimedOut : function() {
         return this.dt()/this.timeout;
+    }
+}
+
+Lives = function(game) {
+    this.game = game;
+    this.MAX_LIFE = 3;
+
+}
+Lives.prototype = {
+    preload : function(){
+        this.game.load.image('life', 'assets/life.png');
+    },
+    create : function(){
+        for(var i = 0; i < this.MAX_LIFE; ++i){
+            this.game.add.sprite(10+ i*33,0,'life');
+        }
+    },
+    update : function(){
+
+
     }
 }
