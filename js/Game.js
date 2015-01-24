@@ -44,15 +44,14 @@ Game.prototype = {
 		_this = this;
 
 		// miniGame = new ShapeMatching(_this);
-<<<<<<< HEAD
         // miniGame = new KeyMatching(_this);
         miniGame = new ButtonMashing(_this);
 		miniGame.preload();
-=======
-        miniGame = new KeyMatching(_this);
+// =======
+//         miniGame = new KeyMatching(_this);
 
-        miniGame.preload();
->>>>>>> 33712b769a2158d4cdd01e866527e25430d9baf9
+//         miniGame.preload();
+// >>>>>>> 33712b769a2158d4cdd01e866527e25430d9baf9
         this.hud.preload();
     },
 
