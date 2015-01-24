@@ -13,7 +13,7 @@ LevelMaster.prototype = {
 		needTransition: 0,
 		failed: 0,
 		reachedEnd: 0,
-		numGameTypes: 4
+		numGameTypes: 5
 		};
 	}
 	
@@ -58,12 +58,12 @@ LevelMaster.prototype = {
 	
 	showFailed: function() {
 		// show failed ending
-		this.game.state.start('failed', true, false, this.data);
+		this.game.state.start('failed', false, false, this.data);
 	},
 	
 	showEnding: function() {
 		// show ending for completing game
-		this.game.state.start('end', true, false, this.data);
+		this.game.state.start('end', false, false, this.data);
 	},
 	
 	nextTransition: function() {
@@ -80,19 +80,22 @@ LevelMaster.prototype = {
 		
 		switch(gameType) {
 		case 1: 
-			this.game.state.start('keyMatching', true, false, this.data);
+			this.game.state.start('keyMatching', false, false, this.data);
 			break;
 		case 2:
-			this.game.state.start('shapeMatching', true, false, this.data);
+			this.game.state.start('shapeMatching', false, false, this.data);
 			break;
 		case 3: 
-			this.game.state.start('colourText', true, false, this.data);
+			this.game.state.start('colourText', false, false, this.data);
 			break;
 		case 4:
-			this.game.state.start('jumping', true, false, this.data);
+			this.game.state.start('jumping', false, false, this.data);
+			break;
+		case 5:
+			this.game.state.start('running', false, false, this.data);
 			break;
 		default:
-			this.game.state.start('jumping', true, false, this.data);
+			this.game.state.start('jumping', false, false, this.data);
 			break;
 		}
 		
