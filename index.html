@@ -11,6 +11,7 @@
 		<script type="text/javascript" src="js/End.js"></script>
 		<script type="text/javascript" src="js/LevelMaster.js"></script>
 		<script type="text/javascript" src="js/ButtonMashing.js"></script>
+		<script type="text/javascript" src="js/LevelMaster.js"></script>
 
 	    <style type="text/css">
 	        body {
@@ -34,7 +35,7 @@
 		    game.state.add('preloader', Preloader, true);
 		    game.state.add('game', Game);
 		    game.state.add('endGame', End);
-
+			// game.state.add('levelMaster', LevelMaster);
 		    game.state.start('game');
 
 		})();

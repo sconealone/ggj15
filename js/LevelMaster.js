@@ -4,7 +4,7 @@ LevelMaster = function(game) {
 	
 LevelMaster.prototype = {
 	// set initial game data if new game
-	initData: function(data) {
+	init: function(data) {
 	if (!data) {
 		data = {
 		lives: 5,
@@ -12,7 +12,8 @@ LevelMaster.prototype = {
 		newGame: 1,
 		needTransition: 0,
 		failed: 0,
-		reachedEnd: 0
+		reachedEnd: 0,
+		numGameTypes: 5
 		};
 	}
 	
@@ -57,7 +58,7 @@ LevelMaster.prototype = {
 	
 	showFailed: function() {
 		// show failed ending
-		this.game.state.start('failed', true, false, this.data);
+		this.game.state.start('failed', false, false, this.data);
 	},
 	
 	showEnding: function() {
@@ -73,6 +74,31 @@ LevelMaster.prototype = {
 	
 	nextLevel: function() {
 		// start the next game stage
+		
+		// pick a game type randomly
+		var gameType = integerInRange(1, this.data.numGameTypes);
+		
+		switch(gameType) {
+		case 1: 
+			this.game.state.start('keyMatching', false, false, this.data);
+			break;
+		case 2:
+			this.game.state.start('shapeMatching', false, false, this.data);
+			break;
+		case 3: 
+			this.game.state.start('colourText', false, false, this.data);
+			break;
+		case 4:
+			this.game.state.start('jumping', false, false, this.data);
+			break;
+		case 5:
+			this.game.state.start('running', false, false, this.data);
+			break;
+		default:
+			this.game.state.start('jumping', false, false, this.data);
+			break;
+		}
+		
 	},
 	
 }
