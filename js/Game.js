@@ -44,7 +44,8 @@ Game.prototype = {
 		_this = this;
 
 		// miniGame = new ShapeMatching(_this);
-        miniGame = new KeyMatching(_this);
+        //miniGame = new KeyMatching(_this);
+         miniGame = new ColorTile(_this);
 
         miniGame.preload();
         this.hud.preload();
@@ -111,7 +112,8 @@ Hud.prototype = {
         this.game.load.spritesheet('avatars', 'assets/avatars.png', 32, 32);
         this.game.load.spritesheet('timer', 'assets/timer.png', 256, 32);
         this.game.load.spritesheet('directions', 'assets/directions.png', 32*3, 32);
-        this.game.load.spritesheet('keys', 'assets/keys2.png', 256, 32);
+        this.game.load.spritesheet('keys', 'assets/keys2.png', 32, 32);
+        this.game.load.spritesheet('words', 'assets/colorWords.png', 128, 64);
     },
     create : function() {
         this.initialize();
