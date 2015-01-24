@@ -1,10 +1,11 @@
 Game = function(game) {
 	this.game = game;
+    var _this = this;
 	miniGame = null;
-    this.hud = new Hud(this, 4);
+    this.hud = new Hud(_this, 4);
     this.MIN_KEY_VAL = 0;
     this.MAX_KEY_VAL = 2;
-    this.timer = new Timer(this);
+    this.timer = new Timer(_this);
 }
 
 Game.prototype = {
@@ -43,7 +44,7 @@ Game.prototype = {
 
 
 		// miniGame = new ShapeMatching(_this);
-        miniGame = new KeyMatching(_this);
+        miniGame = new CollisionGame(_this);//KeyMatching(_this);
 
 		miniGame.preload();
         this.hud.preload();
