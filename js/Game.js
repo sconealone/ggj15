@@ -4,7 +4,11 @@ Game = function(game) {
     this.hud = new Hud(this, 4);
     this.MIN_KEY_VAL = 0;
     this.MAX_KEY_VAL = 2;
-    this.timer = new Timer(this);
+    var _this = this;
+    this.timer = new Timer(_this);
+    this.lives = 5;
+
+    this.levelMaster = new LevelMaster(_this);
 }
 
 Game.prototype = {
@@ -147,6 +151,7 @@ Hud.prototype = {
 
     setWrong : function(player) {
         this.avatars[player].frame = this.frameForSprite(player) + 2;
+        this.lives > 0 ? this.lives-- : this.levelMaster.showEnding();
     },
 
     reset :function(player) {

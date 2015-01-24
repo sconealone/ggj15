@@ -1,6 +1,6 @@
 LevelMaster = function(game) {
     this.game = game;
-	}
+}
 	
 LevelMaster.prototype = {
 	// set initial game data if new game
@@ -62,7 +62,7 @@ LevelMaster.prototype = {
 	
 	showEnding: function() {
 		// show ending for completing game
-		this.game.state.start('end', true, false, this.data);
+		this.game.state.start('endGame', true, false, this.data);
 	},
 	
 	nextTransition: function() {
