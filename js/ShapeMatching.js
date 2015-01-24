@@ -131,7 +131,7 @@ ShapeMatching.prototype = {
             if (!this.p4Resp.responded && this.p4Resp[i].isDown) {
                 this.p4Resp.responded = true;
 
-                if (i == this.answer) {
+                if (this.order[i] == this.answer) {
                     console.log("p4 pass") 
                     this.game.hud.setRight(3);
                 } else {
