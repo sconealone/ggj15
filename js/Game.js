@@ -40,6 +40,8 @@ Game.prototype = {
 
 	preload: function() {
 		_this = this;
+
+
 		// miniGame = new ShapeMatching(_this);
         miniGame = new KeyMatching(_this);
 

@@ -9,7 +9,7 @@ KeyMatching = function(game) {
     this.frameHeight = 32;
 
     this.avatarsY = 0.25*game.world.height;
-    this.directionsY = 0.5*game.world.height;
+    this.directionsY = 0.35*game.world.height;
     this.firstPlayerX = 0.20,
     this.secondPlayerX = 0.40,
     this.thirdPlayerX = 0.60,
@@ -19,22 +19,6 @@ KeyMatching = function(game) {
     this.directionSpritesheetPath = 'assets/directions.png';
 
     this.timeout = 2;
-}
-
-// helpers and sh1t
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function generateOrder(o) {
-    for (var i = o.length - 1; i >= 0; --i) {
-        var randomIndex = getRandomInt(0, i);
-        // swap
-        var tmp = o[i];
-        o[i] = o[randomIndex];
-        o[randomIndex] = tmp;
-    }
-    return o;
 }
 
 
