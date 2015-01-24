@@ -46,8 +46,9 @@ Game.prototype = {
 		// miniGame = new ShapeMatching(_this);
         //miniGame = new KeyMatching(_this);
          miniGame = new ColorTile(_this);
+        //miniGame = new ButtonMashing(_this);
 
-        miniGame.preload();
+		miniGame.preload();
         this.hud.preload();
     },
 
@@ -192,17 +193,19 @@ Timer.prototype = {
             if (this.dt() >= this.timeout) {
                 this.started = false;
                 if (this.callback) {
-                    this.callback();
+                    this.callback(this.param);
                 }
             }
             this.game.hud.setTimer(Math.max(0, 1 - this.percentTimedOut()));
         }
     },
 
-    setTimeout : function(timeout, callback) {
+    setTimeout : function(timeout, callback, param) {
+
         if (!this.started) {
             this.timeout = timeout;
             this.callback = callback || null;
+            this.param = param || null;
             this.start();
         }
     },
