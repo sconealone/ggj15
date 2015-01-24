@@ -52,19 +52,23 @@ LevelMaster.prototype = {
 	
 	newGameTransition: function() {
 		// show transition for new game
+		this.game.state.start('newGame', false, false, this.data);
 	},
 	
 	showFailed: function() {
 		// show failed ending
+		this.game.state.start('failed', true, false, this.data);
 	},
 	
 	showEnding: function() {
 		// show ending for completing game
+		this.game.state.start('end', true, false, this.data);
 	},
 	
 	nextTransition: function() {
 		// show transition for next game stage
 		this.data.level++;
+		this.game.state.start('transition', false, false, this.data);
 	},
 	
 	nextLevel: function() {
