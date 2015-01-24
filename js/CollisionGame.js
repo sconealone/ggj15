@@ -30,11 +30,11 @@ CollisionGame.prototype = {
         this.game.hud.timerFrame.visible = false;
         this.game.hud.timerBar.visible = false;
 
-        var enemy = this.game.add.sprite(this.game.world.width, this.groundY, 'enemy', 0);
-        enemy.anchor.setTo(0, 1);
-        enemy.scale.set(2, 2);
+        this.enemy = this.game.add.sprite(this.game.world.width, this.groundY, 'enemy', 0);
+        this.enemy.anchor.setTo(0, 1);
+        this.enemy.scale.set(2, 2);
 
-        var tween = this.game.add.tween(enemy);
+        var tween = this.game.add.tween(this.enemy);
         var timeout = 2000;
         tween.to({x:-64}, timeout);
         tween.start();
@@ -74,6 +74,18 @@ CollisionGame.prototype = {
     },
 
     checkCollisions: function() {
+        var enemyRect = new Phaser.Rectangle(this.enemy.x, this.enemy.y, this.enemy.width, this.enemy.height);
+        var players = [this.p1, this.p2, this.p3, this.p4];
+        for (var i = 0; i < players.length; ++i) {
+            var p = players[i];
+            if (enemyRect.intersects(new Phaser.Rectangle(p.sprite.x, p.sprite.y, p.sprite.width, p.sprite.height))) {
+                p.goFlying() 
+                this.game.hud.setWrong(p.playerNumber);
+            }
+            if (enemyRect.x + enemyRect.width < p.sprite.x && !p.flownAway) {
+                this.game.hud.setRight(p.playerNumber);
+            }
+        }
     }
 }
 
@@ -81,10 +93,13 @@ Player = function(game, collisionGame, playerNumber, order) {
     this.game = game;
     this.collisionGame = collisionGame;
     this.playerNumber = playerNumber;
-    this.v0 = 0;
+    this.vy0 = 0;
+    this.vx0 = 0;
     this.sprite = null;
     this.t0 = -1;
     this.order = order
+    this.flownAway = false;
+    this.x0 = 0;
 }
 
 Player.prototype = {
@@ -94,19 +109,39 @@ Player.prototype = {
     create : function() {
         // This is bad, but I'm only doing it because I'm reusing the avatar
         // when i should be using the fruit sprites
-        this.sprite = this.game.add.sprite(this.game.world.width * 0.333 - this.order * 48, this.collisionGame.groundY, 'avatars', this.game.hud.frameForSprite(this.playerNumber));
+        this.x0 = this.game.world.width * 0.333 - this.order * 48;
+        this.sprite = this.game.add.sprite(this.x0, this.collisionGame.groundY, 'avatars', this.game.hud.frameForSprite(this.playerNumber));
         this.sprite.anchor.setTo(0, 1);
     },
 
     update : function() {
         var dt = this.game.time.totalElapsedSeconds() - this.t0;
-        var d = -0.5*this.collisionGame.gravity*dt*dt - this.v0*dt + this.collisionGame.groundY;
-        d = Math.min(this.collisionGame.groundY, d);
-        this.sprite.position.y = d;
+        var dy = -0.5*this.collisionGame.gravity*dt*dt - this.vy0*dt + this.collisionGame.groundY;
+        dy = Math.min(this.collisionGame.groundY, dy);
+        dx = this.vx0 * dt;
+        this.sprite.position.y = dy;
+        this.sprite.position.x = this.x0 - dx;
+
+        if (this.flownAway) {
+            this.sprite.angle -= 12;
+        }
     },
 
     jump: function() {
-        this.v0 = 500;
+        this.vy0 = 500;
         this.t0 = this.game.time.totalElapsedSeconds();
+    },
+
+    goFlying: function() {
+        if (!this.flownAway) {
+            this.t0 = this.game.time.totalElapsedSeconds();
+            this.vx0 = 200;
+            this.vy0 = 700;
+            this.flownAway = true;
+
+            this.sprite.y -= this.sprite.height/2;
+            this.sprite.x += this.sprite.width/2;
+            this.sprite.anchor.setTo(0.5, 0.5);
+        }
     },
 }
