@@ -20,7 +20,7 @@ KeyMatching = function(game, data) {
     this.directionsSpriteSheet = 'directions';
     this.directionSpritesheetPath = 'assets/directions.png';
 
-    this.timeout = 2;
+    this.timeout = 10;
     this.hud = new Hud(game);
     this.timer = new Timer(game, this.hud);
 }
@@ -105,10 +105,12 @@ KeyMatching.prototype = {
 
     preload: function() {
         this.game.load.spritesheet(this.directionsSpriteSheet, this.directionSpritesheetPath, this.dframeWidth, this.dframeHeight);
+        this.game.load.image('cellar', 'assets/cellar.png');
 
     },
 
     create: function() {
+        this.game.add.sprite(0,0,'cellar');
         var gm = GetGameManager(this.game)
 
         // choose correct answer

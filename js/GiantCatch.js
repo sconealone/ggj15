@@ -15,13 +15,14 @@ GiantCatch = function(game, data) {
 
     this.floor = null;
 
-    this.startX = 0.7 * WIDTH
+    this.startX = 0.7 * WIDTH;
+    this.startY = 0;
     this.groundY = 0.7 * HEIGHT;
 
-    this.handX = 0;
     this.handframe = 0;
+    this.count = 0;
 
-    this.gravity = -981;
+    this.timeout = 10;
 
     this.hud = new Hud(game);
     this.timer = new Timer(game, this.hud);
@@ -33,19 +34,25 @@ GiantCatch.prototype = {
     preload: function(){
 
         this.game.load.spritesheet('hand', 'assets/hand.png', 156, 606);
-
-        this.game.load.image('ground', 'assets/ground.png');
+        //this.game.load.image('ground', 'assets/ground.png');
+        this.game.load.image('bk', 'assets/handbk.png');
     },
 
     create: function(){
 
+        this.game.add.sprite(0, 0, 'bk');
         //this.floor = this.game.add.sprite(0, 0.72 * HEIGHT, 'ground');
         this.playerRun = this.game.add.group();
 
-        this.blueberryRun = this.playerRun.create(this.startX, this.groundY, 'blueberry', 3);
+        this.blueberryRun = this.playerRun.create(getRandomInt(0, WIDTH), this.groundY, 'blueberry', 3);
+        this.appleRun = this.playerRun.create(getRandomInt(0, WIDTH), this.groundY, 'apple', 3);
+        this.pearRun = this.playerRun.create(getRandomInt(0, WIDTH), this.groundY, 'pear', 3);
+        this.bananaRun = this.playerRun.create(getRandomInt(0, WIDTH), this.groundY, 'banana', 3);
+
+/*        this.blueberryRun = this.playerRun.create(this.startX, this.groundY, 'blueberry', 3);
         this.appleRun = this.playerRun.create(this.startX, this.groundY, 'apple', 3);
         this.pearRun = this.playerRun.create(this.startX, this.groundY, 'pear', 3);
-        this.bananaRun = this.playerRun.create(this.startX, this.groundY, 'banana', 3);
+        this.bananaRun = this.playerRun.create(this.startX, this.groundY, 'banana', 3);*/
 
         this.sprites = [this.blueberryRun, this.appleRun, this.pearRun, this.bananaRun];
 
@@ -55,51 +62,42 @@ GiantCatch.prototype = {
             this.sprites[player].anchor.setTo(0.5, 0.5);
         }
 
-        this.handX = getRandomInt(0, WIDTH);
-        this.handdown = this.game.add.sprite(this.handX, 0, 'hand', 0);
-        this.handdown.anchor.setTo(0.5, 1);
-        this.handdown.animations.add('move', [0, 1], 0.9, true);
-        this.handdown.loopCount = 5;
+        //var x = getRandomInt(0, WIDTH);
+        this.hand = this.game.add.sprite(this.startX, this.startY, 'hand', this.handframe);
+        this.hand.animations.add('move', [0,1], 1, true);
+        this.hand.anchor.setTo(0.5, 1);
 
-        //this.handup = this.game.add.sprite(0, 0,'hand', 1);
-
-        var tweenY = this.game.add.tween(this.handdown);
-        var timeout = 1000;
-        tweenY.to({y: this.groundY}, timeout);
-        tweenY.repeat(-1);
+        var tweenY = this.game.add.tween(this.hand);
+        var time = 1000;
+        tweenY.to({y: this.groundY}, time);
+        tweenY.repeat(4);
         tweenY.yoyo(true);
         tweenY.start();
+        tweenY.killOnComplete;
 
-/*        var tweenX = this.game.add.tween(this.handdown);
-        var timeoutX = 2000;
-        tweenX.to({x: 0}, timeoutX);
-        tweenX.repeat(5);
-        tweenX.yoyo(true);
-        tweenX.start();*/
-    },
-
-    update: function(){
-        //this.checkHit();
-        this.handdown.animations.play('move');
-        this.checkResponse();
-        this.checkCollisions();
+        var _this = this;
+        this.timer.setTimeout(10, this.transition, _this);
 
         this.hud.create();
         this.timer.create();
-
     },
 
-    checkHit: function(){
-  /*      //var gm = GetGameManager(self.game);
-        var handRect = new Phaser.Rectangle(this.handdown.x, this.handdown.y, this.handdown.width, this.handdown.height);
-        var groundRect = new Phaser.Rectangle(this.floor.x, this.floor.y, this.floor.width, this.floor.height);
-        if (handRect.intersects(groundRect)){
+    update: function(){
+        this.hand.animations.play('move');
+        for (var i = 0; i < 5; i++){
+
+            if (this.hand.position.y == 0){
+                this.handframe = 0;
+                this.hand.position.x = getRandomInt(0, WIDTH);
+           }
+        }
+        if (this.hand.position.y == this.groundY){
             this.handframe = 1;
-        }else {
-            this.handframe = 0;
-        }*/
-
-
+        }
+        this.checkResponse();
+        this.checkCollisions();
+        this.timer.update();
+        this.hud.update();
     },
 
     checkResponse: function(){
@@ -118,16 +116,12 @@ GiantCatch.prototype = {
                 this.sprites[player].animations.play('right');
             }
             // jump?
-
-            // stahp
+            // stand still
             else {
                 this.sprites[player].animations.stop();
                 this.sprites[player].frame = 3;
             }
         }
-        this.hud.update();
-        this.timer.update();
-
     },
  
     shutdown: function() {
@@ -138,13 +132,16 @@ GiantCatch.prototype = {
     checkCollisions: function(){
         var gm = GetGameManager(this.game);
         var players = [this.blueberryRun, this.appleRun, this.pearRun, this.bananaRun];
-
         for (var i = 0; i < players.length; ++i){;
-            if (players[i].overlap(this.handdown)){
+            if (players[i].overlap(this.hand)){
                 console.log("overlaps!" + i);
-                gm.hud.setWrong(i);
+                this.hud.setWrong(i);
+                gm.levelMaster.decreaseLife();
             }
         }
+/*        if (this.count == 4){
+            gm.levelMaster.decreaseLife();
+        }*/
     },
 
 }

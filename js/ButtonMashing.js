@@ -6,8 +6,10 @@ ButtonMashing = function(game, data) {
 
     this.avatarSpritesheet = 'avatars'
     this.spritesheetPath = 'assets/avatars.png'
-    this.frameWidth = 32;
-    this.frameHeight = 32;
+    this.frameWidth = 180;
+    this.frameHeight = 200;
+    this.dframeWidth = 32;
+    this.dframeHeight = 32;
 
     this.avatarsY = 0.25*HEIGHT;
     this.directionsY = 0.35*HEIGHT;
@@ -19,7 +21,7 @@ ButtonMashing = function(game, data) {
     this.directionsSpriteSheet = 'directions';
     this.directionSpritesheetPath = 'assets/directions.png';
 
-    this.timeout = 10;
+    this.timeout = 20;
 
     this.MIN_STROKE_BOUND = getRandomInt(10, 20);
 
@@ -35,26 +37,26 @@ ButtonMashing.prototype = {
         //players 0-3
         this.players  = [
             {   
-                id: 1,
+                id: 0,
                 keyFrame: 0,
                 strokeCount: 0,
                 answer: getRandomInt(gm.MIN_KEY_VAL, gm.MAX_KEY_VAL)
             },
             {   
-                id: 2,
+                id: 1,
                 keyFrame: 1,
                 strokeCount: 0,
                 answer: getRandomInt(gm.MIN_KEY_VAL, gm.MAX_KEY_VAL)
             },
             {   
-                id: 3,
-                keyFrame: 6,
+                id: 2,
+                keyFrame: 2,
                 strokeCount: 0,
                 answer: getRandomInt(gm.MIN_KEY_VAL, gm.MAX_KEY_VAL)
             },
             {   
-                id: 4,
-                keyFrame: 7,
+                id: 3,
+                keyFrame: 3,
                 strokeCount: 0,
                 answer: getRandomInt(gm.MIN_KEY_VAL, gm.MAX_KEY_VAL)
             },         
@@ -93,12 +95,13 @@ ButtonMashing.prototype = {
     },
 
     incrementStroke: function(player) {
-        player.strokeCount >= this.MIN_STROKE_BOUND ? this.game.hud.setRight(player.id) : player.strokeCount += 1;
+        player.strokeCount >= this.MIN_STROKE_BOUND ? this.hud.setRight(player.id) : player.strokeCount += 1;
+        console.log("player: " + player + "strock: " + player.strokeCount);
     },
 
     preload: function() {
         this.game.load.spritesheet(this.avatarSpritesheet, this.spritesheetPath, this.frameWidth, this.frameHeight);
-        this.game.load.spritesheet(this.directionsSpriteSheet, this.directionSpritesheetPath, this.frameWidth, this.frameHeight);
+        this.game.load.spritesheet(this.directionsSpriteSheet, this.directionSpritesheetPath, this.dframeWidth, this.dframeHeight);
 
     },
 
