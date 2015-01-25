@@ -203,12 +203,13 @@ ButtonMashing.prototype = {
     },
 
     transition: function(_this) {
+        var gm = GetGameManager();
 
         for (var i=0; i < _this.players.length; i++) {
 
             if (_this.players[i].strokeCount < _this.MIN_STROKE_BOUND) {
                 _this.hud.setWrong(i);
-                _this.game.levelMaster.decreaseLife();
+                gm.levelMaster.decreaseLife();
             }
         }
 
