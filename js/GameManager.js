@@ -1,16 +1,16 @@
 // This file is super buggy
 // Don't call it too early
 _gameManager = null;
-GetGameManager = function(game) {
+GetGameManager = function(game, levelMaster) {
     if (_gameManager == null) {
-        _gameManager = new GameManager(game);
+        _gameManager = new GameManager(game, levelMaster);
         _gameManager.preload();
         _gameManager.create();
     }
     return _gameManager
 }
 
-GameManager = function(game) {
+GameManager = function(game, levelMaster) {
 	this.game = game;
     var _this = this;
     this.WIDTH = 1280;
@@ -18,7 +18,7 @@ GameManager = function(game) {
 	this.miniGame = null;
     this.MIN_KEY_VAL = 0;
     this.MAX_KEY_VAL = 2;
-    this.levelMaster = new LevelMaster(game);
+    this.levelMaster = levelMaster;
     this.FAIL_SOUNDS = ["smallViolin", "wahWah", "slowClap"];
     this.FAIL_COMPLAIN_SOUNDS = ["grumpyBanana", "grumpyBlueBerry", "grumpyPear", "GrumpyApple"];
     this.FAIL_EMBARRASSED_SOUNDS = ["embBanana", "embBlueBerry", "embApple", "emPear"];

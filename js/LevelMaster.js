@@ -1,4 +1,6 @@
 LevelMaster = function(game, data) {
+
+    console.log("LEVEL MASTER CONSTRUCTOR")
     this.game = game;
     this.MAX_LIVES = 3;
 	this.GAME_ARRAY_SHORT = ["keyMatching", "keyMatching", "keyMatching", 
@@ -26,8 +28,8 @@ LevelMaster = function(game, data) {
     ]
 	this.levelSequenceCounter = 0;
 	//this.levelSequence = generateOrder(this.GAME_ARRAY_LONG);
-    //this.levelSequence = [0, 1, 2, 3, 4, 5, 6];
-	this.levelSequence = [6];
+    this.levelSequence = [0, 1, 2, 3, 4, 5, 6];
+	//this.levelSequence = [6];
 
 
 	// set initial game data
@@ -52,6 +54,8 @@ LevelMaster = function(game, data) {
 LevelMaster.prototype = {
 	
 	create: function() {
+        console.log("LEVEL MASTER CREATE")
+        GetGameManager(this.game, this);
         // decide if we want to show transition state or go to the next game state
         this.decideGameState();
 	},
@@ -131,9 +135,6 @@ LevelMaster.prototype = {
 	
 	nextLevel: function() {
 		console.log(this.levelSequenceCounter);
-		if (this.levelSequenceCounter == 7) {
-			this.levelSequenceCounter = 0;
-		}
 		console.log(this.STATE_KEYS[this.levelSequence[this.levelSequenceCounter]]);
 
         if (this.levelSequenceCounter >= this.levelSequence.length) {
