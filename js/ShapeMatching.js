@@ -127,6 +127,10 @@ ShapeMatching.prototype = {
         this.checkResponse();
     },
 
+    shutdown: function() {
+        this.timer.stop()
+    },
+
 
     drawLayout : function() {
         this.game.add.sprite(0,0,'shapeMatchingBK');

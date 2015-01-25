@@ -132,6 +132,11 @@ GiantCatch.prototype = {
         this.timer.update();
 
     },
+ 
+    shutdown: function() {
+        this.timer.stop()
+    },
+
 
     checkResponse: function(){
 

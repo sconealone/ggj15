@@ -150,6 +150,10 @@ ButtonMashing.prototype = {
         this.timer.update();
     },
 
+    shutdown: function() {
+        this.timer.stop()
+    },
+
     drawLayout : function() {
 
         this.shape1 = this.players[this.displayOrder[0]].keyFrame;
@@ -278,6 +282,11 @@ ButtonMashingRun.prototype = {
         this.p4.percentDone(this.numPlayerStrokes[3]/(this.goal + 30));
     },
 
+    shutdown: function() {
+        this.timer.stop()
+    },
+
+
     transition : function(_this) {
         for (var i=0; i < 4; ++i) {
             if (_this.numPlayerStrokes[i] < _this.goal)
@@ -314,7 +323,6 @@ ButtonMashing.Player = function(game, playerNumber, x, y, key) {
     this.x0 = x;
     this.y0 = y;
     this.key = key;
-    this.tween = null;
 }
 
 ButtonMashing.Player.prototype = {
@@ -330,6 +338,7 @@ ButtonMashing.Player.prototype = {
 
     update : function() {
     },
+
 
     percentDone : function(percent) {
         var distance = WIDTH + 100 - this.x0;
