@@ -65,6 +65,11 @@ CollisionGame.prototype = {
         this.checkCollisions();
     },
 
+    shutdown: function() {
+        this.timer.stop()
+    },
+
+
     checkResponse: function() {
         var gm = GetGameManager(this.game);
         for (var i=0; i < 3 ; i++) {

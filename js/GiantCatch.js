@@ -129,6 +129,11 @@ GiantCatch.prototype = {
         this.timer.update();
 
     },
+ 
+    shutdown: function() {
+        this.timer.stop()
+    },
+
 
     checkCollisions: function(){
         var gm = GetGameManager(this.game);
