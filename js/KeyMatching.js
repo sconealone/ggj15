@@ -23,6 +23,8 @@ KeyMatching = function(game, data) {
     this.timeout = 10;
     this.hud = new Hud(game);
     this.timer = new Timer(game, this.hud);
+
+    this.blame = false;
 }
 
 
@@ -63,7 +65,8 @@ KeyMatching.prototype = {
                     this.hud.setRight(0);
                 } else {
                     this.hud.setWrong(0);
-                    gm.levelMaster.decreaseLife();
+                    // gm.levelMaster.decreaseLife();
+                    this.blame = true;
                 }
             }
 
@@ -74,7 +77,8 @@ KeyMatching.prototype = {
                     this.hud.setRight(1);
                 } else {
                     this.hud.setWrong(1);
-                    gm.levelMaster.decreaseLife();
+                    // gm.levelMaster.decreaseLife();
+                    this.blame = true;
                 }
             }
 
@@ -84,7 +88,8 @@ KeyMatching.prototype = {
                 if (i == this.players[2].answer) {
                     this.hud.setRight(2);
                 } else {
-                    gm.levelMaster.decreaseLife();
+                    // gm.levelMaster.decreaseLife();
+                    this.blame = true;
                     this.hud.setWrong(2);
                 }
             }
@@ -95,10 +100,16 @@ KeyMatching.prototype = {
                 if (i == this.players[3].answer) {
                     this.hud.setRight(3);
                 } else {
-                    gm.levelMaster.decreaseLife();
+                    // gm.levelMaster.decreaseLife();
+                    this.blame = true;
                     this.hud.setWrong(3);
                 }
             }                                    
+        }
+
+        if (gm.p1Resp.responded && gm.p2Resp.responded && gm.p3Resp.responded && gm.p4Resp.responded
+            && this.blame) {
+            gm.levelMaster.decreaseLife(null);
         }
 
     },
@@ -128,8 +139,8 @@ KeyMatching.prototype = {
 
     update: function() {
         this.checkResponse();
-        this.timer.update()
-        this.hud.update()
+        this.timer.update();
+        this.hud.update();
     },
 
     shutdown : function() {

@@ -7,7 +7,7 @@ GetGameManager = function(game) {
         _gameManager.preload();
         _gameManager.create();
     }
-    return _gameManager
+    return _gameManager;
 }
 
 GameManager = function(game) {

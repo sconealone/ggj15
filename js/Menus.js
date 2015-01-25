@@ -66,16 +66,18 @@ Menus.FailState.prototype = {
         var sound = sfx[i];
         sound.play();
 
-        for (var k=0; k < 4; k++) {
+        for (var k=0; k < 2; k++) {
             var j = getRandomInt(0,7);
             var noise = crowdNoise[j];
             noise.play();
         }
 
+        var _this = this;
 
-        setInterval(function() {
-            gm.levelMaster.nextLevel()
-        }, 3000);
+        // setInterval(function() {
+        //     // _this.game.state.start("levelMaster");
+        //     // gm.levelMaster.nextLevel()
+        // }, 3000);
     },
 };
 
