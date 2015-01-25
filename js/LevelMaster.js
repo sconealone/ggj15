@@ -128,6 +128,10 @@ LevelMaster.prototype = {
 	
 	nextLevel: function() {
         console.log("Next level. Sequence: " + this.levelSequenceCounter);
+        if (this.levelSequenceCounter >= this.levelSequence.length) {
+            this.showEnding();
+            return;
+        }
 
 		this.game.state.start(this.STATE_KEYS[this.levelSequence[this.levelSequenceCounter]], true, false, this.game, this.data);
         console.log("upping sequence counter")
