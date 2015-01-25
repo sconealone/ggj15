@@ -28,7 +28,7 @@ LevelMaster = function(game, data) {
     ]
 	this.levelSequenceCounter = 0;
 	//this.levelSequence = generateOrder(this.GAME_ARRAY_LONG);
-    this.levelSequence = [0, 1, 2, 3, 4, 5, 6];
+    this.levelSequence = [0, 0, 0, 0, 0, 5, 6];
 	//this.levelSequence = [6];
 
 
@@ -94,12 +94,15 @@ LevelMaster.prototype = {
 	},
 
 	decreaseLife: function(blameList) {
+        console.log("LOSE A LIFE");
         this.data.failFruits = blameList;
-		if (this.data.lives > 1 && !this.data.decreasedLife) {
+		if (this.data.lives > 1) {
 			this.data.lives--;
 			this.showFailed();
 		}
 		else {
+            console.log("DECREASE LIFE END");
+            console.log("data.lives: " + this.data.lives);
 			this.data.lives == 1 ? this.data.lives = 0: "";
 			this.showEnding();
 		}
