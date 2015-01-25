@@ -209,7 +209,7 @@ CollisionGame.Player.prototype = {
     },
 
     jump: function() {
-        this.vy0 = 600;
+        this.vy0 = 650;
         this.t0 = this.game.time.totalElapsedSeconds();
     },
 
