@@ -58,7 +58,7 @@ CollisionGame.prototype = {
         tween.start();
 
         var _this = this;
-        this.timer.setTimeout(7, this.transition, _this);
+        this.timer.setTimeout(5, this.transition, _this);
 
 
         this.blueberryJump = this.game.add.audio('blueberryJump');
@@ -71,6 +71,7 @@ CollisionGame.prototype = {
     update : function() {
         this.enemy.animations.play('left');
         this.checkResponse();
+        this.timer.update();
         this.p1.update();
         this.p2.update();
         this.p3.update();

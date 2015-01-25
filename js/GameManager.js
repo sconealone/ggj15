@@ -7,6 +7,7 @@ GetGameManager = function(game, levelMaster) {
         _gameManager.preload();
         _gameManager.create();
     }
+
     else if (levelMaster && !_gameManager.levelMaster) {
         _gameManager.levelMaster = levelMaster
     }
