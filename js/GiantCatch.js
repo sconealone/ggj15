@@ -83,6 +83,7 @@ GiantCatch.prototype = {
     },
     create: function(){
 
+        this.reset();
         this.game.add.sprite(0, 0, 'bk');
         //this.floor = this.game.add.sprite(0, 0.72 * HEIGHT, 'ground');
         this.playerRun = this.game.add.group();

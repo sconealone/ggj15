@@ -50,6 +50,7 @@ CollisionGame.prototype = {
     this.timer = new Timer(this.game, this.hud);
     },
     create : function() {
+        this.reset()
         this.game.add.sprite(0,0,'jumpbk');
         this.p1.create();
         this.p2.create();
