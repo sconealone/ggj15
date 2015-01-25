@@ -20,7 +20,7 @@ KeyMatching = function(game, data) {
     this.directionsSpriteSheet = 'directions';
     this.directionSpritesheetPath = 'assets/directions.png';
 
-    this.timeout = 15;
+    this.timeout = 10;
     this.hud = new Hud(game);
     this.timer = new Timer(game, this.hud);
 }
@@ -130,6 +130,10 @@ KeyMatching.prototype = {
         this.checkResponse();
         this.timer.update()
         this.hud.update()
+    },
+
+    shutdown : function() {
+        this.timer.stop();
     },
 
     drawLayout : function() {
