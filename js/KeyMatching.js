@@ -7,11 +7,11 @@ KeyMatching = function(game, data) {
     this.spritesheetPath = 'assets/avatars.png'
     this.frameWidth = 180;
     this.frameHeight = 200;
-    this.dframeWidth = 32;
-    this.dframeHeight = 32;
+    this.dframeWidth = 74;
+    this.dframeHeight = 74;
 
-    this.avatarsY = 0.35*game.height;
-    this.directionsY = 0.5*game.height;
+    this.avatarsY = 0.45*game.height;
+    this.directionsY = 0.7*game.height;
     this.firstPlayerX = 0.20,
     this.secondPlayerX = 0.40,
     this.thirdPlayerX = 0.60,

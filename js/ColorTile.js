@@ -99,9 +99,12 @@ ColorTile.prototype = {
 
     preload: function(){
         this.game.load.spritesheet(this.spritesheet, this.spritesheetPath, this.frameWidth, this.frameHeight);
+		this.game.load.image('unlocked', 'assets/buttonmashunlockedbg.png');
     },
 
     create: function(){
+		
+	
         // generate answer between 0 and 5
         this.answer = getRandomInt(this.MIN_FRAME, this.MAX_FRAME);
 
@@ -150,6 +153,7 @@ ColorTile.prototype = {
 
     drawLayout: function(){
         // create question: Which button is <color>?
+		this.game.add.sprite(0,0,'unlocked');
         var x = this.game.world.width * 0.5;
         var y = this.wordSpriteY - 80;
         this.question = this.game.add.text(x, y, 'Pick the '+ this.qColor + ' word. :)', { frontSize: '32px', fill: '#fff'});

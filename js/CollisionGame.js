@@ -25,7 +25,7 @@ CollisionGame.prototype = {
 
         //this.game.load.spritesheet('enemy', 'assets/ghost.png', 32, 48);
         this.game.load.spritesheet('enemy', 'assets/ghostrun.png', 79, 100);
-        this.game.load.image('jumpbk', 'assets/jumpbg2.png');
+        this.game.load.image('jumpbk', 'assets/jumpbg.png');
 
         this.load.audio('blueberryJump', ['assets/sounds/blueberryJump3.wav']);
         this.load.audio('appleJump', ['assets/sounds/appleJump1.wav']);
