@@ -1,3 +1,5 @@
+// This file is super buggy
+// Don't call it too early
 _gameManager = null;
 GetGameManager = function(game) {
     if (_gameManager == null) {
@@ -9,22 +11,21 @@ GetGameManager = function(game) {
 }
 
 GameManager = function(game) {
-    console.log("GameManager constructor")
 	this.game = game;
-    console.log(this.game)
     var _this = this;
+    this.WIDTH = 1280;
+    this.HEIGHT = 720;
 	this.miniGame = null;
     this.hud = new Hud(_this, 4);
     this.MIN_KEY_VAL = 0;
     this.MAX_KEY_VAL = 2;
     this.timer = new Timer(_this);
-    this.lives = new Lives(_this);
+    this.levelMaster = new LevelMaster(_this);
 
 }
 
 GameManager.prototype = {
     initializeKeys: function() {
-        console.log("Initialize keys");
         this.p1Resp = {
             0: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),
             1: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
@@ -108,7 +109,15 @@ GameManager.prototype = {
 
 	update: function() {
         this.timer.update();
-    }
+    },
+
+    reorderHud : function() {
+        this.hud.timerBar.bringToTop();
+        this.hud.timerFrame.bringToTop();
+        for (var i = 0; i < 4; ++i) {
+            this.hud.avatars[i].bringToTop();
+        }
+    },
 }
 
 // Hud is the player avatars + time countdown
@@ -122,26 +131,26 @@ Hud = function(gameManager, numPlayers) {
 
     this.numPlayers = numPlayers;
 
-    this.FRAME_APPLE_NO_ANSWER = 0;
-    this.FRAME_APPLE_WRONG = 2;
-    this.FRAME_APPLE_RIGHT = 4;
+    this.FRAME_BLUEBERRY_NO_ANSWER = 0;
+    this.FRAME_BLUEBERRY_WRONG = 8;
+    this.FRAME_BLUEBERRY_RIGHT = 4;
 
-    this.FRAME_BANANA_NO_ANSWER = 1;
-    this.FRAME_BANANA_WRONG = 3;
-    this.FRAME_BANANA_RIGHT = 5;
+    this.FRAME_APPLE_NO_ANSWER = 1;
+    this.FRAME_APPLE_WRONG = 9;
+    this.FRAME_APPLE_RIGHT = 5;
 
-    this.FRAME_ORANGE_NO_ANSWER = 6;
-    this.FRAME_ORANGE_WRONG = 8;
-    this.FRAME_ORANGE_RIGHT = 10;
+    this.FRAME_PEAR_NO_ANSWER = 2;
+    this.FRAME_PEAR_WRONG = 10;
+    this.FRAME_PEAR_RIGHT = 6;
 
-    this.FRAME_BLUEBERRY_NO_ANSWER = 7;
-    this.FRAME_BLUEBERRY_WRONG = 9;
-    this.FRAME_BLUEBERRY_RIGHT = 11;
+    this.FRAME_BANANA_NO_ANSWER = 3;
+    this.FRAME_BANANA_WRONG = 11;
+    this.FRAME_BANANA_RIGHT = 7;
 
-    this.APPLE = 0;
-    this.BANANA = 1;
-    this.ORANGE = 2;
-    this.BLUEBERRY = 3;
+    this.BLUEBERRY = 0;
+    this.APPLE = 1;
+    this.PEAR = 2;
+    this.BANANA = 3;
 
     this.avatars = [];
 
@@ -162,26 +171,26 @@ Hud.prototype = {
         // initialize avatars
         for (var i = 0; i < this.numPlayers; ++i) {
             var x = (1 + i) * 0.2 * this.gameManager.game.world.width;
-            var y = 0.9 * this.gameManager.game.world.height;
+            var y = 0.85 * this.gameManager.game.world.height;
 
             this.avatars.push(this.gameManager.game.add.sprite(x, y, 'avatars', this.frameForSprite(i)))
             this.avatars[i].anchor.setTo(0.5, 0.5);
         }
 
         // initialize timer
-        var x = 0.5 * (this.gameManager.game.world.width - 256);
+        var x = 0.005 * this.gameManager.game.world.width;
         var y = 0.1 * this.gameManager.game.world.height;
+        this.timerBar = this.gameManager.game.add.sprite(x+50, y, 'timers', 1);
         this.timerFrame = this.gameManager.game.add.sprite(x, y, 'timers', 0);
-        this.timerBar = this.gameManager.game.add.sprite(x, y, 'timers', 1);
         this.timerFrame.anchor.setTo(0, 0.5);
         this.timerBar.anchor.setTo(0, 0.5);
 
-        // initialize lives
-        for(var i = 0; i < this.gameManager.lives.MAX_LIFE; ++i){
-            var x = (10 + i * 30);
-            var y = 0;
-            this.lifeCount.push(this.gameManager.game.add.sprite(x, y, 'life'));
 
+        // initialize lives
+        for(var i = 0; i < this.gameManager.levelMaster.MAX_LIVES; ++i){
+            var x = 0.87 * this.gameManager.game.width - i * 125;
+            var y = 0.02 * this.gameManager.game.height;
+            this.lifeCount.push(this.gameManager.game.add.sprite(x, y, 'life'));
         }
     },
 
@@ -190,7 +199,7 @@ Hud.prototype = {
     frameForSprite : function(i) {
         if (i == this.APPLE) return this.FRAME_APPLE_NO_ANSWER;
         if (i == this.BANANA) return this.FRAME_BANANA_NO_ANSWER;
-        if (i == this.ORANGE) return this.FRAME_ORANGE_NO_ANSWER;
+        if (i == this.PEAR) return this.FRAME_PEAR_NO_ANSWER;
         if (i == this.BLUEBERRY) return this.FRAME_BLUEBERRY_NO_ANSWER;
         return -1;
     },
@@ -200,7 +209,7 @@ Hud.prototype = {
     },
 
     setWrong : function(player) {
-        this.avatars[player].frame = this.frameForSprite(player) + 2;
+        this.avatars[player].frame = this.frameForSprite(player) + 8;
     },
 
     reset :function(player) {
@@ -257,12 +266,4 @@ Timer.prototype = {
     percentTimedOut : function() {
         return this.dt()/this.timeout;
     }
-}
-
-Lives = function(game) {
-    this.game = game;
-    this.MAX_LIFE = 3;
-
-}
-Lives.prototype = {
 }

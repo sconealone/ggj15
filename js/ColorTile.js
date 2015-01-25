@@ -2,9 +2,6 @@
  * Created by Ro on 24/01/2015.
  */
 ColorTile = function(game, data) {
-    console.log("ColorTile constructor")
-    console.log(game)
-    console.log(data)
 	this.game = game;
     this.data = data;
 
@@ -26,16 +23,16 @@ ColorTile = function(game, data) {
     this.frameWidth = 128;
     this.frameHeight = 64;
 
-    this.wordSprite1X = 0.33 * game.width;
-    this.wordSprite2X = 0.5 * game.width;
-    this.wordSprite3X = 0.67 * game.width;
-    this.wordSpriteY = 0.4 * game.height;
+    this.wordSprite1X = 0.33 * WIDTH
+    this.wordSprite2X = 0.5 * WIDTH
+    this.wordSprite3X = 0.67 * WIDTH
+    this.wordSpriteY = 0.4 * HEIGHT
 
     // constants
     this.MAX_FRAME = 5;
     this.MIN_FRAME = 0;
 
-    this.timeout = 1;
+    this.timeout = 2;
 }
 
 ColorTile.prototype = {
@@ -52,6 +49,7 @@ ColorTile.prototype = {
                 } else {
                     console.log("p1 fail");
                     gm.hud.setWrong(0);
+                    gm.levelMaster.decreaseLife();
                 }
             }
 
@@ -63,6 +61,7 @@ ColorTile.prototype = {
                     gm.hud.setRight(1);
                 } else {
                     console.log("p2 fail");
+                    gm.levelMaster.decreaseLife();
                     gm.hud.setWrong(1);
                 }
             }
@@ -75,6 +74,7 @@ ColorTile.prototype = {
                     gm.hud.setRight(2);
                 } else {
                     console.log("p3 fail");
+                    gm.levelMaster.decreaseLife();
                     gm.hud.setWrong(2);
                 }
             }
@@ -87,6 +87,7 @@ ColorTile.prototype = {
                     gm.hud.setRight(3);
                 } else {
                     console.log("p4 fail");
+                    gm.levelMaster.decreaseLife();
                     gm.hud.setWrong(3);
                 }
             }
@@ -120,7 +121,7 @@ ColorTile.prototype = {
         this.apos = this.order.indexOf(this.answer);
 
         // generate question's color
-        var col = ['BLUE', 'RED', 'ORIANGE', 'GREEN', 'PURPLE', 'YELLOW'];
+        var col = ['BLUE', 'RED', 'ORANGE', 'GREEN', 'PURPLE', 'YELLOW'];
         this.qColor = col[this.answer];
 
         // draw the layout
@@ -128,7 +129,8 @@ ColorTile.prototype = {
 
         // start timer
         var gm = GetGameManager(this.game);
-        gm.timer.setTimeout(this.timeout, this.transition);
+        var _this = this;
+        gm.timer.setTimeout(this.timeout, this.transition, _this);
 
     },
 
@@ -156,8 +158,28 @@ ColorTile.prototype = {
 
     },
 
-    transition: function(){
-        console.log("transition");
+    transition: function(_this){
+        var gm = GetGameManager(_this.game)
+        if (!gm.p1Resp.responded) {
+            gm.hud.setWrong(0);
+        }
+
+        if (!gm.p2Resp.responded) {
+            gm.hud.setWrong(1);
+        }
+
+        if (!gm.p3Resp.responded) {
+            gm.hud.setWrong(2);
+        }
+
+        if (!gm.p4Resp.responded) {
+            gm.hud.setWrong(3);
+        }
+
+        if (!gm.p1Resp.responded || !gm.p2Resp.responded || !gm.p3Resp.responded ||
+            !gm.p4Resp.responded) {
+            gm.levelMaster.decreaseLife();
+        }
     }
 
 }

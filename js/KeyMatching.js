@@ -5,11 +5,13 @@ KeyMatching = function(game, data) {
 
     this.avatarSpritesheet = 'avatars'
     this.spritesheetPath = 'assets/avatars.png'
-    this.frameWidth = 32;
-    this.frameHeight = 32;
+    this.frameWidth = 180;
+    this.frameHeight = 200;
+    this.dframeWidth = 32;
+    this.dframeHeight = 32;
 
-    this.avatarsY = 0.25*game.height;
-    this.directionsY = 0.35*game.height;
+    this.avatarsY = 0.35*game.height;
+    this.directionsY = 0.5*game.height;
     this.firstPlayerX = 0.20,
     this.secondPlayerX = 0.40,
     this.thirdPlayerX = 0.60,
@@ -37,11 +39,11 @@ KeyMatching.prototype = {
                 answer: getRandomInt(gm.MIN_KEY_VAL, gm.MAX_KEY_VAL)
             },
             {
-                keyFrame: 6,
+                keyFrame: 2,
                 answer: getRandomInt(gm.MIN_KEY_VAL, gm.MAX_KEY_VAL)
             },
             {
-                keyFrame: 7,
+                keyFrame: 3,
                 answer: getRandomInt(gm.MIN_KEY_VAL, gm.MAX_KEY_VAL)
             },         
         ];
@@ -61,6 +63,7 @@ KeyMatching.prototype = {
                 } else {
                     console.log("p1 fail");
                     gm.hud.setWrong(0);
+                    gm.levelMaster.decreaseLife();
                 }
             }
 
@@ -73,6 +76,7 @@ KeyMatching.prototype = {
                 } else {
                     console.log("p2 fail");
                     gm.hud.setWrong(1);
+                    gm.levelMaster.decreaseLife();
                 }
             }
 
@@ -84,6 +88,7 @@ KeyMatching.prototype = {
                     gm.hud.setRight(2);
                 } else {
                     console.log("p3 fail");
+                    gm.levelMaster.decreaseLife();
                     gm.hud.setWrong(2);
                 }
             }
@@ -96,6 +101,7 @@ KeyMatching.prototype = {
                     gm.hud.setRight(3);
                 } else {
                     console.log("p4 fail");
+                    gm.levelMaster.decreaseLife();
                     gm.hud.setWrong(3);
                 }
             }                                    
@@ -104,8 +110,7 @@ KeyMatching.prototype = {
     },
 
     preload: function() {
-        this.game.load.spritesheet(this.avatarSpritesheet, this.spritesheetPath, this.frameWidth, this.frameHeight);
-        this.game.load.spritesheet(this.directionsSpriteSheet, this.directionSpritesheetPath, this.frameWidth, this.frameHeight);
+        this.game.load.spritesheet(this.directionsSpriteSheet, this.directionSpritesheetPath, this.dframeWidth, this.dframeHeight);
 
     },
 
@@ -126,7 +131,8 @@ KeyMatching.prototype = {
 
         // draw the shapes each type of shape matching mini game needs to know its own layout
         this.drawLayout();
-        gm.timer.setTimeout(this.timeout, this.transition);
+        var _this = this;
+        gm.timer.setTimeout(this.timeout, this.transition, _this);
     },
 
     update: function() {
@@ -173,5 +179,29 @@ KeyMatching.prototype = {
         this.dir4Sprite.anchor.setTo(0.5, 0.5);
 
     },
+
+    transition: function(_this) {
+        var gm = GetGameManager(_this.game)
+        if (!gm.p1Resp.responded) {
+            gm.hud.setWrong(0);
+        }
+
+        if (!gm.p2Resp.responded) {
+            gm.hud.setWrong(1);
+        }
+
+        if (!gm.p3Resp.responded) {
+            gm.hud.setWrong(2);
+        }
+
+        if (!gm.p4Resp.responded) {
+            gm.hud.setWrong(3);
+        }
+
+        if (!gm.p1Resp.responded || !gm.p2Resp.responded || !gm.p3Resp.responded ||
+            !gm.p4Resp.responded) {
+            gm.levelMaster.decreaseLife();
+        }
+    }
 
 }
