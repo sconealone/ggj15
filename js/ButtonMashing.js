@@ -107,6 +107,34 @@ ButtonMashing.prototype = {
 
     },
 
+    reset: function () {
+        this.displayOrder = [];
+        this.question = '';
+        
+        this.avatarSpritesheet = 'avatars'
+        this.spritesheetPath = 'assets/avatars.png'
+        this.frameWidth = 180;
+        this.frameHeight = 200;
+        this.dframeWidth = 74;
+        this.dframeHeight = 74;
+
+        this.avatarsY = 0.4*HEIGHT;
+        this.directionsY = 0.6*HEIGHT;
+        this.firstPlayerX = 0.20,
+        this.secondPlayerX = 0.40,
+        this.thirdPlayerX = 0.60,
+        this.fourthPlayerX = 0.80;
+
+        this.directionsSpriteSheet = 'directions';
+        this.directionSpritesheetPath = 'assets/directions.png';
+
+        this.timeout = 20;
+
+        this.MIN_STROKE_BOUND = getRandomInt(10, 20);
+
+        this.hud = new Hud(this.game);
+        this.timer = new Timer(this.game, this.hud);
+    },
     create: function() {
         // choose correct answer
         this.game.add.sprite(0,0,'bmbackground');
@@ -248,6 +276,28 @@ ButtonMashingRun.prototype = {
 		this.game.load.image('cellar', 'assets/cellar.png');
     },
 
+    reset : function() {
+        this.numPlayerStrokes = [0, 0, 0, 0];
+        this.goal = 80;
+        this.timeout = 10;
+        this.x0 = WIDTH * 0.2;
+        this.y0 = HEIGHT * 0.4;
+
+        this.question2 = '';
+        
+        this.p1 = new ButtonMashing.Player(this.game, 0, this.x0, this.y0, 'blueberry');
+        this.p2 = new ButtonMashing.Player(this.game, 0, this.x0 - 10, this.y0 + 60, 'apple');
+        this.p3 = new ButtonMashing.Player(this.game, 0, this.x0 - 20, this.y0 + 120, 'pear');
+        this.p4 = new ButtonMashing.Player(this.game, 0, this.x0 - 30, this.y0 + 180, 'banana');
+
+        this.p1Count = null;
+        this.p2Count = null;
+        this.p3Count = null;
+        this.p4Count = null;
+
+        this.hud = new Hud(this.game);
+        this.timer = new Timer(this.game, this.hud);
+    },
     create : function() {
 		this.game.add.sprite(0,0,'cellar');
         this.p1.create();

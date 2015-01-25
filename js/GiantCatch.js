@@ -51,6 +51,36 @@ GiantCatch.prototype = {
 
     },
 
+    reset : function () {
+
+    this.playerRun = null;
+    this.sprites = [];
+
+    this.blueberryRun = null;
+    this.appleRun = null;
+    this.pearRun = null;
+    this.bananaRun = null;
+
+    this.floor = null;
+
+    this.startX = 0.7 * WIDTH;
+    this.startY = 0;
+    this.groundY = 0.7 * HEIGHT;
+
+    this.handframe = 0;
+    this.count = 0;
+
+    this.timeout = 10;
+
+    this.hud = new Hud(this.game);
+    this.timer = new Timer(this.game, this.hud);
+
+    this.BLUEBERRY = 0;
+    this.APPLE = 1;
+    this.PEAR = 2;
+    this.BANANA = 3;
+    this.characters  = ["blueberry", "apple", "pear", "banana"];
+    },
     create: function(){
 
         this.game.add.sprite(0, 0, 'bk');
