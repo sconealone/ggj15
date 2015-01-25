@@ -27,7 +27,10 @@ LevelMaster = function(game, data) {
         'running', // 6
     ]
 	this.levelSequenceCounter = 0;
-    this.levelSequence = [0, 1, 2, 3, 4, 5, 6];
+
+    this.levelSequence = [0, 5, 2, 3, 4, 2, 6];
+	//this.levelSequence = [4];
+
 
 
 	// set initial game data
