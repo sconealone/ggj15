@@ -38,6 +38,8 @@ ShapeMatching = function(game, data) {
     this.timeout = 5;
     this.hud = new Hud(game);
     this.timer = new Timer(game, this.hud);
+
+    this.blame = false;
 }
 
 
@@ -53,7 +55,8 @@ ShapeMatching.prototype = {
                     this.hud.setRight(0);
                 } else {
                     this.hud.setWrong(0);
-                    gm.levelMaster.decreaseLife();
+                    this.blame = true;
+                    //gm.levelMaster.decreaseLife();
                 }
             }
 
@@ -64,7 +67,8 @@ ShapeMatching.prototype = {
                     this.hud.setRight(1);
                 } else {
                     this.hud.setWrong(1);
-                    gm.levelMaster.decreaseLife();
+                    this.blame = true;
+                    //gm.levelMaster.decreaseLife();
                 }
             }
 
@@ -75,7 +79,8 @@ ShapeMatching.prototype = {
                     this.hud.setRight(2);
                 } else {
                     this.hud.setWrong(2);
-                    gm.levelMaster.decreaseLife();
+                    this.blame = true;
+                    //gm.levelMaster.decreaseLife();
                 }
             }
 
@@ -86,9 +91,16 @@ ShapeMatching.prototype = {
                     this.hud.setRight(3);
                 } else {
                     this.hud.setWrong(3);
-                    gm.levelMaster.decreaseLife();
+                    this.blame = true;
+                    //gm.levelMaster.decreaseLife();
                 }
-            }                                    
+            }
+            
+            if (gm.p1Resp.responded && gm.p2Resp.responded && gm.p3Resp.responded && gm.p4Resp.responded
+                && this.blame) {
+                gm.levelMaster.decreaseLife(null);
+            }
+
         }
 
     },

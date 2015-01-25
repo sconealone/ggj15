@@ -226,6 +226,8 @@ ButtonMashingRun = function(game, data) {
     this.x0 = WIDTH * 0.2;
     this.y0 = HEIGHT * 0.4;
 
+	this.question2 = '';
+	
     this.p1 = new ButtonMashing.Player(this.game, 0, this.x0, this.y0, 'blueberry');
     this.p2 = new ButtonMashing.Player(this.game, 0, this.x0 - 10, this.y0 + 60, 'apple');
     this.p3 = new ButtonMashing.Player(this.game, 0, this.x0 - 20, this.y0 + 120, 'pear');
@@ -284,6 +286,12 @@ ButtonMashingRun.prototype = {
         this.hud.create()
         this.timer.create()
         this.timer.setTimeout(10, this.transition, _this);
+		
+		var x = this.game.world.width * 0.5;
+        var y = this.game.world.height * 0.15;
+        this.question2 = this.game.add.text(x, y, 'MASH THE BUTTONS!', { frontSize: '42px', fill: '#fff'});
+        this.question2.anchor.setTo(0.5, 0.5);
+		
     },
 
     update : function() {
