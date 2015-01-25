@@ -173,6 +173,8 @@ ShapeMatching.prototype = {
         if (!gm.p1Resp.responded || !gm.p2Resp.responded || !gm.p3Resp.responded ||
             !gm.p4Resp.responded) {
             gm.levelMaster.decreaseLife();
+        } else {
+            gm.levelMaster.nextLevel();
         }
 
     },

@@ -287,6 +287,11 @@ ButtonMashingRun.prototype = {
         this.p2.percentDone(this.numPlayerStrokes[1]/(this.goal + 30));
         this.p3.percentDone(this.numPlayerStrokes[2]/(this.goal + 30));
         this.p4.percentDone(this.numPlayerStrokes[3]/(this.goal + 30));
+
+        var gm = GetGameManager();
+        for (var i = 0; i < 4; ++i) {
+            if (this.numPlayerStrokes[i] >= this.goal) this.hud.setRight(i)
+        }
     },
 
     shutdown: function() {
@@ -295,9 +300,12 @@ ButtonMashingRun.prototype = {
 
 
     transition : function(_this) {
+        var shouldFail = false;
         for (var i=0; i < 4; ++i) {
-            if (_this.numPlayerStrokes[i] < _this.goal)
+            if (_this.numPlayerStrokes[i] < _this.goal) {
                 _this.hud.setWrong(i);
+                shouldFail = true;
+            }
             else
                 _this.hud.setRight(i);
         }
@@ -319,6 +327,12 @@ ButtonMashingRun.prototype = {
         gm.p4Resp[0].onDown.remove(_this.p4Count);
         gm.p4Resp[1].onDown.remove(_this.p4Count);
         gm.p4Resp[2].onDown.remove(_this.p4Count);
+
+        if (shouldFail) {
+            gm.levelMaster.decreaseLife();
+        } else {
+            gm.levelMaster.nextLevel();
+        }
         
     }
 }

@@ -140,11 +140,14 @@ CollisionGame.prototype = {
     },
 
     transition: function(_this) {
-        if (collided) {
-            _this.game.levelMaster.decreaseLife();
-        }
+        var gm = GetGameManager();
         this.hud.timerFrame.visible = true;
         this.hud.timerBar.visible = true;
+        if (collided) {
+            gm.levelMaster.decreaseLife();
+        } else {
+            gm.levelMaster.nextLevel();
+        }
     }
 }
 

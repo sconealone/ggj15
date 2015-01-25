@@ -198,6 +198,9 @@ KeyMatching.prototype = {
             !gm.p4Resp.responded) {
             gm.levelMaster.decreaseLife();
         }
+        else {
+            gm.levelMaster.nextLevel();
+        }
     }
 
 }
