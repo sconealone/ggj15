@@ -9,8 +9,8 @@ ButtonMashing = function(game, data) {
     this.frameWidth = 32;
     this.frameHeight = 32;
 
-    this.avatarsY = 0.25*game.HEIGHT;
-    this.directionsY = 0.35*game.HEIGHT;
+    this.avatarsY = 0.25*HEIGHT;
+    this.directionsY = 0.35*HEIGHT;
     this.firstPlayerX = 0.20,
     this.secondPlayerX = 0.40,
     this.thirdPlayerX = 0.60,
@@ -22,11 +22,15 @@ ButtonMashing = function(game, data) {
     this.timeout = 10;
 
     this.MIN_STROKE_BOUND = getRandomInt(10, 20);
+
+    this.hud = new Hud(game);
+    this.timer = new Timer(game, this.hud);
 }
 
 
 ButtonMashing.prototype = {
     createAnswers: function() {
+        var gm = GetGameManager(this.game);
 
         //players 0-3
         this.players  = [
@@ -34,25 +38,25 @@ ButtonMashing.prototype = {
                 id: 1,
                 keyFrame: 0,
                 strokeCount: 0,
-                answer: getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL)
+                answer: getRandomInt(gm.MIN_KEY_VAL, gm.MAX_KEY_VAL)
             },
             {   
                 id: 2,
                 keyFrame: 1,
                 strokeCount: 0,
-                answer: getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL)
+                answer: getRandomInt(gm.MIN_KEY_VAL, gm.MAX_KEY_VAL)
             },
             {   
                 id: 3,
                 keyFrame: 6,
                 strokeCount: 0,
-                answer: getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL)
+                answer: getRandomInt(gm.MIN_KEY_VAL, gm.MAX_KEY_VAL)
             },
             {   
                 id: 4,
                 keyFrame: 7,
                 strokeCount: 0,
-                answer: getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL)
+                answer: getRandomInt(gm.MIN_KEY_VAL, gm.MAX_KEY_VAL)
             },         
         ];
 
@@ -65,23 +69,24 @@ ButtonMashing.prototype = {
             p2 = this.players[1],
             p3 = this.players[2],
             p4 = this.players[3];
+        var gm = GetGameManager(this.game);
 
         for (var i=0; i < 3 ; i++) {
-            if (this.game.p1Resp[i].isDown && i != p1.answer) {
-                this.game.hud.setWrong(0);
-                this.game.levelMaster.decreaseLife();
+            if (gm.p1Resp[i].isDown && i != p1.answer) {
+                this.hud.setWrong(0);
+                gm.levelMaster.decreaseLife();
             }
-            else if (this.game.p2Resp[i].isDown && i != p2.answer) {
-                this.game.hud.setWrong(1);
-                this.game.levelMaster.decreaseLife();
+            else if (gm.p2Resp[i].isDown && i != p2.answer) {
+                this.hud.setWrong(1);
+                gm.levelMaster.decreaseLife();
             }
-            else if (this.game.p3Resp[i].isDown && i != p3.answer) {
-                this.game.hud.setWrong(2);
-                this.game.levelMaster.decreaseLife();
+            else if (gm.p3Resp[i].isDown && i != p3.answer) {
+                this.hud.setWrong(2);
+                gm.levelMaster.decreaseLife();
             }
-            else if (this.game.p4Resp[i].isDown && i != p4.answer) {
-                this.game.hud.setWrong(3);
-                this.game.levelMaster.decreaseLife();
+            else if (gm.p4Resp[i].isDown && i != p4.answer) {
+                this.hud.setWrong(3);
+                gm.levelMaster.decreaseLife();
             }
         }
 
@@ -112,19 +117,20 @@ ButtonMashing.prototype = {
 
         _this = this;
 
-        this.game.p1Resp[p1.answer].onDown.add(function() {
+        var gm = GetGameManager(this.game);
+        gm.p1Resp[p1.answer].onDown.add(function() {
             return _this.incrementStroke(p1);
         }, null);
 
-        this.game.p2Resp[p2.answer].onDown.add(function() {
+        gm.p2Resp[p2.answer].onDown.add(function() {
             return _this.incrementStroke(p2);
         }, null);
 
-        this.game.p3Resp[p3.answer].onDown.add(function() {
+        gm.p3Resp[p3.answer].onDown.add(function() {
             return _this.incrementStroke(p3);
         }, null);
 
-        this.game.p4Resp[p4.answer].onDown.add(function() {
+        gm.p4Resp[p4.answer].onDown.add(function() {
             return _this.incrementStroke(p4);
         }, null);
 
@@ -132,13 +138,16 @@ ButtonMashing.prototype = {
         // draw the shapes each type of shape matching mini game needs to know its own layout
         this.drawLayout();
         var _this = this;
-        this.game.timer.setTimeout(this.timeout, _this.transition, _this);
 
-
+        this.hud.create();
+        this.timer.create();
+        this.timer.setTimeout(this.timeout, _this.transition, _this);
     },
 
     update: function() {
         this.checkResponse();
+        this.hud.update();
+        this.timer.update();
     },
 
     drawLayout : function() {
@@ -183,7 +192,7 @@ ButtonMashing.prototype = {
         for (var i=0; i < _this.players.length; i++) {
 
             if (_this.players[i].strokeCount < _this.MIN_STROKE_BOUND) {
-                _this.game.hud.setWrong(i);
+                _this.hud.setWrong(i);
                 _this.game.levelMaster.decreaseLife();
             }
         }

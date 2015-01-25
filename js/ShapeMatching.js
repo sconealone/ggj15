@@ -36,6 +36,8 @@ ShapeMatching = function(game, data) {
     this.answerSpriteY = 0.5*height;
 
     this.timeout = 5;
+    this.hud = new Hud(game);
+    this.timer = new Timer(game, this.hud);
 }
 
 
@@ -49,10 +51,10 @@ ShapeMatching.prototype = {
 
                 if (this.order[i] == this.answer) {
                     console.log("p1 pass") 
-                    gm.hud.setRight(0);
+                    this.hud.setRight(0);
                 } else {
                     console.log("p1 fail");
-                    gm.hud.setWrong(0);
+                    this.hud.setWrong(0);
                     gm.levelMaster.decreaseLife();
                 }
             }
@@ -62,10 +64,10 @@ ShapeMatching.prototype = {
 
                 if (this.order[i] == this.answer) {
                     console.log("p2 pass") 
-                    gm.hud.setRight(1);
+                    this.hud.setRight(1);
                 } else {
                     console.log("p2 fail");
-                    gm.hud.setWrong(1);
+                    this.hud.setWrong(1);
                     gm.levelMaster.decreaseLife();
                 }
             }
@@ -75,10 +77,10 @@ ShapeMatching.prototype = {
 
                 if (this.order[i] == this.answer) {
                     console.log("p3 pass") 
-                    gm.hud.setRight(2);
+                    this.hud.setRight(2);
                 } else {
                     console.log("p3 fail");
-                    gm.hud.setWrong(2);
+                    this.hud.setWrong(2);
                     gm.levelMaster.decreaseLife();
                 }
             }
@@ -88,10 +90,10 @@ ShapeMatching.prototype = {
 
                 if (this.order[i] == this.answer) {
                     console.log("p4 pass") 
-                    gm.hud.setRight(3);
+                    this.hud.setRight(3);
                 } else {
                     console.log("p4 fail");
-                    gm.hud.setWrong(3);
+                    this.hud.setWrong(3);
                     gm.levelMaster.decreaseLife();
                 }
             }                                    
@@ -108,7 +110,6 @@ ShapeMatching.prototype = {
         // choose correct answer
         var gm = GetGameManager(this.game)
         this.answer = getRandomInt(gm.MIN_KEY_VAL, gm.MAX_KEY_VAL);
-        console.log(this.answer);
 
         // choose order of shapes
         var a = [0, 1, 2];
@@ -124,13 +125,15 @@ ShapeMatching.prototype = {
 
         // Start timer
         var _this = this;
-        gm.timer.setTimeout(this.timeout, this.transition, _this);
+        this.hud.create();
+        this.timer.create();
+        this.timer.setTimeout(this.timeout, this.transition, _this);
     },
 
     update: function() {
-        var gm = GetGameManager(this.game)
+        this.hud.update();
+        this.timer.update();
         this.checkResponse();
-        gm.update();
     },
 
 
@@ -157,19 +160,19 @@ ShapeMatching.prototype = {
 
         var gm = GetGameManager(_this.game);
         if (!gm.p1Resp.responded) {
-            gm.hud.setWrong(0);
+            this.hud.setWrong(0);
         }
 
         if (!gm.p2Resp.responded) {
-            gm.hud.setWrong(1);
+            this.hud.setWrong(1);
         }
 
         if (!gm.p3Resp.responded) {
-            gm.hud.setWrong(2);
+            this.hud.setWrong(2);
         }
 
         if (!gm.p4Resp.responded) {
-            gm.hud.setWrong(3);
+            this.hud.setWrong(3);
         }
 
         if (!gm.p1Resp.responded || !gm.p2Resp.responded || !gm.p3Resp.responded ||

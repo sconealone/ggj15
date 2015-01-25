@@ -12,6 +12,8 @@ CollisionGame = function(game, data) {
     this.groundY = 0.6 * HEIGHT;
 
     var collided = false;
+    this.hud = new Hud(game);
+    this.timer = new Timer(game, this.hud);
 }
 
 CollisionGame.prototype = {
@@ -30,9 +32,10 @@ CollisionGame.prototype = {
         this.p3.create();
         this.p4.create();
 
-        var gm = GetGameManager(this.game);
-        gm.hud.timerFrame.visible = false;
-        gm.hud.timerBar.visible = false;
+        this.hud.create();
+
+        this.hud.timerFrame.visible = false;
+        this.hud.timerBar.visible = false;
 
         this.enemy = this.game.add.sprite(this.game.width, this.groundY, 'enemy', 0);
         this.enemy.anchor.setTo(0, 1);
@@ -44,7 +47,7 @@ CollisionGame.prototype = {
         tween.start();
 
         var _this = this;
-        gm.timer.setTimeout(7, this.transition, _this);
+        this.timer.setTimeout(7, this.transition, _this);
     },
 
     update : function() {
@@ -90,11 +93,11 @@ CollisionGame.prototype = {
             var p = players[i];
             if (enemyRect.intersects(new Phaser.Rectangle(p.sprite.x, p.sprite.y, p.sprite.width, p.sprite.height))) {
                 p.goFlying() 
-                gm.hud.setWrong(p.playerNumber);
+                this.hud.setWrong(p.playerNumber);
                 collided = true;
             }
             if (enemyRect.x + enemyRect.width < p.sprite.x && !p.flownAway) {
-                gm.hud.setRight(p.playerNumber);
+                this.hud.setRight(p.playerNumber);
             }
         }
 
@@ -104,9 +107,8 @@ CollisionGame.prototype = {
         if (collided) {
             _this.game.levelMaster.decreaseLife();
         }
-        var gm = GetGameManager(this.game);
-        gm.hud.timerFrame.visible = true;
-        gm.hud.timerBar.visible = true;
+        this.hud.timerFrame.visible = true;
+        this.hud.timerBar.visible = true;
     }
 }
 

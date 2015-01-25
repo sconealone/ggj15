@@ -19,6 +19,9 @@ GiantCatch = function(game, data) {
 
     this.gravity = -981;
 
+    this.hud = new Hud(game);
+    this.timer = new Timer(game, this.hud);
+
 }
 
 GiantCatch.prototype = {
@@ -55,6 +58,9 @@ GiantCatch.prototype = {
         this.bananaRun.animations.add('left', [0, 1, 2], 30, true);
         this.bananaRun.animations.add('right', [4, 5, 6], 30, true);
 
+        this.hud.create();
+        this.timer.create();
+
     },
 
     update: function(){
@@ -82,6 +88,8 @@ GiantCatch.prototype = {
                 sprites[player].frame = 3;
             }
         }
+        this.hud.update();
+        this.timer.update();
 
     },
 
