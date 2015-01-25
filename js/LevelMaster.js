@@ -29,9 +29,9 @@ LevelMaster = function(game, data) {
 	this.levelSequenceCounter = 0;
 	//this.levelSequence = generateOrder(this.GAME_ARRAY_LONG);
 
-    this.levelSequence = [0, 0, 0, 0, 0, 0];
+    // this.levelSequence = [0, 0, 0, 0, 0, 0];
 
-    //this.levelSequence = [0, 1, 2, 3, 4, 5, 6];
+    this.levelSequence = [1, 1, 2, 3, 4, 5, 6];
 
 
 	// set initial game data
@@ -170,14 +170,6 @@ LevelMaster.prototype = {
 			this.bgmI4.play();
 		}
 
-		console.log(this.levelSequenceCounter);
-// <<<<<<< HEAD
-// 		if (this.levelSequenceCounter == 2) {
-// 			this.levelSequenceCounter = 0;
-// 		}
-// =======
-// >>>>>>> 61321ae0d42b44bdeae4ce5c8244ba27d567b564
-		console.log(this.STATE_KEYS[this.levelSequence[this.levelSequenceCounter]]);
 
         if (this.levelSequenceCounter >= this.levelSequence.length) {
             this.showEnding();
@@ -187,9 +179,6 @@ LevelMaster.prototype = {
 		this.game.state.start(this.STATE_KEYS[this.levelSequence[this.levelSequenceCounter]], true, false, this.game, this.data);
 
 		this.levelSequenceCounter++;
-        console.log("upping sequence counter")
-
-        console.log("Next level after. Sequence: " + this.levelSequenceCounter);
 
 	},
 	

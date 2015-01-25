@@ -72,12 +72,10 @@ Menus.FailState.prototype = {
             noise.play();
         }
 
-        var _this = this;
 
-        // setInterval(function() {
-        //     // _this.game.state.start("levelMaster");
-        //     // gm.levelMaster.nextLevel()
-        // }, 3000);
+        setTimeout(function() {
+            gm.levelMaster.nextLevel()
+        }, 3000);
     },
 };
 
