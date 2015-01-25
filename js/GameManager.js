@@ -38,9 +38,9 @@ GameManager.prototype = {
         };
 
         this.p2Resp = {
-            0: this.game.input.keyboard.addKey(Phaser.Keyboard.A),
-            1: this.game.input.keyboard.addKey(Phaser.Keyboard.S),
-            2: this.game.input.keyboard.addKey(Phaser.Keyboard.D),
+            0: this.game.input.keyboard.addKey(Phaser.Keyboard.Z),
+            1: this.game.input.keyboard.addKey(Phaser.Keyboard.X),
+            2: this.game.input.keyboard.addKey(Phaser.Keyboard.C),
             responded: false
         };
 
