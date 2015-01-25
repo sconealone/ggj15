@@ -198,3 +198,49 @@ ButtonMashing.prototype = {
     }
 
 }
+
+// Button mashing mini game where the fruits run away from something
+ButtonMashingRun = function(game) {
+    this.game = game;
+    this.numPlayerStrokes = [0, 0, 0, 0];
+}
+
+ButtonMashingRun.prototype = {
+    preload : function() {
+    },
+
+    create : function() {
+    },
+
+    update : function() {
+        checkResponse();
+    },
+
+    checkResponse : function() {
+        for (var player = 0; i < 4; ++player) {
+            var ignoreKey  = [false, false, false];
+            for (var key = 0; i < 3; ++key) {
+                if (!ignoreKey[key] && this.game.getPlayerRespondKey(player, key).isDown) {
+                    ignoreKey[key] = true;
+                    this.numPlayerStrokes[player] += 1;
+                } else {
+                    ignoreKey[key] = false;
+                }
+            }
+        }
+    },
+}
+
+ButtonMashing.Player = function(game, buttonMashingGame, playerNumber) {
+}
+
+ButtonMashing.Player.prototype = {
+    preload : function() {
+    },
+
+    create : function() {
+    },
+
+    update : function() {
+    },
+}

@@ -1,11 +1,12 @@
 Game = function(game) {
-    this.game = game;
-    miniGame = null;
-    this.hud = new Hud(this, 4);
+	this.game = game;
+    var _this = this;
+	this.miniGame = null;
+    this.hud = new Hud(_this, 4);
     this.MIN_KEY_VAL = 0;
     this.MAX_KEY_VAL = 2;
-    this.timer = new Timer(this);
-    this.lives = new Lives(this);
+    this.timer = new Timer(_this);
+    this.lives = new Lives(_this);
 }
 
 Game.prototype = {
@@ -39,29 +40,70 @@ Game.prototype = {
         };
     },
 
+    setPlayerRespond : function(playerNumber) {
+        var resp = null;
+        if (playerNumber == 0) {
+            resp = this.p1Resp;
+        } else if (playerNumber == 1) {
+            resp = this.p2Resp;
+        } else if (playerNumber == 2) {
+            resp = this.p3Resp;
+        } else if (playerNumber == 3) {
+            resp = this.p4Resp;
+        }
+        resp.responded = true;
+    },
+
+    getPlayerRespond : function(playerNumber) {
+        var resp = null;
+        if (playerNumber == 0) {
+            resp = this.p1Resp;
+        } else if (playerNumber == 1) {
+            resp = this.p2Resp;
+        } else if (playerNumber == 2) {
+            resp = this.p3Resp;
+        } else if (playerNumber == 3) {
+            resp = this.p4Resp;
+        }
+        return resp.responded;
+    },
+
+    getPlayerRespondKey : function(playerNumber, keyNumber) {
+        if (playerNumber == 0) {
+            return this.p1Resp[keyNumber]
+        } else if (playerNumber == 1) {
+            return this.p2Resp[keyNumber]
+        } else if (playerNumber == 2) {
+            return this.p3Resp[keyNumber]
+        } else if (playerNumber == 3) {
+            return this.p4Resp[keyNumber]
+        }
+    },
+
 
 	preload: function() {
 		_this = this;
 
-		// miniGame = new ShapeMatching(_this);
-        // miniGame = new KeyMatching(_this);
-        // miniGame = new ColorTile(_this);
-        miniGame = new ButtonMashing(_this);
+		this.miniGame = new ShapeMatching(_this);
+        //this.miniGame = new KeyMatching(_this);
+        //this.miniGame = new ColorTile(_this);
+        //this.miniGame = new ButtonMashing(_this);
+        //this.miniGame = new CollisionGame(_this);
 
-		miniGame.preload();
+		this.miniGame.preload();
         this.hud.preload();
     },
 
     create: function() {
         //initialize the keys for each player
         this.initializeKeys();
-
-        miniGame.create();
         this.hud.create();
+
+        this.miniGame.create();
     },
 
     update: function() {
-        miniGame.update();
+        this.miniGame.update();
         this.timer.update();
         this.lives.update();
     }
