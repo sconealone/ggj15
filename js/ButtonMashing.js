@@ -239,7 +239,10 @@ ButtonMashing.prototype = {
             if (_this.players[i].strokeCount < _this.MIN_STROKE_BOUND) {
                 _this.hud.setWrong(i);
                 gm.levelMaster.decreaseLife();
-            }
+            } else
+		{
+		gm.levelMaster.nextLevel();
+		}
         }
 
     }

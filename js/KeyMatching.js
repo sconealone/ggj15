@@ -215,6 +215,7 @@ KeyMatching.prototype = {
     },
 
     transition: function(_this) {
+	console.log("IN TRANSITION");
         var gm = GetGameManager(_this.game)
         if (!gm.p1Resp.responded) {
             this.hud.setWrong(0);
