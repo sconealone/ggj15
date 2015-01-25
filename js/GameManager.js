@@ -148,6 +148,8 @@ Hud = function(game, numPlayers) {
 
 Hud.prototype = {
     preload : function() {
+        this.game.load.spritesheet('timers', 'assets/timer.png', 438, 128);
+        this.game.load.spritesheet('avatars', 'assets/avatars.png', 180, 200);
     },
     create : function() {
         this.initialize();
