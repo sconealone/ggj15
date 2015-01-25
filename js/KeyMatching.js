@@ -132,6 +132,10 @@ KeyMatching.prototype = {
         this.hud.update()
     },
 
+    shutdown : function() {
+        this.timer.stop();
+    },
+
     drawLayout : function() {
 
         this.shape1 = this.players[this.displayOrder[0]].keyFrame;

@@ -144,6 +144,9 @@ ColorTile.prototype = {
         this.timer.update();
 
     },
+    shutdown : function() {
+        this.timer.stop();
+    },
 
     drawLayout: function(){
         // create question: Which button is <color>?

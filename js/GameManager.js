@@ -258,5 +258,14 @@ Timer.prototype = {
 
     percentTimedOut : function() {
         return this.dt()/this.timeout;
-    }
+    },
+
+    stop : function (callback) {
+        if (this.started) {
+            this.started = false;
+            if (callback) {
+                this.callback(this.param);
+            }
+        }
+    },
 }
