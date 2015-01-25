@@ -195,9 +195,10 @@ Hud.prototype = {
             this.lifeCount.push(this.game.add.sprite(x, y, 'life'));
         }*/
         for(var i = 0; i < gm.levelMaster.data.lives; ++i){
-            var x = 0.87 * this.game.width - i * 125;
+            var x = 0.87 * this.game.width - i * 125/2;
             var y = 0.02 * this.game.height;
             var l = this.lifegroup.create(x, y, 'life', 0);
+            l.scale.set(0.5, 0.5)
         }
 
     },
