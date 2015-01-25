@@ -13,8 +13,18 @@ LevelMaster = function(game, data) {
 						"shapeMatching", "shapeMatching", "shapeMatching", "shapeMatching",
 						"shapeMatching", "shapeMatching", "shapeMatching", "shapeMatching"];
 
+    this.STATE_KEYS = [
+        'keyMatching', // 0
+        'shapeMatching', // 1
+        'colourText', // 2
+        'jumping', // 3
+        'hand', // 4
+        'oneMash', // 5
+        'twoMash', // 6
+    ]
 	this.levelSequenceCounter = 0;
-	this.levelSequence = generateOrder(this.GAME_ARRAY_LONG);
+	//this.levelSequence = generateOrder(this.GAME_ARRAY_LONG);
+    this.levelSequence = [0, 1, 2, 3, 4, 5, 6];
 
 	// set initial game data
 	if (!data) {
@@ -90,31 +100,31 @@ LevelMaster.prototype = {
 	newGameTransition: function() {
 		// show transition for new game
 		this.nextLevel();
-		this.game.state.start('newGame', false, false, this.game, this.data);
+		this.game.state.start('newGame', true, false, this.game, this.data);
 	},
 	
 	showFailed: function() {
 
 		// show failed ending
 		var _this = this;
-		this.game.state.start('failState', false, false, _this.game, _this.data);
-		this.data.decreasedLife = false;
+		this.game.state.start('failState', true, false, _this.game, _this.data);
+		this.data.decreasedLife = true;
 	},
 	
 	showEnding: function() {
 		// show ending for completing game
-		this.game.state.start('endState', false, false, this.game, this.data);
+		this.game.state.start('endState', true, false, this.game, this.data);
 	},
 	
 	nextTransition: function() {
 		// show transition for next game stage
 		this.data.level++;
-		this.game.state.start('transition', false, false, this.game, this.data);
+		this.game.state.start('transition', true, false, this.game, this.data);
 	},
 	
 	nextLevel: function() {
 
-		this.game.state.start(this.levelSequence[this.levelSequenceCounter], true, false, this.game, this.data);
+		this.game.state.start(this.STATE_KEYS[this.levelSequence[this.levelSequenceCounter]], true, false, this.game, this.data);
 		this.levelSequenceCounter++;
 
 	},
