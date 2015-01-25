@@ -24,6 +24,12 @@ CollisionGame.prototype = {
         this.p4.preload();
 
         this.game.load.spritesheet('enemy', 'assets/ghost.png', 32, 48);
+
+        this.load.audio('blueberryJump', ['assets/sounds/blueberryJump3.wav']);
+        this.load.audio('appleJump', ['assets/sounds/appleJump1.wav']);
+        this.load.audio('pearJump', ['assets/sounds/pearJump1.wav']);
+        this.load.audio('bananaJump', ['assets/sounds/bananaJump2.wav']);
+
     },
 
     create : function() {
@@ -48,6 +54,13 @@ CollisionGame.prototype = {
 
         var _this = this;
         this.timer.setTimeout(7, this.transition, _this);
+
+
+        this.blueberryJump = this.game.add.audio('blueberryJump');
+        this.bananaJump = this.game.add.audio('bananaJump');
+        this.appleJump = this.game.add.audio('appleJump');
+        this.pearJump = this.game.add.audio('pearJump');
+
     },
 
     update : function() {
@@ -65,22 +78,34 @@ CollisionGame.prototype = {
             if (!gm.p1Resp.responded && gm.p1Resp[i].isDown) {
                 gm.p1Resp.responded = true;
                 this.p1.jump();
+                if (!this.blueberryJump.isPlaying) {
+                    this.blueberryJump.play();
+                }
             }
 
             if (!gm.p2Resp.responded && gm.p2Resp[i].isDown) {
                 gm.p2Resp.responded = true;
                 this.p2.jump();
+                if (!this.appleJump.isPlaying) {
+                    this.appleJump.play();
+                }                
             }
 
             if (!gm.p3Resp.responded && gm.p3Resp[i].isDown) {
                 gm.p3Resp.responded = true;
                 this.p3.jump();
+                if (!this.pearJump.isPlaying) {
+                    this.pearJump.play();
+                }                
             }
 
             if (!gm.p4Resp.responded && gm.p4Resp[i].isDown) {
                 gm.p4Resp.responded = true;
                 this.p4.jump();
-            }                                    
+                if (!this.bananaJump.isPlaying) {
+                    this.bananaJump.play();
+                }
+            }
         }
     },
 

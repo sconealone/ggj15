@@ -7,20 +7,22 @@ LevelMaster = function(game, data) {
 						"running", "running", "buttonMashing", 
 						"buttonMashing", "buttonMashing", "hand"];
 
-	this.GAME_ARRAY_LONG = ["keyMatching", "keyMatching", "keyMatching", "keyMatching",
-						"shapeMatching", "shapeMatching", "shapeMatching", "colourText",
-						"colourText", "shapeMatching", "shapeMatching", "shapeMatching", 
-						"shapeMatching", "shapeMatching", "shapeMatching", "shapeMatching",
-						"shapeMatching", "shapeMatching", "shapeMatching", "shapeMatching"];
+	// this.GAME_ARRAY_LONG = ["keyMatching", "keyMatching", "keyMatching", "keyMatching",
+	// 					"shapeMatching", "shapeMatching", "shapeMatching", "colourText",
+	// 					"colourText", "shapeMatching", "shapeMatching", "shapeMatching", 
+	// 					"shapeMatching", "shapeMatching", "shapeMatching", "shapeMatching",
+	// 					"shapeMatching", "shapeMatching", "shapeMatching", "shapeMatching"];
+
+	
 
     this.STATE_KEYS = [
-        'keyMatching', // 0
-        'shapeMatching', // 1
-        'colourText', // 2
-        'jumping', // 3
+        // 'keyMatching', // 0
+        // 'shapeMatching', // 1
+        // 'colourText', // 2
+        // 'jumping', // 3
         'hand', // 4
-        'oneMash', // 5
-        'twoMash', // 6
+        // 'oneMash', // 5
+        // 'twoMash', // 6
     ]
 	this.levelSequenceCounter = 0;
 	//this.levelSequence = generateOrder(this.GAME_ARRAY_LONG);

@@ -22,12 +22,25 @@ GiantCatch = function(game, data) {
     this.hud = new Hud(game);
     this.timer = new Timer(game, this.hud);
 
+    this.BLUEBERRY = 0;
+    this.APPLE = 1;
+    this.PEAR = 2;
+    this.BANANA = 3;
+    this.characters  = ["blueberry", "apple", "pear", "banana"];
+
+
 }
 
 GiantCatch.prototype = {
     preload: function(){
 
         this.game.load.image('ground', 'assets/ground.png');
+        this.load.audio('blueberryPanic', ['assets/sounds/blueBerryPanic.wav']);
+        this.load.audio('applePanic', ['assets/sounds/applePanic.wav']);
+        this.load.audio('pearPanic', ['assets/sounds/pearPanic.wav']);
+        this.load.audio('bananaPanic', ['assets/sounds/bananaPanic.wav']);
+        this.load.audio('footstep', ['assets/sounds/footstep.wav']);
+
     },
 
     create: function(){
@@ -61,17 +74,43 @@ GiantCatch.prototype = {
         this.hud.create();
         this.timer.create();
 
+        this.blueberryPanting = this.game.add.audio('blueberryPanic');
+        this.bananaPanting = this.game.add.audio('bananaPanic');
+        this.applePanting = this.game.add.audio('applePanic');
+        this.pearPanting = this.game.add.audio('pearPanic');
+        this.footstep = this.game.add.audio('footstep');
+
     },
 
     update: function(){
         var gm = GetGameManager(self.game);
         var sprites = [this.blueberryRun, this.appleRun, this.pearRun, this.bananaRun];
         for (var player=0; player < 4; ++player) {
+
             // left
             if (gm.getPlayerRespondKey(player, 0).isDown) { // will it crash!?!?!?!
 
+
                 sprites[player].x = Math.max(0, sprites[player].x - 5);
                 sprites[player].animations.play('left');
+
+                if (player == this.BLUEBERRY && !this.blueberryPanting.isPlaying) {
+                    this.blueberryPanting.play();
+                }
+                else if (player == this.PEAR && !this.pearPanting.isPlaying) {
+                    this.pearPanting.play();
+                }
+                else if (player == this.APPLE && !this.applePanting.isPlaying) {
+                    this.applePanting.play();
+                }
+                else if (player == this.BANANA && !this.bananaPanting.isPlaying) {
+                    this.bananaPanting.play();
+                }             
+                   
+                if (!this.footstep.playing) {
+                    this.footstep.play();
+                }
+
             }
 
             // right
@@ -87,6 +126,7 @@ GiantCatch.prototype = {
                 sprites[player].animations.stop();
                 sprites[player].frame = 3;
             }
+
         }
         this.hud.update();
         this.timer.update();
