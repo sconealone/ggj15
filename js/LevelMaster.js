@@ -1,10 +1,7 @@
-LevelMaster = function(game) {
+LevelMaster = function(game, data) {
     this.game = game;
-}
 	
-LevelMaster.prototype = {
-	// set initial game data if new game
-	init: function(data) {
+	// set initial game data
 	if (!data) {
 		data = {
 		lives: 5,
@@ -18,14 +15,16 @@ LevelMaster.prototype = {
 	}
 	
 	this.data = data;
-	},
+}
+	
+LevelMaster.prototype = {
 	
 	create: function() {
         // decide if we want to show transition state or go to the next game state
         this.decideGameState();
 	},
 	
-	decideLevelState: function() {
+	decideGameState: function() {
 		// if new game show intro transition
         if (this.data.newGame == 1) {
 			this.data.newGame = 0;
@@ -53,6 +52,8 @@ LevelMaster.prototype = {
 	
 	newGameTransition: function() {
 		// show transition for new game
+		console.log("in new game");
+		this.nextLevel();
 		this.game.state.start('newGame', false, false, this.data);
 	},
 	
@@ -76,22 +77,27 @@ LevelMaster.prototype = {
 		// start the next game stage
 		
 		// pick a game type randomly
-		var gameType = integerInRange(1, this.data.numGameTypes);
+		var gameType = this.game.rnd.integerInRange(1, this.data.numGameTypes);
 		
 		switch(gameType) {
 		case 1: 
+			console.log("In case 1");
 			this.game.state.start('keyMatching', false, false, this.data);
 			break;
 		case 2:
+		console.log("In case 2");
 			this.game.state.start('shapeMatching', false, false, this.data);
 			break;
 		case 3: 
+		console.log("In case 3");
 			this.game.state.start('colourText', false, false, this.data);
 			break;
 		case 4:
+		console.log("In case 4");
 			this.game.state.start('jumping', false, false, this.data);
 			break;
 		case 5:
+		console.log("In case 5");
 			this.game.state.start('running', false, false, this.data);
 			break;
 		default:
