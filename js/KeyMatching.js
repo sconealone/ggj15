@@ -1,6 +1,6 @@
-KeyMatching = function(game) {
+KeyMatching = function(game, data) {
     this.game = game;
-
+	this.data = data;
     this.displayOrder = [];
 
     this.avatarSpritesheet = 'avatars'
@@ -8,8 +8,8 @@ KeyMatching = function(game) {
     this.frameWidth = 32;
     this.frameHeight = 32;
 
-    this.avatarsY = 0.25*game.world.height;
-    this.directionsY = 0.35*game.world.height;
+    this.avatarsY = 0.25*game.height;
+    this.directionsY = 0.35*game.height;
     this.firstPlayerX = 0.20,
     this.secondPlayerX = 0.40,
     this.thirdPlayerX = 0.60,

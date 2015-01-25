@@ -54,8 +54,9 @@ Game.prototype = {
         //initialize the keys for each player
         this.initializeKeys();
 
+		this.hud.create();
 		miniGame.create();
-        this.hud.create();
+        
 	},
 
 	update: function() {

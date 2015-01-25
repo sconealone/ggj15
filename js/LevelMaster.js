@@ -77,12 +77,13 @@ LevelMaster.prototype = {
 		// start the next game stage
 		
 		// pick a game type randomly
-		var gameType = this.game.rnd.integerInRange(1, this.data.numGameTypes);
+		//var gameType = this.game.rnd.integerInRange(1, this.data.numGameTypes);
+		var gameType = this.game.rnd.integerInRange(1, 1);
 		
 		switch(gameType) {
 		case 1: 
 			console.log("In case 1");
-			this.game.state.start('keyMatching', false, false, this.data);
+			this.game.state.start('keyMatching', false, false, this.game, this.data);
 			break;
 		case 2:
 		console.log("In case 2");
