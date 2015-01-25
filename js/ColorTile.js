@@ -145,6 +145,7 @@ ColorTile.prototype = {
     this.timer = new Timer(this.game, this.hud);
     }, 
     create: function(){
+        this.reset()
 		
 	
         // generate answer between 0 and 5

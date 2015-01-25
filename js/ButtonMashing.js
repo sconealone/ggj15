@@ -136,6 +136,7 @@ ButtonMashing.prototype = {
         this.timer = new Timer(this.game, this.hud);
     },
     create: function() {
+        this.reset()
         // choose correct answer
         this.game.add.sprite(0,0,'bmbackground');
         this.createAnswers();
@@ -304,6 +305,7 @@ ButtonMashingRun.prototype = {
         this.timer = new Timer(this.game, this.hud);
     },
     create : function() {
+        this.reset()
 		this.game.add.sprite(0,0,'cellar');
         this.p1.create();
         this.p2.create();
