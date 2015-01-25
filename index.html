@@ -33,7 +33,7 @@
 
 		    //  No parameters given, which means no default state is created or started
 		    //var game = new Phaser.Game($(window).width() * 0.7, $(window).width() * 0.7 / 1.6, Phaser.AUTO);
-		    var game = new Phaser.Game(800, 600, Phaser.AUTO);
+		    var game = new Phaser.Game(1280, 720, Phaser.AUTO);
 		    game.state.add('preloader', Preloader, true);
 		    game.state.add('game', Game);
 		    game.state.add('failState', Menus.FailState);

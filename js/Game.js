@@ -121,26 +121,26 @@ Hud = function(game, numPlayers) {
 
     this.numPlayers = numPlayers;
 
-    this.FRAME_APPLE_NO_ANSWER = 0;
-    this.FRAME_APPLE_WRONG = 2;
-    this.FRAME_APPLE_RIGHT = 4;
+    this.FRAME_BLUEBERRY_NO_ANSWER = 0;
+    this.FRAME_BLUEBERRY_WRONG = 8;
+    this.FRAME_BLUEBERRY_RIGHT = 4;
 
-    this.FRAME_BANANA_NO_ANSWER = 1;
-    this.FRAME_BANANA_WRONG = 3;
-    this.FRAME_BANANA_RIGHT = 5;
+    this.FRAME_APPLE_NO_ANSWER = 1;
+    this.FRAME_APPLE_WRONG = 9;
+    this.FRAME_APPLE_RIGHT = 5;
 
-    this.FRAME_ORANGE_NO_ANSWER = 6;
-    this.FRAME_ORANGE_WRONG = 8;
-    this.FRAME_ORANGE_RIGHT = 10;
+    this.FRAME_PEAR_NO_ANSWER = 2;
+    this.FRAME_PEAR_WRONG = 10;
+    this.FRAME_PEAR_RIGHT = 6;
 
-    this.FRAME_BLUEBERRY_NO_ANSWER = 7;
-    this.FRAME_BLUEBERRY_WRONG = 9;
-    this.FRAME_BLUEBERRY_RIGHT = 11;
+    this.FRAME_BANANA_NO_ANSWER = 3;
+    this.FRAME_BANANA_WRONG = 11;
+    this.FRAME_BANANA_RIGHT = 7;
 
-    this.APPLE = 0;
-    this.BANANA = 1;
-    this.ORANGE = 2;
-    this.BLUEBERRY = 3;
+    this.BLUEBERRY = 0;
+    this.APPLE = 1;
+    this.PEAR = 2;
+    this.BANANA = 3;
 
     this.avatars = [];
 
@@ -153,11 +153,12 @@ Hud = function(game, numPlayers) {
 Hud.prototype = {
     preload : function() {
         this.game.load.image('life', 'assets/life.png');
-        this.game.load.spritesheet('avatars', 'assets/avatars.png', 32, 32);
-        this.game.load.spritesheet('timer', 'assets/timer.png', 256, 32);
+        this.game.load.spritesheet('avatars', 'assets/avatars.png', 180, 200);
+        this.game.load.spritesheet('timer', 'assets/timer.png', 438, 128);
         this.game.load.spritesheet('directions', 'assets/directions.png', 32*3, 32);
-        this.game.load.spritesheet('keys', 'assets/keys2.png', 32, 32);
+        this.game.load.spritesheet('keys', 'assets/keys.png', 120, 300);
         this.game.load.spritesheet('words', 'assets/colorWords.png', 128, 64);
+        this.game.load.image('shapeMatchingBK', 'assets/ShapeMatchingbk.png');
     },
     create : function() {
         this.initialize();
@@ -167,24 +168,27 @@ Hud.prototype = {
         // initialize avatars
         for (var i = 0; i < this.numPlayers; ++i) {
             var x = (1 + i) * 0.2 * this.game.world.width;
-            var y = 0.9 * this.game.world.height;
+            var y = 0.85 * this.game.world.height;
 
             this.avatars.push(this.game.add.sprite(x, y, 'avatars', this.frameForSprite(i)))
             this.avatars[i].anchor.setTo(0.5, 0.5);
         }
 
         // initialize timer
-        var x = 0.5 * (this.game.world.width - 256);
+        //var x = 0.65 * this.game.world.width;
+        var x = 0.005 * this.game.world.width;
         var y = 0.1 * this.game.world.height;
+        this.timerBar = this.game.add.sprite(x+50, y, 'timer', 1);
         this.timerFrame = this.game.add.sprite(x, y, 'timer', 0);
-        this.timerBar = this.game.add.sprite(x, y, 'timer', 1);
         this.timerFrame.anchor.setTo(0, 0.5);
         this.timerBar.anchor.setTo(0, 0.5);
 
+
         // initialize lives
         for(var i = 0; i < this.game.lives.MAX_LIFE; ++i){
-            var x = (10 + i * 30);
-            var y = 0;
+            var x = 0.87 * this.game.world.width - i * 125;
+            var y = 0.02 * this.game.world.height;
+            console.log("adding life " + i);
             this.lifeCount.push(this.game.add.sprite(x, y, 'life'));
 
         }
@@ -195,7 +199,7 @@ Hud.prototype = {
     frameForSprite : function(i) {
         if (i == this.APPLE) return this.FRAME_APPLE_NO_ANSWER;
         if (i == this.BANANA) return this.FRAME_BANANA_NO_ANSWER;
-        if (i == this.ORANGE) return this.FRAME_ORANGE_NO_ANSWER;
+        if (i == this.PEAR) return this.FRAME_PEAR_NO_ANSWER;
         if (i == this.BLUEBERRY) return this.FRAME_BLUEBERRY_NO_ANSWER;
         return -1;
     },
@@ -205,7 +209,7 @@ Hud.prototype = {
     },
 
     setWrong : function(player) {
-        this.avatars[player].frame = this.frameForSprite(player) + 2;
+        this.avatars[player].frame = this.frameForSprite(player) + 8;
     },
 
     reset :function(player) {

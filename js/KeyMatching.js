@@ -5,11 +5,13 @@ KeyMatching = function(game) {
 
     this.avatarSpritesheet = 'avatars'
     this.spritesheetPath = 'assets/avatars.png'
-    this.frameWidth = 32;
-    this.frameHeight = 32;
+    this.frameWidth = 180;
+    this.frameHeight = 200;
+    this.dframeWidth = 32;
+    this.dframeHeight = 32;
 
-    this.avatarsY = 0.25*game.world.height;
-    this.directionsY = 0.35*game.world.height;
+    this.avatarsY = 0.35*game.world.height;
+    this.directionsY = 0.5*game.world.height;
     this.firstPlayerX = 0.20,
     this.secondPlayerX = 0.40,
     this.thirdPlayerX = 0.60,
@@ -36,11 +38,11 @@ KeyMatching.prototype = {
                 answer: getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL)
             },
             {
-                keyFrame: 6,
+                keyFrame: 2,
                 answer: getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL)
             },
             {
-                keyFrame: 7,
+                keyFrame: 3,
                 answer: getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL)
             },         
         ];
@@ -107,7 +109,7 @@ KeyMatching.prototype = {
 
     preload: function() {
         this.game.load.spritesheet(this.avatarSpritesheet, this.spritesheetPath, this.frameWidth, this.frameHeight);
-        this.game.load.spritesheet(this.directionsSpriteSheet, this.directionSpritesheetPath, this.frameWidth, this.frameHeight);
+        this.game.load.spritesheet(this.directionsSpriteSheet, this.directionSpritesheetPath, this.dframeWidth, this.dframeHeight);
 
     },
 
