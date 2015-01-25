@@ -221,5 +221,10 @@ GiantCatch.prototype = {
         }*/
     },
 
+    transition: function(_this) {
+        var gm = GetGameManager(_this.game);
+        gm.levelMaster.nextLevel();
+    }
+
 }
 
