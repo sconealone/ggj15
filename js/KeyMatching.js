@@ -40,7 +40,7 @@ KeyMatching.prototype = {
         this.dframeHeight = 74;
 
         this.avatarsY = 0.45*HEIGHT
-        this.directionsY = 0.7*HEIGHT
+        this.directionsY = 0.62*HEIGHT
         this.firstPlayerX = 0.20,
         this.secondPlayerX = 0.40,
         this.thirdPlayerX = 0.60,
@@ -237,6 +237,7 @@ KeyMatching.prototype = {
             gm.levelMaster.decreaseLife();
         }
         else {
+            console.log("Go to the next level!");
             gm.levelMaster.nextLevel();
         }
     }
