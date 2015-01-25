@@ -237,6 +237,11 @@ ButtonMashingRun = function(game, data) {
 ButtonMashingRun.prototype = {
     preload : function() {
 		this.game.load.image('cellar', 'assets/cellar.png');
+        this.load.audio('blueberryPanic', ['assets/sounds/blueBerryPanic.wav']);
+        this.load.audio('applePanic', ['assets/sounds/applePanic.wav']);
+        this.load.audio('pearPanic', ['assets/sounds/pearPanic.wav']);
+        this.load.audio('bananaPanic', ['assets/sounds/bananaPanic.wav']);
+        this.load.audio('footstep', ['assets/sounds/footstep.wav']);  
     },
 
     create : function() {
@@ -278,15 +283,22 @@ ButtonMashingRun.prototype = {
         this.hud.create()
         this.timer.create()
         this.timer.setTimeout(10, this.transition, _this);
+
+        this.blueberryPanting = this.game.add.audio('blueberryPanic');
+        this.bananaPanting = this.game.add.audio('bananaPanic');
+        this.applePanting = this.game.add.audio('applePanic');
+        this.pearPanting = this.game.add.audio('pearPanic');
+        this.footstep = this.game.add.audio('footstep');
+
     },
 
     update : function() {
         this.hud.update();
         this.timer.update();
-        this.p1.percentDone(this.numPlayerStrokes[0]/(this.goal + 30));
-        this.p2.percentDone(this.numPlayerStrokes[1]/(this.goal + 30));
-        this.p3.percentDone(this.numPlayerStrokes[2]/(this.goal + 30));
-        this.p4.percentDone(this.numPlayerStrokes[3]/(this.goal + 30));
+        this.p1.percentDone(this.numPlayerStrokes[0]/(this.goal + 30), 1);
+        this.p2.percentDone(this.numPlayerStrokes[1]/(this.goal + 30), 2);
+        this.p3.percentDone(this.numPlayerStrokes[2]/(this.goal + 30), 3);
+        this.p4.percentDone(this.numPlayerStrokes[3]/(this.goal + 30), 4);
     },
 
     shutdown: function() {
@@ -296,7 +308,7 @@ ButtonMashingRun.prototype = {
 
     transition : function(_this) {
         for (var i=0; i < 4; ++i) {
-            if (_this.numPlayerStrokes[i] < _this.goal)
+            if (_this.numPlayerStrokes[i] < _this.goal) {
                 _this.hud.setWrong(i);
             else
                 _this.hud.setRight(i);
@@ -334,6 +346,11 @@ ButtonMashing.Player = function(game, playerNumber, x, y, key) {
 
 ButtonMashing.Player.prototype = {
     preload : function() {
+        this.load.audio('blueberryPanic', ['assets/sounds/blueBerryPanic.wav']);
+        this.load.audio('applePanic', ['assets/sounds/applePanic.wav']);
+        this.load.audio('pearPanic', ['assets/sounds/pearPanic.wav']);
+        this.load.audio('bananaPanic', ['assets/sounds/bananaPanic.wav']);
+        this.load.audio('footstep', ['assets/sounds/footstep.wav']);
     },
 
     create : function() {
@@ -341,14 +358,34 @@ ButtonMashing.Player.prototype = {
         this.sprite.animations.add('right', [4, 5, 6], 20, true);
         this.sprite.animations.play('right');
         this.tween = this.game.add.tween(this.sprite);
+
+        this.blueberryPanting = this.game.add.audio('blueberryPanic');
+        this.bananaPanting = this.game.add.audio('bananaPanic');
+        this.applePanting = this.game.add.audio('applePanic');
+        this.pearPanting = this.game.add.audio('pearPanic');
+        this.footstep = this.game.add.audio('footstep');
     },
 
     update : function() {
     },
 
 
-    percentDone : function(percent) {
+    percentDone : function(percent, player) {
         var distance = WIDTH + 100 - this.x0;
         this.sprite.x = this.x0 + distance * percent;
+        if (player == 1 && !this.blueberryPanting.isPlaying) {
+            this.blueberryPanting.play();
+        }
+        if (player == 2 && !this.applePanting.isPlaying) {
+            this.applePanting.play();
+        }
+        if (player == 3 && !this.pearPanting.isPlaying) {
+            this.pearPanting.play();
+        }
+        if (player == 4 && !this.bananaPanting.isPlaying) {
+            this.bananaPanting.play();
+        }
+
+        this.footstep.play();
     }
 }

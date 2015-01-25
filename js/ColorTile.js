@@ -32,7 +32,7 @@ ColorTile = function(game, data) {
     this.MAX_FRAME = 5;
     this.MIN_FRAME = 0;
 
-    this.timeout = 2;
+    this.timeout = 5;
     this.hud = new Hud(game);
     this.timer = new Timer(game, this.hud);
 }

@@ -28,14 +28,16 @@ LevelMaster = function(game, data) {
     ]
 	this.levelSequenceCounter = 0;
 	//this.levelSequence = generateOrder(this.GAME_ARRAY_LONG);
-    this.levelSequence = [0, 1, 2, 3, 4, 5, 6];
+    // this.levelSequence = [0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 6, 6];
+    // this.levelSequence = generateOrder(this.levelSequence);
+    this.levelSequence = [6,6,0];
 
 
 
 	// set initial game data
 	if (true || !data) {
 		data = {
-		lives: 3,
+		lives: 5,
 		level: 1,
 		numGameTypes: 7,
 
@@ -154,23 +156,24 @@ LevelMaster.prototype = {
 	
 	nextLevel: function() {
 		var gm = GetGameManager(this.game)
+
 		gm.p1Resp.responded = false;
 		gm.p2Resp.responded = false;
 		gm.p3Resp.responded = false;
 		gm.p4Resp.responded = false;
 
-		if (this.levelSequenceCounter < 1) {
+		if (this.levelSequenceCounter < 10) {
 			this.data.bgm = this.bgmI2;
 			this.game.state.states['failState'].bgm = this.bgmI2;
 
 			this.bgmI2.play();
 			console.log(this.data);
 		}
-		else if (this.levelSequenceCounter < 2) {
+		else if (this.levelSequenceCounter < 15) {
 			this.game.state.states['failState'].bgm = this.bgmI3;
 			this.bgmI3.play();
 		}
-		else if (this.levelSequenceCounter >= 2) {
+		else {
 			this.game.state.states['failState'].bgm = this.bgmI4;
 			this.bgmI4.play();
 		}
