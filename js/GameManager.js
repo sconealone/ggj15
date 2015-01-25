@@ -10,18 +10,20 @@ GetGameManager = function(game) {
 
 GameManager = function(game) {
 	this.game = game;
-	miniGame = null;
-    this.hud = new Hud(this, 4);
+    var _this = this;
+	this.miniGame = null;
+    this.hud = new Hud(_this, 4);
     this.MIN_KEY_VAL = 0;
     this.MAX_KEY_VAL = 2;
-    this.timer = new Timer(this);
+    this.timer = new Timer(_this);
+    this.lives = new Lives(_this);
 }
 
 GameManager.prototype = {
     initializeKeys: function() {
         this.p1Resp = {
-            0: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),  
-            1: this.game.input.keyboard.addKey(Phaser.Keyboard.W), 
+            0: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),
+            1: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
             2: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
             responded: false
         };
@@ -34,24 +36,65 @@ GameManager.prototype = {
         };
 
         this.p3Resp = {
-            0: this.game.input.keyboard.addKey(Phaser.Keyboard.I),  
-            1: this.game.input.keyboard.addKey(Phaser.Keyboard.O), 
-             2: this.game.input.keyboard.addKey(Phaser.Keyboard.P),
-             responded: false
-         };
+            0: this.game.input.keyboard.addKey(Phaser.Keyboard.I),
+            1: this.game.input.keyboard.addKey(Phaser.Keyboard.O),
+            2: this.game.input.keyboard.addKey(Phaser.Keyboard.P),
+            responded: false
+        };
 
         this.p4Resp = {
-            0: this.game.input.keyboard.addKey(Phaser.Keyboard.J),  
-            1: this.game.input.keyboard.addKey(Phaser.Keyboard.K), 
+            0: this.game.input.keyboard.addKey(Phaser.Keyboard.J),
+            1: this.game.input.keyboard.addKey(Phaser.Keyboard.K),
             2: this.game.input.keyboard.addKey(Phaser.Keyboard.L),
             responded: false
         };
     },
 
+    setPlayerRespond : function(playerNumber) {
+        var resp = null;
+        if (playerNumber == 0) {
+            resp = this.p1Resp;
+        } else if (playerNumber == 1) {
+            resp = this.p2Resp;
+        } else if (playerNumber == 2) {
+            resp = this.p3Resp;
+        } else if (playerNumber == 3) {
+            resp = this.p4Resp;
+        }
+        resp.responded = true;
+    },
+
+    getPlayerRespond : function(playerNumber) {
+        var resp = null;
+        if (playerNumber == 0) {
+            resp = this.p1Resp;
+        } else if (playerNumber == 1) {
+            resp = this.p2Resp;
+        } else if (playerNumber == 2) {
+            resp = this.p3Resp;
+        } else if (playerNumber == 3) {
+            resp = this.p4Resp;
+        }
+        return resp.responded;
+    },
+
+    getPlayerRespondKey : function(playerNumber, keyNumber) {
+        if (playerNumber == 0) {
+            return this.p1Resp[keyNumber]
+        } else if (playerNumber == 1) {
+            return this.p2Resp[keyNumber]
+        } else if (playerNumber == 2) {
+            return this.p3Resp[keyNumber]
+        } else if (playerNumber == 3) {
+            return this.p4Resp[keyNumber]
+        }
+    },
+
+
 	preload: function() {
 	},
 
-	create: function() {
+    create: function() {
         //initialize the keys for each player
         this.initializeKeys();
 
@@ -61,7 +104,7 @@ GameManager.prototype = {
 
 	update: function() {
         this.timer.update();
-	}
+    }
 }
 
 // Hud is the player avatars + time countdown
@@ -100,6 +143,8 @@ Hud = function(gameManager, numPlayers) {
 
     this.timerFrame = null;
     this.timerBar = null;
+
+    this.lifeCount = [];
 }
 
 Hud.prototype = {
@@ -126,6 +171,14 @@ Hud.prototype = {
         this.timerBar = this.gameManager.game.add.sprite(x, y, 'timers', 1);
         this.timerFrame.anchor.setTo(0, 0.5);
         this.timerBar.anchor.setTo(0, 0.5);
+
+        // initialize lives
+        for(var i = 0; i < this.game.lives.MAX_LIFE; ++i){
+            var x = (10 + i * 30);
+            var y = 0;
+            this.lifeCount.push(this.game.add.sprite(x, y, 'life'));
+
+        }
     },
 
     // This function is dumb. I'm dumb. If the avatar sprite sheet had some
@@ -173,17 +226,19 @@ Timer.prototype = {
             if (this.dt() >= this.timeout) {
                 this.started = false;
                 if (this.callback) {
-                    this.callback();
+                    this.callback(this.param);
                 }
             }
             this.gameManager.hud.setTimer(Math.max(0, 1 - this.percentTimedOut()));
         }
     },
 
-    setTimeout : function(timeout, callback) {
+    setTimeout : function(timeout, callback, param) {
+
         if (!this.started) {
             this.timeout = timeout;
             this.callback = callback || null;
+            this.param = param || null;
             this.start();
         }
     },
@@ -194,8 +249,16 @@ Timer.prototype = {
             this.started = true;
         }
     },
-    
+
     percentTimedOut : function() {
         return this.dt()/this.timeout;
     }
+}
+
+Lives = function(game) {
+    this.game = game;
+    this.MAX_LIFE = 3;
+
+}
+Lives.prototype = {
 }
