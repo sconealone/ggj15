@@ -27,9 +27,9 @@ LevelMaster = function(game, data) {
     this.levelSequence = [0, 1, 2, 3, 4, 5, 6];
 
 	// set initial game data
-	if (!data) {
+	if (true || !data) {
 		data = {
-		lives: 5,
+		lives: 3,
 		level: 1,
 		numGameTypes: 7,
 
@@ -37,11 +37,12 @@ LevelMaster = function(game, data) {
 		needTransition: false,
 		failed: false,
 		reachedEnd: false,
-		decreasedLife: false
+		decreasedLife: false,
 		};
 	}
 	
 	this.data = data;
+    this.failFruits = [1, 2, 3];
 }
 	
 LevelMaster.prototype = {
@@ -84,11 +85,11 @@ LevelMaster.prototype = {
 		return this.data.lives;
 	},
 
-	decreaseLife: function() {
+	decreaseLife: function(blameList) {
+        this.data.failFruits = blameList;
 		if (this.data.lives > 1 && !this.data.decreasedLife) {
 			this.data.lives--;
 			this.showFailed();
-
 		}
 		else {
 			this.data.lives == 1 ? this.data.lives = 0: "";

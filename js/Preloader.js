@@ -9,7 +9,8 @@ Preloader.prototype = {
         this.game.load.spritesheet('timers', 'assets/timer.png', 438, 128);
         this.game.load.spritesheet('avatars', 'assets/avatars.png', 180, 200);
         this.game.load.image('life', 'assets/life.png')
-        this.game.load.image('failed', 'assets/FailState.png');
+        this.game.load.spritesheet('bg', 'assets/backgrounds.png', 1280, 720);
+        this.game.load.spritesheet('failFruits', 'assets/failFruits.png', 425, 355);
 
         this.game.load.spritesheet('blueberry', 'assets/blueberryrun.png', 89.71, 78);
         this.game.load.spritesheet('apple', 'assets/applerun.png', 72.86, 91);
