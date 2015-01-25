@@ -115,11 +115,18 @@ Menus.NewGame.prototype = {
     },
     create: function() {
         var bgFrame = 11;
+        var gm = GetGameManager(this.game);
+
         this.game.add.sprite(0, 0, 'bg', bgFrame);
         var _this = this;
-        setTimeout(function() {
-            _this.game.state.start('instructions', true, false, _this.game, _this.data)
-        }, 3000);
+        this.key = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);   
+        this.f = function(e) {
+            _this.game.state.start('instructions', true, false, _this.game, _this.data);
+        }
+        this.key.onDown.add(this.f)
+    },
+    shutdown: function() {
+        this.key.onDown.remove(this.f)
     },
     update: function() {
     },
@@ -136,9 +143,15 @@ Menus.Instructions.prototype = {
         var gm = GetGameManager(this.game);
         var bgFrame = 10;
         this.game.add.sprite(0, 0, 'bg', bgFrame);
-        setTimeout(function() {
+        this.key = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
+
+        this.f = function(e) {
             gm.levelMaster.nextLevel();
-        }, 3000);
+        }
+        this.key.onDown.add(this.f)
+    },
+    shutdown: function() {
+        this.key.onDown.remove(this.f)
     },
     update: function() {
     },
