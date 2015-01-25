@@ -41,7 +41,7 @@ ColorTile = function(game, data) {
 ColorTile.prototype = {
 
     checkResponse: function() {
-        var gm = GetGameManager(self.game);
+        var gm = GetGameManager(this.game);
         for (var i=0; i < 3 ; i++) {
             if (!gm.p1Resp.responded && gm.p1Resp[i].isDown) {
                 gm.p1Resp.responded = true;
@@ -127,13 +127,13 @@ ColorTile.prototype = {
         this.drawLayout();
 
         // start timer
-        var gm = GetGameManager(self.game);
+        var gm = GetGameManager(this.game);
         gm.timer.setTimeout(this.timeout, this.transition);
 
     },
 
     update: function(){
-        var gm = GetGameManager(self.game);
+        var gm = GetGameManager(this.game);
         this.checkResponse();
         gm.update();
 

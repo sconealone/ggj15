@@ -78,9 +78,7 @@ LevelMaster.prototype = {
 		
 		// pick a game type randomly
 		//var gameType = this.game.rnd.integerInRange(1, this.data.numGameTypes);
-		var gameType = this.game.rnd.integerInRange(2, 2);
-        console.log("Next level");
-        console.log(this.game)
+		var gameType = this.game.rnd.integerInRange(3, 3);
 		
 		switch(gameType) {
 		case 1: 
