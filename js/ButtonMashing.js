@@ -68,15 +68,19 @@ ButtonMashing.prototype = {
         for (var i=0; i < 3 ; i++) {
             if (this.game.p1Resp[i].isDown && i != p1.answer) {
                 this.game.hud.setWrong(0);
+                this.game.levelMaster.decreaseLife();
             }
             else if (this.game.p2Resp[i].isDown && i != p2.answer) {
                 this.game.hud.setWrong(1);
+                this.game.levelMaster.decreaseLife();
             }
             else if (this.game.p3Resp[i].isDown && i != p3.answer) {
                 this.game.hud.setWrong(2);
+                this.game.levelMaster.decreaseLife();
             }
             else if (this.game.p4Resp[i].isDown && i != p4.answer) {
                 this.game.hud.setWrong(3);
+                this.game.levelMaster.decreaseLife();
             }
         }
 
@@ -190,7 +194,7 @@ ButtonMashing.prototype = {
 
             if (_this.players[i].strokeCount < _this.MIN_STROKE_BOUND) {
                 _this.game.hud.setWrong(i);
-                console.log(i + " didn't make it");
+                _this.game.levelMaster.decreaseLife();
             }
         }
 

@@ -59,6 +59,7 @@ KeyMatching.prototype = {
                 } else {
                     console.log("p1 fail");
                     this.game.hud.setWrong(0);
+                    this.game.levelMaster.decreaseLife();
                 }
             }
 
@@ -71,6 +72,7 @@ KeyMatching.prototype = {
                 } else {
                     console.log("p2 fail");
                     this.game.hud.setWrong(1);
+                    this.game.levelMaster.decreaseLife();
                 }
             }
 
@@ -83,6 +85,7 @@ KeyMatching.prototype = {
                 } else {
                     console.log("p3 fail");
                     this.game.hud.setWrong(2);
+                    this.game.levelMaster.decreaseLife();
                 }
             }
 
@@ -95,6 +98,7 @@ KeyMatching.prototype = {
                 } else {
                     console.log("p4 fail");
                     this.game.hud.setWrong(3);
+                    this.game.levelMaster.decreaseLife();
                 }
             }                                    
         }
@@ -123,7 +127,8 @@ KeyMatching.prototype = {
 
         // draw the shapes each type of shape matching mini game needs to know its own layout
         this.drawLayout();
-        this.game.timer.setTimeout(this.timeout, this.transition);
+        var _this = this;
+        this.game.timer.setTimeout(this.timeout, this.transition, _this);
     },
 
     update: function() {
@@ -168,5 +173,28 @@ KeyMatching.prototype = {
         this.dir4Sprite.anchor.setTo(0.5, 0.5);
 
     },
+
+    transition: function(_this) {
+        if (!_this.game.p1Resp.responded) {
+            _this.game.hud.setWrong(0);
+        }
+
+        if (!_this.game.p2Resp.responded) {
+            _this.game.hud.setWrong(1);
+        }
+
+        if (!_this.game.p3Resp.responded) {
+            _this.game.hud.setWrong(2);
+        }
+
+        if (!_this.game.p4Resp.responded) {
+            _this.game.hud.setWrong(3);
+        }
+
+        if (!_this.game.p1Resp.responded || !_this.game.p2Resp.responded || !_this.game.p3Resp.responded ||
+            !_this.game.p4Resp.responded) {
+            _this.game.levelMaster.decreaseLife();
+        }
+    }
 
 }

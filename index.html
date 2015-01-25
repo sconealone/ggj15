@@ -11,6 +11,8 @@
         <script type="text/javascript" src="js/CollisionGame.js"></script>
 		<script type="text/javascript" src="js/ColorTile.js"></script>
 		<script type="text/javascript" src="js/ButtonMashing.js"></script>
+		<script type="text/javascript" src="js/LevelMaster.js"></script>
+		<script type="text/javascript" src="js/Menus.js"></script>
 
 	    <style type="text/css">
 	        body {
@@ -34,6 +36,8 @@
 		    var game = new Phaser.Game(800, 600, Phaser.AUTO);
 		    game.state.add('preloader', Preloader, true);
 		    game.state.add('game', Game);
+		    game.state.add('failState', Menus.FailState);
+		    game.state.add('endState', Menus.EndState);
 		    game.state.start('game');
 
 		})();

@@ -6,6 +6,7 @@ Game = function(game) {
     this.MIN_KEY_VAL = 0;
     this.MAX_KEY_VAL = 2;
     this.timer = new Timer(_this);
+    this.levelMaster = new LevelMaster(_this);
     this.lives = new Lives(_this);
 }
 
@@ -84,11 +85,11 @@ Game.prototype = {
 	preload: function() {
 		_this = this;
 
-		this.miniGame = new ShapeMatching(_this);
+		// this.miniGame = new ShapeMatching(_this);
         //this.miniGame = new KeyMatching(_this);
-        //this.miniGame = new ColorTile(_this);
+        this.miniGame = new ColorTile(_this);
         //this.miniGame = new ButtonMashing(_this);
-        //this.miniGame = new CollisionGame(_this);
+        // this.miniGame = new CollisionGame(_this);
 
 		this.miniGame.preload();
         this.hud.preload();

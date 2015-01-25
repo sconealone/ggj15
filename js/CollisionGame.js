@@ -9,6 +9,8 @@ CollisionGame = function(game) {
     this.p4 = new CollisionGame.Player(game, _this, 3, order[3]);
     this.gravity = -981;
     this.groundY = 0.6 * this.game.world.height;
+
+    var collided = false;
 }
 
 CollisionGame.prototype = {
@@ -38,6 +40,9 @@ CollisionGame.prototype = {
         var timeout = 2000;
         tween.to({x:-64}, timeout);
         tween.start();
+
+        var _this = this;
+        this.game.timer.setTimeout(7, this.transition, _this);
     },
 
     update : function() {
@@ -76,15 +81,24 @@ CollisionGame.prototype = {
     checkCollisions: function() {
         var enemyRect = new Phaser.Rectangle(this.enemy.x, this.enemy.y, this.enemy.width, this.enemy.height);
         var players = [this.p1, this.p2, this.p3, this.p4];
+
         for (var i = 0; i < players.length; ++i) {
             var p = players[i];
             if (enemyRect.intersects(new Phaser.Rectangle(p.sprite.x, p.sprite.y, p.sprite.width, p.sprite.height))) {
                 p.goFlying() 
                 this.game.hud.setWrong(p.playerNumber);
+                collided = true;
             }
             if (enemyRect.x + enemyRect.width < p.sprite.x && !p.flownAway) {
                 this.game.hud.setRight(p.playerNumber);
             }
+        }
+
+    },
+
+    transition: function(_this) {
+        if (collided) {
+            _this.game.levelMaster.decreaseLife();
         }
     }
 }

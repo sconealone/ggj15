@@ -32,7 +32,7 @@ ShapeMatching = function(game) {
     this.answerSpriteX = 0.5*game.world.width;
     this.answerSpriteY = 0.5*game.world.height;
 
-    this.timeout = 1;
+    this.timeout = 5;
 }
 
 
@@ -49,6 +49,7 @@ ShapeMatching.prototype = {
                 } else {
                     console.log("p1 fail");
                     this.game.hud.setWrong(0);
+                    this.game.levelMaster.decreaseLife();
                 }
             }
 
@@ -61,6 +62,7 @@ ShapeMatching.prototype = {
                 } else {
                     console.log("p2 fail");
                     this.game.hud.setWrong(1);
+                    this.game.levelMaster.decreaseLife();
                 }
             }
 
@@ -73,6 +75,7 @@ ShapeMatching.prototype = {
                 } else {
                     console.log("p3 fail");
                     this.game.hud.setWrong(2);
+                    this.game.levelMaster.decreaseLife();
                 }
             }
 
@@ -85,6 +88,7 @@ ShapeMatching.prototype = {
                 } else {
                     console.log("p4 fail");
                     this.game.hud.setWrong(3);
+                    this.game.levelMaster.decreaseLife();
                 }
             }                                    
         }
@@ -116,7 +120,8 @@ ShapeMatching.prototype = {
         this.drawLayout();
 
         // Start timer
-        this.game.timer.setTimeout(this.timeout, this.transition);
+        var _this = this;
+        this.game.timer.setTimeout(this.timeout, this.transition, _this);
     },
 
     update: function() {
@@ -137,7 +142,29 @@ ShapeMatching.prototype = {
         this.answerSprite.scale.set(2, 2);
     },
 
-    transition: function() {
+    transition: function(_this) {
+
+        if (!_this.game.p1Resp.responded) {
+            _this.game.hud.setWrong(0);
+        }
+
+        if (!_this.game.p2Resp.responded) {
+            _this.game.hud.setWrong(1);
+        }
+
+        if (!_this.game.p3Resp.responded) {
+            _this.game.hud.setWrong(2);
+        }
+
+        if (!_this.game.p4Resp.responded) {
+            _this.game.hud.setWrong(3);
+        }
+
+        if (!_this.game.p1Resp.responded || !_this.game.p2Resp.responded || !_this.game.p3Resp.responded ||
+            !_this.game.p4Resp.responded) {
+            _this.game.levelMaster.decreaseLife();
+        }
+
         console.log("transition");
     },
 
