@@ -28,7 +28,7 @@ Menus.FailState.prototype = {
         fruit.anchor.setTo(0.5, 0.5);
 
 
-        setInterval(function() {
+        setTimeout(function() {
             gm.levelMaster.nextLevel()
         }, 3000);
     },
