@@ -2,7 +2,7 @@ LevelMaster = function(game, data) {
 
     console.log("LEVEL MASTER CONSTRUCTOR")
     this.game = game;
-    this.MAX_LIVES = 3;
+    this.MAX_LIVES = 5;
 	this.GAME_ARRAY_SHORT = ["keyMatching", "keyMatching", "keyMatching", 
 						"shapeMatching", "shapeMatching", "colourText", 
 						"jumping", "jumping", "jumping", 
@@ -27,11 +27,10 @@ LevelMaster = function(game, data) {
         'running', // 6
     ]
 	this.levelSequenceCounter = 0;
-	//this.levelSequence = generateOrder(this.GAME_ARRAY_LONG);
-    // this.levelSequence = [0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 6, 6];
-    // this.levelSequence = generateOrder(this.levelSequence);
-    this.levelSequence = [6,6,0];
 
+	//this.levelSequence = generateOrder(this.GAME_ARRAY_LONG);
+    this.levelSequence = [0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 6, 6];
+    this.levelSequence = generateOrder(this.levelSequence);
 
 
 	// set initial game data

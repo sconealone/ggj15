@@ -90,7 +90,7 @@ Menus.EndState.prototype = {
     },
     create: function() {
         // Choose a random bg
-        var bgFrame = getRandomInt(3, 8); // fail backgrounds
+        var bgFrame = 9;
         this.game.add.sprite(0, 0, 'bg', bgFrame);
         
         for (var i = 0; i < 4; ++i) {

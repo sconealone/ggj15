@@ -3,7 +3,8 @@ ButtonMashing = function(game, data) {
     this.data = data;
 
     this.displayOrder = [];
-
+	this.question = '';
+	
     this.avatarSpritesheet = 'avatars'
     this.spritesheetPath = 'assets/avatars.png'
     this.frameWidth = 180;
@@ -160,7 +161,12 @@ ButtonMashing.prototype = {
     },
 
     drawLayout : function() {
-
+		
+		var x = this.game.world.width * 0.5;
+        var y = this.game.world.height * 0.15;
+        this.question = this.game.add.text(x, y, 'Mash the button!', { frontSize: '42px', fill: '#fff'});
+        this.question.anchor.setTo(0.5, 0.5);
+		
         this.shape1 = this.players[this.displayOrder[0]].keyFrame;
         this.shape2 = this.players[this.displayOrder[1]].keyFrame;
         this.shape3 = this.players[this.displayOrder[2]].keyFrame;
@@ -220,6 +226,8 @@ ButtonMashingRun = function(game, data) {
     this.x0 = WIDTH * 0.2;
     this.y0 = HEIGHT * 0.4;
 
+	this.question2 = '';
+	
     this.p1 = new ButtonMashing.Player(this.game, 0, this.x0, this.y0, 'blueberry');
     this.p2 = new ButtonMashing.Player(this.game, 0, this.x0 - 10, this.y0 + 60, 'apple');
     this.p3 = new ButtonMashing.Player(this.game, 0, this.x0 - 20, this.y0 + 120, 'pear');
@@ -290,15 +298,27 @@ ButtonMashingRun.prototype = {
         this.pearPanting = this.game.add.audio('pearPanic');
         this.footstep = this.game.add.audio('footstep');
 
+		var x = this.game.world.width * 0.5;
+        var y = this.game.world.height * 0.15;
+        this.question2 = this.game.add.text(x, y, 'MASH THE BUTTONS!', { frontSize: '42px', fill: '#fff'});
+        this.question2.anchor.setTo(0.5, 0.5);
+		
     },
 
     update : function() {
         this.hud.update();
         this.timer.update();
+
         this.p1.percentDone(this.numPlayerStrokes[0]/(this.goal + 30), 1);
         this.p2.percentDone(this.numPlayerStrokes[1]/(this.goal + 30), 2);
         this.p3.percentDone(this.numPlayerStrokes[2]/(this.goal + 30), 3);
         this.p4.percentDone(this.numPlayerStrokes[3]/(this.goal + 30), 4);
+
+        var gm = GetGameManager();
+        for (var i = 0; i < 4; ++i) {
+            if (this.numPlayerStrokes[i] >= this.goal) this.hud.setRight(i)
+        }
+
     },
 
     shutdown: function() {
@@ -307,9 +327,12 @@ ButtonMashingRun.prototype = {
 
 
     transition : function(_this) {
+        var shouldFail = false;
         for (var i=0; i < 4; ++i) {
             if (_this.numPlayerStrokes[i] < _this.goal) {
                 _this.hud.setWrong(i);
+                shouldFail = true;
+            }
             else
                 _this.hud.setRight(i);
         }
@@ -331,6 +354,12 @@ ButtonMashingRun.prototype = {
         gm.p4Resp[0].onDown.remove(_this.p4Count);
         gm.p4Resp[1].onDown.remove(_this.p4Count);
         gm.p4Resp[2].onDown.remove(_this.p4Count);
+
+        if (shouldFail) {
+            gm.levelMaster.decreaseLife();
+        } else {
+            gm.levelMaster.nextLevel();
+        }
         
     }
 }
@@ -359,7 +388,7 @@ ButtonMashing.Player.prototype = {
         this.sprite.animations.play('right');
         this.tween = this.game.add.tween(this.sprite);
 
-        this.blueberryPanting = this.game.add.audio('blueberryPanic');
+        this.blueberryPanting = this.game.add.audio('blueberryMad');
         this.bananaPanting = this.game.add.audio('bananaPanic');
         this.applePanting = this.game.add.audio('applePanic');
         this.pearPanting = this.game.add.audio('pearPanic');

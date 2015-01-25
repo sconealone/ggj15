@@ -35,6 +35,7 @@ ColorTile = function(game, data) {
     this.timeout = 5;
     this.hud = new Hud(game);
     this.timer = new Timer(game, this.hud);
+    this.blame = false;
 }
 
 ColorTile.prototype = {
@@ -51,7 +52,8 @@ ColorTile.prototype = {
                 } else {
                     console.log("p1 fail");
                     this.hud.setWrong(0);
-                    gm.levelMaster.decreaseLife();
+                    this.blame = true;
+                    //gm.levelMaster.decreaseLife();
                 }
             }
 
@@ -63,7 +65,8 @@ ColorTile.prototype = {
                     this.hud.setRight(1);
                 } else {
                     console.log("p2 fail");
-                    gm.levelMaster.decreaseLife();
+                    this.blame = true;
+                    //gm.levelMaster.decreaseLife();
                     this.hud.setWrong(1);
                 }
             }
@@ -76,7 +79,8 @@ ColorTile.prototype = {
                     this.hud.setRight(2);
                 } else {
                     console.log("p3 fail");
-                    gm.levelMaster.decreaseLife();
+                    this.blame = true;
+                    //gm.levelMaster.decreaseLife();
                     this.hud.setWrong(2);
                 }
             }
@@ -89,9 +93,14 @@ ColorTile.prototype = {
                     this.hud.setRight(3);
                 } else {
                     console.log("p4 fail");
-                    gm.levelMaster.decreaseLife();
+                    this.blame = true;
+                    //gm.levelMaster.decreaseLife();
                     this.hud.setWrong(3);
                 }
+            }
+            if (gm.p1Resp.responded && gm.p2Resp.responded && gm.p3Resp.responded && gm.p4Resp.responded
+                && this.blame) {
+                gm.levelMaster.decreaseLife(null);
             }
         }
 
@@ -156,7 +165,7 @@ ColorTile.prototype = {
 		this.game.add.sprite(0,0,'unlocked');
         var x = this.game.world.width * 0.5;
         var y = this.wordSpriteY - 80;
-        this.question = this.game.add.text(x, y, 'Pick the '+ this.qColor + ' word. :)', { frontSize: '32px', fill: '#fff'});
+        this.question = this.game.add.text(x, y, 'Pick the '+ this.qColor + ' word!', { frontSize: '32px', fill: '#fff'});
         this.question.anchor.setTo(0.5, 0.5);
 
         this.wordSprite1 = this.game.add.sprite(this.wordSprite1X, this.wordSpriteY, this.spritesheet, this.word1);
