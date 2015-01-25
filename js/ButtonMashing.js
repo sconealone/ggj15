@@ -11,8 +11,8 @@ ButtonMashing = function(game, data) {
     this.dframeWidth = 32;
     this.dframeHeight = 32;
 
-    this.avatarsY = 0.25*HEIGHT;
-    this.directionsY = 0.35*HEIGHT;
+    this.avatarsY = 0.4*HEIGHT;
+    this.directionsY = 0.55*HEIGHT;
     this.firstPlayerX = 0.20,
     this.secondPlayerX = 0.40,
     this.thirdPlayerX = 0.60,
@@ -102,11 +102,13 @@ ButtonMashing.prototype = {
     preload: function() {
         this.game.load.spritesheet(this.avatarSpritesheet, this.spritesheetPath, this.frameWidth, this.frameHeight);
         this.game.load.spritesheet(this.directionsSpriteSheet, this.directionSpritesheetPath, this.dframeWidth, this.dframeHeight);
+        this.game.load.image('bmbackground', 'assets/buttonmashingbg.png');
 
     },
 
     create: function() {
         // choose correct answer
+        this.game.add.sprite(0,0,'bmbackground');
         this.createAnswers();
 
         // choose order of player iteration

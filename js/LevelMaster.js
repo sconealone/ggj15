@@ -16,10 +16,10 @@ LevelMaster = function(game, data) {
 	
 
     this.STATE_KEYS = [
-        // 'keyMatching', // 0
-        // 'shapeMatching', // 1
-        // 'colourText', // 2
-        // 'jumping', // 3
+         'keyMatching', // 0
+         'shapeMatching', // 1
+         'colourText', // 2
+         'jumping', // 3
         'hand', // 4
         'buttonMashing', // 5
         'running', // 6
@@ -27,7 +27,7 @@ LevelMaster = function(game, data) {
 	this.levelSequenceCounter = 0;
 	//this.levelSequence = generateOrder(this.GAME_ARRAY_LONG);
     //this.levelSequence = [0, 1, 2, 3, 4, 5, 6];
-	this.levelSequence = [5];
+	this.levelSequence = [6];
 
 
 	// set initial game data
