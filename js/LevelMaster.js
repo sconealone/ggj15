@@ -2,7 +2,7 @@ LevelMaster = function(game, data) {
 
     console.log("LEVEL MASTER CONSTRUCTOR")
     this.game = game;
-    this.MAX_LIVES = 3;
+    this.MAX_LIVES = 5;
 	this.GAME_ARRAY_SHORT = ["keyMatching", "keyMatching", "keyMatching", 
 						"shapeMatching", "shapeMatching", "colourText", 
 						"jumping", "jumping", "jumping", 
@@ -27,14 +27,13 @@ LevelMaster = function(game, data) {
         'running', // 6
     ]
 	this.levelSequenceCounter = 0;
-    this.levelSequence = [3, 1, 2, 3, 4, 5, 6];
-	//this.levelSequence = [4];
+    this.levelSequence = [0, 1, 2, 3, 4, 5, 6];
 
 
 	// set initial game data
 	if (true || !data) {
 		data = {
-		lives: 3,
+		lives: 5,
 		level: 1,
 		numGameTypes: 7,
 
@@ -153,23 +152,24 @@ LevelMaster.prototype = {
 	
 	nextLevel: function() {
 		var gm = GetGameManager(this.game)
+
 		gm.p1Resp.responded = false;
 		gm.p2Resp.responded = false;
 		gm.p3Resp.responded = false;
 		gm.p4Resp.responded = false;
 
-		if (this.levelSequenceCounter < 1) {
+		if (this.levelSequenceCounter < 10) {
 			this.data.bgm = this.bgmI2;
 			this.game.state.states['failState'].bgm = this.bgmI2;
 
 			this.bgmI2.play();
 			console.log(this.data);
 		}
-		else if (this.levelSequenceCounter < 2) {
+		else if (this.levelSequenceCounter < 15) {
 			this.game.state.states['failState'].bgm = this.bgmI3;
 			this.bgmI3.play();
 		}
-		else if (this.levelSequenceCounter >= 2) {
+		else {
 			this.game.state.states['failState'].bgm = this.bgmI4;
 			this.bgmI4.play();
 		}
