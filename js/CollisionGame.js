@@ -3,10 +3,10 @@ CollisionGame = function(game) {
     var _this = this;
     order = generateOrder([0, 1, 2, 3]);
 
-    this.p1 = new Player(game, _this, 0, order[0]);
-    this.p2 = new Player(game, _this, 1, order[1]);
-    this.p3 = new Player(game, _this, 2, order[2]);
-    this.p4 = new Player(game, _this, 3, order[3]);
+    this.p1 = new CollisionGame.Player(game, _this, 0, order[0]);
+    this.p2 = new CollisionGame.Player(game, _this, 1, order[1]);
+    this.p3 = new CollisionGame.Player(game, _this, 2, order[2]);
+    this.p4 = new CollisionGame.Player(game, _this, 3, order[3]);
     this.gravity = -981;
     this.groundY = 0.6 * this.game.world.height;
 }
@@ -89,7 +89,7 @@ CollisionGame.prototype = {
     }
 }
 
-Player = function(game, collisionGame, playerNumber, order) {
+CollisionGame.Player = function(game, collisionGame, playerNumber, order) {
     this.game = game;
     this.collisionGame = collisionGame;
     this.playerNumber = playerNumber;
@@ -102,7 +102,7 @@ Player = function(game, collisionGame, playerNumber, order) {
     this.x0 = 0;
 }
 
-Player.prototype = {
+CollisionGame.Player.prototype = {
     preload : function() {
     },
 
@@ -134,6 +134,7 @@ Player.prototype = {
 
     goFlying: function() {
         if (!this.flownAway) {
+            this.game.setPlayerRespond(this.playerNumber);
             this.t0 = this.game.time.totalElapsedSeconds();
             this.vx0 = 200;
             this.vy0 = 700;

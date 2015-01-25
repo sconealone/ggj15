@@ -40,14 +40,57 @@ Game.prototype = {
         };
     },
 
+    setPlayerRespond : function(playerNumber) {
+        var resp = null;
+        if (playerNumber == 0) {
+            resp = this.p1Resp;
+        } else if (playerNumber == 1) {
+            resp = this.p2Resp;
+        } else if (playerNumber == 2) {
+            resp = this.p3Resp;
+        } else if (playerNumber == 3) {
+            resp = this.p4Resp;
+        }
+        resp.responded = true;
+    },
+
+    getPlayerRespond : function(playerNumber) {
+        var resp = null;
+        if (playerNumber == 0) {
+            resp = this.p1Resp;
+        } else if (playerNumber == 1) {
+            resp = this.p2Resp;
+        } else if (playerNumber == 2) {
+            resp = this.p3Resp;
+        } else if (playerNumber == 3) {
+            resp = this.p4Resp;
+        }
+        return resp.responded;
+    },
+
+    getPlayerRespondKey : function(playerNumber, keyNumber) {
+        if (playerNumber == 0) {
+            return this.p1Resp[keyNumber]
+        } else if (playerNumber == 1) {
+            return this.p2Resp[keyNumber]
+        } else if (playerNumber == 2) {
+            return this.p3Resp[keyNumber]
+        } else if (playerNumber == 3) {
+            return this.p4Resp[keyNumber]
+        }
+    },
+
 
 	preload: function() {
 		_this = this;
 
-		// miniGame = new ShapeMatching(_this);
-        this.miniGame = new CollisionGame(_this);//KeyMatching(_this);
+		this.miniGame = new ShapeMatching(_this);
+        //this.miniGame = new KeyMatching(_this);
+        //this.miniGame = new ColorTile(_this);
+        //this.miniGame = new ButtonMashing(_this);
+        //this.miniGame = new CollisionGame(_this);
 
-        this.miniGame.preload();
+		this.miniGame.preload();
         this.hud.preload();
     },
 
@@ -113,6 +156,7 @@ Hud.prototype = {
         this.game.load.spritesheet('timer', 'assets/timer.png', 256, 32);
         this.game.load.spritesheet('directions', 'assets/directions.png', 32*3, 32);
         this.game.load.spritesheet('keys', 'assets/keys2.png', 32, 32);
+        this.game.load.spritesheet('words', 'assets/colorWords.png', 128, 64);
     },
     create : function() {
         this.initialize();
@@ -190,17 +234,19 @@ Timer.prototype = {
             if (this.dt() >= this.timeout) {
                 this.started = false;
                 if (this.callback) {
-                    this.callback();
+                    this.callback(this.param);
                 }
             }
             this.game.hud.setTimer(Math.max(0, 1 - this.percentTimedOut()));
         }
     },
 
-    setTimeout : function(timeout, callback) {
+    setTimeout : function(timeout, callback, param) {
+
         if (!this.started) {
             this.timeout = timeout;
             this.callback = callback || null;
+            this.param = param || null;
             this.start();
         }
     },
