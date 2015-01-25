@@ -1,16 +1,16 @@
 // This file is super buggy
 // Don't call it too early
 _gameManager = null;
-GetGameManager = function(game) {
+GetGameManager = function(game, levelMaster) {
     if (_gameManager == null) {
-        _gameManager = new GameManager(game);
+        _gameManager = new GameManager(game, levelMaster);
         _gameManager.preload();
         _gameManager.create();
     }
     return _gameManager;
 }
 
-GameManager = function(game) {
+GameManager = function(game, levelMaster) {
 	this.game = game;
     var _this = this;
     this.WIDTH = 1280;
@@ -18,7 +18,7 @@ GameManager = function(game) {
 	this.miniGame = null;
     this.MIN_KEY_VAL = 0;
     this.MAX_KEY_VAL = 2;
-    this.levelMaster = new LevelMaster(game);
+    this.levelMaster = levelMaster;
     this.FAIL_SOUNDS = ["smallViolin", "wahWah", "slowClap"];
     this.FAIL_COMPLAIN_SOUNDS = ["grumpyBanana", "grumpyBlueBerry", "grumpyPear", "GrumpyApple"];
     this.FAIL_EMBARRASSED_SOUNDS = ["embBanana", "embBlueBerry", "embApple", "emPear"];
@@ -102,6 +102,7 @@ GameManager.prototype = {
     create: function() {
         //initialize the keys for each player
         this.initializeKeys();
+
 	},
 
 	update: function() {
@@ -147,6 +148,7 @@ Hud = function(game, numPlayers) {
     this.timerBar = null;
 
     this.lifeCount = [];
+    this.lifegroup = null;
 }
 
 Hud.prototype = {
@@ -181,11 +183,16 @@ Hud.prototype = {
 
         // initialize lives
         var gm = GetGameManager(this.game)
-        for(var i = 0; i < gm.levelMaster.MAX_LIVES; ++i){
+        this.lifegroup = this.game.add.group();
+/*        for(var i = 0; i < gm.levelMaster.MAX_LIVES; ++i){
             var x = 0.87 * this.game.width - i * 125;
             var y = 0.02 * this.game.height;
             this.lifeCount.push(this.game.add.sprite(x, y, 'life'));
-
+        }*/
+        for(var i = 0; i < gm.levelMaster.MAX_LIVES; ++i){
+            var x = 0.87 * this.game.width - i * 125;
+            var y = 0.02 * this.game.height;
+            var l = this.lifegroup.create(x, y, 'life', 0);
         }
 
     },

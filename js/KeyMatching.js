@@ -116,10 +116,12 @@ KeyMatching.prototype = {
 
     preload: function() {
         this.game.load.spritesheet(this.directionsSpriteSheet, this.directionSpritesheetPath, this.dframeWidth, this.dframeHeight);
+        this.game.load.image('cellar', 'assets/cellar.png');
 
     },
 
     create: function() {
+        this.game.add.sprite(0,0,'cellar');
         var gm = GetGameManager(this.game)
 
         // choose correct answer

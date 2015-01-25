@@ -1,4 +1,6 @@
 LevelMaster = function(game, data) {
+
+    console.log("LEVEL MASTER CONSTRUCTOR")
     this.game = game;
     this.MAX_LIVES = 3;
 	this.GAME_ARRAY_SHORT = ["keyMatching", "keyMatching", "keyMatching", 
@@ -26,8 +28,11 @@ LevelMaster = function(game, data) {
     ]
 	this.levelSequenceCounter = 0;
 	//this.levelSequence = generateOrder(this.GAME_ARRAY_LONG);
+
     this.levelSequence = [0, 0, 0, 0, 0, 0];
-    // this.levelSequence = [0,1,2];
+
+    //this.levelSequence = [0, 1, 2, 3, 4, 5, 6];
+
 
 	// set initial game data
 	if (true || !data) {
@@ -56,6 +61,8 @@ LevelMaster.prototype = {
 		this.load.audio('bgmI4', ['assets/sounds/intensity4.wav']);
 	},
 	create: function() {
+        console.log("LEVEL MASTER CREATE")
+        GetGameManager(this.game, this);
         // decide if we want to show transition state or go to the next game state
         console.log("create");
         this.bgmI2 = this.game.add.audio("bgmI2");
@@ -164,9 +171,12 @@ LevelMaster.prototype = {
 		}
 
 		console.log(this.levelSequenceCounter);
-		if (this.levelSequenceCounter == 2) {
-			this.levelSequenceCounter = 0;
-		}
+// <<<<<<< HEAD
+// 		if (this.levelSequenceCounter == 2) {
+// 			this.levelSequenceCounter = 0;
+// 		}
+// =======
+// >>>>>>> 61321ae0d42b44bdeae4ce5c8244ba27d567b564
 		console.log(this.STATE_KEYS[this.levelSequence[this.levelSequenceCounter]]);
 
         if (this.levelSequenceCounter >= this.levelSequence.length) {
