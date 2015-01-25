@@ -7,17 +7,19 @@ LevelMaster = function(game, data) {
 						"running", "running", "buttonMashing", 
 						"buttonMashing", "buttonMashing", "hand"];
 
-	this.GAME_ARRAY_LONG = ["keyMatching", "keyMatching", "keyMatching", "keyMatching",
-						"shapeMatching", "shapeMatching", "shapeMatching", "colourText",
-						"colourText", "shapeMatching", "shapeMatching", "shapeMatching", 
-						"shapeMatching", "shapeMatching", "shapeMatching", "shapeMatching",
-						"shapeMatching", "shapeMatching", "shapeMatching", "shapeMatching"];
+	// this.GAME_ARRAY_LONG = ["keyMatching", "keyMatching", "keyMatching", "keyMatching",
+	// 					"shapeMatching", "shapeMatching", "shapeMatching", "colourText",
+	// 					"colourText", "shapeMatching", "shapeMatching", "shapeMatching", 
+	// 					"shapeMatching", "shapeMatching", "shapeMatching", "shapeMatching",
+	// 					"shapeMatching", "shapeMatching", "shapeMatching", "shapeMatching"];
+
+	
 
     this.STATE_KEYS = [
-        'keyMatching', // 0
-        'shapeMatching', // 1
-        'colourText', // 2
-        'jumping', // 3
+        // 'keyMatching', // 0
+        // 'shapeMatching', // 1
+        // 'colourText', // 2
+        // 'jumping', // 3
         'hand', // 4
         'buttonMashing', // 5
         'running', // 6
@@ -109,9 +111,8 @@ LevelMaster.prototype = {
 	showFailed: function() {
 
 		// show failed ending
+		this.game.state.start('failState', true, false, this.game, this.data);
         console.log("Failed");
-		var _this = this;
-		this.game.state.start('failState', true, false, _this.game, _this.data);
 		this.data.decreasedLife = true;
 	},
 	
@@ -129,7 +130,12 @@ LevelMaster.prototype = {
 	},
 	
 	nextLevel: function() {
-        console.log("Next level. Sequence: " + this.levelSequenceCounter);
+		console.log(this.levelSequenceCounter);
+		if (this.levelSequenceCounter == 7) {
+			this.levelSequenceCounter = 0;
+		}
+		console.log(this.STATE_KEYS[this.levelSequence[this.levelSequenceCounter]]);
+
         if (this.levelSequenceCounter >= this.levelSequence.length) {
             this.showEnding();
             return;

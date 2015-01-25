@@ -27,6 +27,7 @@ Menus.FailState.prototype = {
         var fruit = this.game.add.sprite(WIDTH*0.5, HEIGHT*0.67, 'failFruits', failedFruitFrame);
         fruit.anchor.setTo(0.5, 0.5);
 
+
         setInterval(function() {
             gm.levelMaster.nextLevel()
         }, 3000);

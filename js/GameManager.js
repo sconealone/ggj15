@@ -19,6 +19,9 @@ GameManager = function(game) {
     this.MIN_KEY_VAL = 0;
     this.MAX_KEY_VAL = 2;
     this.levelMaster = new LevelMaster(game);
+    this.FAIL_SOUNDS = ["smallViolin", "wahWah", "slowClap"];
+    this.FAIL_COMPLAIN_SOUNDS = ["grumpyBanana", "grumpyBlueBerry", "grumpyPear", "GrumpyApple"];
+    this.FAIL_EMBARRASSED_SOUNDS = ["embBanana", "embBlueBerry", "embApple", "emPear"];
 }
 
 GameManager.prototype = {
