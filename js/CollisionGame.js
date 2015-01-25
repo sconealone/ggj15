@@ -1,5 +1,6 @@
-CollisionGame = function(game) {
+CollisionGame = function(game, data) {
     this.game = game;
+    this.data = data;
     var _this = this;
     order = generateOrder([0, 1, 2, 3]);
 
@@ -8,7 +9,7 @@ CollisionGame = function(game) {
     this.p3 = new CollisionGame.Player(game, _this, 2, order[2]);
     this.p4 = new CollisionGame.Player(game, _this, 3, order[3]);
     this.gravity = -981;
-    this.groundY = 0.6 * this.game.world.height;
+    this.groundY = 0.6 * this.game.height;
 }
 
 CollisionGame.prototype = {
@@ -27,10 +28,11 @@ CollisionGame.prototype = {
         this.p3.create();
         this.p4.create();
 
-        this.game.hud.timerFrame.visible = false;
-        this.game.hud.timerBar.visible = false;
+        var gm = GetGameManager(this.game);
+        gm.hud.timerFrame.visible = false;
+        gm.hud.timerBar.visible = false;
 
-        this.enemy = this.game.add.sprite(this.game.world.width, this.groundY, 'enemy', 0);
+        this.enemy = this.game.add.sprite(this.game.width, this.groundY, 'enemy', 0);
         this.enemy.anchor.setTo(0, 1);
         this.enemy.scale.set(2, 2);
 
@@ -50,40 +52,42 @@ CollisionGame.prototype = {
     },
 
     checkResponse: function() {
+        var gm = GetGameManager(this.game);
         for (var i=0; i < 3 ; i++) {
-            if (!this.game.p1Resp.responded && this.game.p1Resp[i].isDown) {
-                this.game.p1Resp.responded = true;
+            if (!gm.p1Resp.responded && gm.p1Resp[i].isDown) {
+                gm.p1Resp.responded = true;
                 this.p1.jump();
             }
 
-            if (!this.game.p2Resp.responded && this.game.p2Resp[i].isDown) {
-                this.game.p2Resp.responded = true;
+            if (!gm.p2Resp.responded && gm.p2Resp[i].isDown) {
+                gm.p2Resp.responded = true;
                 this.p2.jump();
             }
 
-            if (!this.game.p3Resp.responded && this.game.p3Resp[i].isDown) {
-                this.game.p3Resp.responded = true;
+            if (!gm.p3Resp.responded && gm.p3Resp[i].isDown) {
+                gm.p3Resp.responded = true;
                 this.p3.jump();
             }
 
-            if (!this.game.p4Resp.responded && this.game.p4Resp[i].isDown) {
-                this.game.p4Resp.responded = true;
+            if (!gm.p4Resp.responded && gm.p4Resp[i].isDown) {
+                gm.p4Resp.responded = true;
                 this.p4.jump();
             }                                    
         }
     },
 
     checkCollisions: function() {
+        var gm = GetGameManager(this.game);
         var enemyRect = new Phaser.Rectangle(this.enemy.x, this.enemy.y, this.enemy.width, this.enemy.height);
         var players = [this.p1, this.p2, this.p3, this.p4];
         for (var i = 0; i < players.length; ++i) {
             var p = players[i];
             if (enemyRect.intersects(new Phaser.Rectangle(p.sprite.x, p.sprite.y, p.sprite.width, p.sprite.height))) {
                 p.goFlying() 
-                this.game.hud.setWrong(p.playerNumber);
+                gm.hud.setWrong(p.playerNumber);
             }
             if (enemyRect.x + enemyRect.width < p.sprite.x && !p.flownAway) {
-                this.game.hud.setRight(p.playerNumber);
+                gm.hud.setRight(p.playerNumber);
             }
         }
     }
@@ -109,8 +113,9 @@ CollisionGame.Player.prototype = {
     create : function() {
         // This is bad, but I'm only doing it because I'm reusing the avatar
         // when i should be using the fruit sprites
-        this.x0 = this.game.world.width * 0.333 - this.order * 48;
-        this.sprite = this.game.add.sprite(this.x0, this.collisionGame.groundY, 'avatars', this.game.hud.frameForSprite(this.playerNumber));
+        var gm = GetGameManager(this.game);
+        this.x0 = this.game.width * 0.333 - this.order * 48;
+        this.sprite = this.game.add.sprite(this.x0, this.collisionGame.groundY, 'avatars', gm.hud.frameForSprite(this.playerNumber));
         this.sprite.anchor.setTo(0, 1);
     },
 
@@ -133,8 +138,9 @@ CollisionGame.Player.prototype = {
     },
 
     goFlying: function() {
+        var gm = GetGameManager(this.game);
         if (!this.flownAway) {
-            this.game.setPlayerRespond(this.playerNumber);
+            gm.setPlayerRespond(this.playerNumber);
             this.t0 = this.game.time.totalElapsedSeconds();
             this.vx0 = 200;
             this.vy0 = 700;

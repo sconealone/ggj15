@@ -78,7 +78,7 @@ LevelMaster.prototype = {
 		
 		// pick a game type randomly
 		//var gameType = this.game.rnd.integerInRange(1, this.data.numGameTypes);
-		var gameType = this.game.rnd.integerInRange(3, 3);
+		var gameType = this.game.rnd.integerInRange(4, 4);
 		
 		switch(gameType) {
 		case 1: 
