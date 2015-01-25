@@ -5,12 +5,18 @@ LevelMaster = function(game, data) {
 						"shapeMatching", "shapeMatching", "colourText", 
 						"jumping", "jumping", "jumping", 
 						"running", "running", "buttonMashing", 
-						"buttonMashing", "buttonMashing", "shapeMatching"];
+						"buttonMashing", "buttonMashing", "hand"];
+	// this.GAME_ARRAY_LONG = ["keyMatching", "keyMatching", "hand", "keyMatching",
+	// 					"shapeMatching", "shapeMatching", "shapeMatching", "colourText",
+	// 					"colourText", "jumping", "jumping", "hand", 
+	// 					"jumping", "buttonMashing", "buttonMashing", "buttonMashing",
+	// 					"running", "running", "running", "shapeMatching"];
+
 	this.GAME_ARRAY_LONG = ["keyMatching", "keyMatching", "keyMatching", "keyMatching",
 						"shapeMatching", "shapeMatching", "shapeMatching", "colourText",
-						"colourText", "jumping", "jumping", "jumping", 
-						"jumping", "buttonMashing", "buttonMashing", "buttonMashing",
-						"running", "running", "running", "shapeMatching"];
+						"colourText", "shapeMatching", "shapeMatching", "shapeMatching", 
+						"shapeMatching", "shapeMatching", "shapeMatching", "shapeMatching",
+						"shapeMatching", "shapeMatching", "shapeMatching", "shapeMatching"];
 
 	this.levelSequenceCounter = 0;
 	this.levelSequence = generateOrder(this.GAME_ARRAY_LONG);
@@ -44,7 +50,10 @@ LevelMaster.prototype = {
 		// if new game show intro transition
         if (this.data.newGame) {
 			this.data.newGame = false;
-            this.newGameTransition();
+            //this.newGameTransition();
+			this.data.needTransition = 0;
+            this.nextLevel();
+
 		// show transition if last state was a game state
         } else if (this.data.needTransition) {
 			this.data.needTransition = false;
@@ -113,51 +122,52 @@ LevelMaster.prototype = {
 	},
 	
 	nextLevel: function() {
+		console.log(this.levelSequence);
 
-		// this.game.state.start(this.levelSequence[this.levelSequenceCounter], true, false, this.game, this.data);
-
+		this.game.state.start(this.levelSequence[this.levelSequenceCounter], true, false, this.game, this.data);
+		this.levelSequenceCounter++;
 		// start the next game stage
 		
 		// pick a game type randomly
-		var gameType = this.game.rnd.integerInRange(1, this.data.numGameTypes);
-		var gameType = this.game.rnd.integerInRange(1, 1);
+		// var gameType = this.game.rnd.integerInRange(1, this.data.numGameTypes);
+		// var gameType = this.game.rnd.integerInRange(1, 1);
 
 
 		
-		switch(gameType) {
-		case 1: 
-			console.log("In case 1");
-			this.game.state.start('keyMatching', false, false, this.game, this.data);
-			break;
-		case 2:
-			console.log("In case 2");
-			this.game.state.start('shapeMatching', false, false, this.game, this.data);
-			break;
-		case 3: 
-			console.log("In case 3");
-			this.game.state.start('colourText', false, false, this.game, this.data);
-			break;
-		case 4:
-			console.log("In case 4");
-			this.game.state.start('jumping', false, false, this.game, this.data);
-			break;
-		case 5:
-			console.log("In case 5");
-			this.game.state.start('hand', false, false, this.game, this.data);
-			break;
-		case 6:
-			console.log("In case 6");
-			this.game.state.start('buttonMashing', false, false, this.game, this.data);
-			break;
-		case 7:
-			console.log("In case 7");
-			this.game.state.start('running', false, false, this.game, this.data);
-			break;
+		// switch(gameType) {
+		// case 1: 
+		// 	console.log("In case 1");
+		// 	this.game.state.start('keyMatching', false, false, this.game, this.data);
+		// 	break;
+		// case 2:
+		// 	console.log("In case 2");
+		// 	this.game.state.start('shapeMatching', false, false, this.game, this.data);
+		// 	break;
+		// case 3: 
+		// 	console.log("In case 3");
+		// 	this.game.state.start('colourText', false, false, this.game, this.data);
+		// 	break;
+		// case 4:
+		// 	console.log("In case 4");
+		// 	this.game.state.start('jumping', false, false, this.game, this.data);
+		// 	break;
+		// case 5:
+		// 	console.log("In case 5");
+		// 	this.game.state.start('hand', false, false, this.game, this.data);
+		// 	break;
+		// case 6:
+		// 	console.log("In case 6");
+		// 	this.game.state.start('buttonMashing', false, false, this.game, this.data);
+		// 	break;
+		// case 7:
+		// 	console.log("In case 7");
+		// 	this.game.state.start('running', false, false, this.game, this.data);
+		// 	break;
 
-		default:
-			this.game.state.start('jumping', false, false, this.game, this.data);
-			break;
-		};
+		// default:
+		// 	this.game.state.start('jumping', false, false, this.game, this.data);
+		// 	break;
+		// };
         var gm = GetGameManager(this.game);
         gm.reorderHud();
 		
