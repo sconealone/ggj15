@@ -239,7 +239,10 @@ ButtonMashing.prototype = {
             if (_this.players[i].strokeCount < _this.MIN_STROKE_BOUND) {
                 _this.hud.setWrong(i);
                 gm.levelMaster.decreaseLife();
-            }
+            } else
+		{
+		gm.levelMaster.nextLevel();
+		}
         }
 
     }
@@ -251,7 +254,7 @@ ButtonMashingRun = function(game, data) {
     this.data = data;
     this.game = game;
     this.numPlayerStrokes = [0, 0, 0, 0];
-    this.goal = 80;
+    this.goal = 40;
     this.timeout = 10;
     this.x0 = WIDTH * 0.2;
     this.y0 = HEIGHT * 0.4;
@@ -284,7 +287,7 @@ ButtonMashingRun.prototype = {
 
     reset : function() {
         this.numPlayerStrokes = [0, 0, 0, 0];
-        this.goal = 80;
+        this.goal = 40;
         this.timeout = 10;
         this.x0 = WIDTH * 0.2;
         this.y0 = HEIGHT * 0.4;
