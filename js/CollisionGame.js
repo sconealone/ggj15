@@ -141,15 +141,14 @@ CollisionGame.prototype = {
     },
 
     transition: function(_this) {
-        var gm = GetGameManager(_this.game);
-
+        var gm = GetGameManager();
+        this.hud.timerFrame.visible = true;
+        this.hud.timerBar.visible = true;
         if (collided) {
             gm.levelMaster.decreaseLife();
         } else {
             gm.levelMaster.nextLevel();
         }
-        this.hud.timerFrame.visible = true;
-        this.hud.timerBar.visible = true;
     }
 }
 
