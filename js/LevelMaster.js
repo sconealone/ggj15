@@ -1,13 +1,27 @@
 LevelMaster = function(game, data) {
     this.game = game;
     this.MAX_LIVES = 3;
-	
+	this.GAME_ARRAY_SHORT = ["keyMatching", "keyMatching", "keyMatching", 
+						"shapeMatching", "shapeMatching", "colourText", 
+						"jumping", "jumping", "jumping", 
+						"running", "running", "buttonMashing", 
+						"buttonMashing", "buttonMashing", "hand"];
+
+	this.GAME_ARRAY_LONG = ["keyMatching", "keyMatching", "keyMatching", "keyMatching",
+						"shapeMatching", "shapeMatching", "shapeMatching", "colourText",
+						"colourText", "shapeMatching", "shapeMatching", "shapeMatching", 
+						"shapeMatching", "shapeMatching", "shapeMatching", "shapeMatching",
+						"shapeMatching", "shapeMatching", "shapeMatching", "shapeMatching"];
+
+	this.levelSequenceCounter = 0;
+	this.levelSequence = generateOrder(this.GAME_ARRAY_LONG);
+
 	// set initial game data
 	if (!data) {
 		data = {
 		lives: 5,
 		level: 1,
-		numGameTypes: 5,
+		numGameTypes: 7,
 
 		newGame: true,
 		needTransition: false,
@@ -29,12 +43,15 @@ LevelMaster.prototype = {
 	
 	decideGameState: function() {
 		// if new game show intro transition
-        if (this.data.newGame == 1) {
-			this.data.newGame = 0;
-            this.newGameTransition();
+        if (this.data.newGame) {
+			this.data.newGame = false;
+            //this.newGameTransition();
+			this.data.needTransition = 0;
+            this.nextLevel();
+
 		// show transition if last state was a game state
         } else if (this.data.needTransition) {
-			this.data.needTransition = 0;
+			this.data.needTransition = false;
 			this.nextTransition();
 			
 		// game end if failed
@@ -60,13 +77,11 @@ LevelMaster.prototype = {
 	decreaseLife: function() {
 		if (this.data.lives > 1 && !this.data.decreasedLife) {
 			this.data.lives--;
-			console.log(this.data.lives);
 			this.showFailed();
 
 		}
 		else {
 			this.data.lives == 1 ? this.data.lives = 0: "";
-			console.log('you dead');
 			this.showEnding();
 		}
 	},
@@ -74,12 +89,12 @@ LevelMaster.prototype = {
 			
 	newGameTransition: function() {
 		// show transition for new game
-		console.log("in new game");
 		this.nextLevel();
 		this.game.state.start('newGame', false, false, this.game, this.data);
 	},
 	
 	showFailed: function() {
+
 		// show failed ending
 		var _this = this;
 		this.game.state.start('failState', false, false, _this.game, _this.data);
@@ -98,39 +113,9 @@ LevelMaster.prototype = {
 	},
 	
 	nextLevel: function() {
-		// start the next game stage
-		
-		// pick a game type randomly
-		//var gameType = this.game.rnd.integerInRange(1, this.data.numGameTypes);
-		var gameType = 7;//this.game.rnd.integerInRange(2, 2);
-		
-		switch(gameType) {
-		case 1: 
-			this.game.state.start('keyMatching', true, false, this.game, this.data);
-			break;
-		case 2:
-			this.game.state.start('shapeMatching', true, false, this.game, this.data);
-			break;
-		case 3: 
-			this.game.state.start('colourText', true, false, this.game, this.data);
-			break;
-		case 4:
-			this.game.state.start('jumping', true, false, this.game, this.data);
-			break;
-		case 5:
-			this.game.state.start('hand', true, false, this.game, this.data);
-			break;
-		case 6:
-			this.game.state.start('oneMash', true, false, this.game, this.data);
-			break;
-		case 7:
-			this.game.state.start('twoMash', true, false, this.game, this.data);
-			break;
-        default:
-			this.game.state.start('twoMash', true, false, this.game, this.data);
-            
-		};
-		
+
+		this.game.state.start(this.levelSequence[this.levelSequenceCounter], true, false, this.game, this.data);
+		this.levelSequenceCounter++;
 	},
 	
 }

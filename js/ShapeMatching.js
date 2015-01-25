@@ -50,10 +50,8 @@ ShapeMatching.prototype = {
                 gm.p1Resp.responded = true;
 
                 if (this.order[i] == this.answer) {
-                    console.log("p1 pass") 
                     this.hud.setRight(0);
                 } else {
-                    console.log("p1 fail");
                     this.hud.setWrong(0);
                     gm.levelMaster.decreaseLife();
                 }
@@ -63,10 +61,8 @@ ShapeMatching.prototype = {
                 gm.p2Resp.responded = true;
 
                 if (this.order[i] == this.answer) {
-                    console.log("p2 pass") 
                     this.hud.setRight(1);
                 } else {
-                    console.log("p2 fail");
                     this.hud.setWrong(1);
                     gm.levelMaster.decreaseLife();
                 }
@@ -76,10 +72,8 @@ ShapeMatching.prototype = {
                 gm.p3Resp.responded = true;
 
                 if (this.order[i] == this.answer) {
-                    console.log("p3 pass") 
                     this.hud.setRight(2);
                 } else {
-                    console.log("p3 fail");
                     this.hud.setWrong(2);
                     gm.levelMaster.decreaseLife();
                 }
@@ -89,10 +83,8 @@ ShapeMatching.prototype = {
                 gm.p4Resp.responded = true;
 
                 if (this.order[i] == this.answer) {
-                    console.log("p4 pass") 
                     this.hud.setRight(3);
                 } else {
-                    console.log("p4 fail");
                     this.hud.setWrong(3);
                     gm.levelMaster.decreaseLife();
                 }
@@ -118,7 +110,6 @@ ShapeMatching.prototype = {
         this.shape2 = this.order[1];
         this.shape3 = this.order[2];
 
-        console.log(this.order);
 
         // draw the shapes each type of shape matching mini game needs to know its own layout
         this.drawLayout();
@@ -180,7 +171,6 @@ ShapeMatching.prototype = {
             gm.levelMaster.decreaseLife();
         }
 
-        console.log("transition");
     },
 
 }

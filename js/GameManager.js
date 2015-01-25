@@ -18,8 +18,7 @@ GameManager = function(game) {
 	this.miniGame = null;
     this.MIN_KEY_VAL = 0;
     this.MAX_KEY_VAL = 2;
-    this.levelMaster = new LevelMaster(_this);
-
+    this.levelMaster = new LevelMaster(game);
 }
 
 GameManager.prototype = {
@@ -100,7 +99,6 @@ GameManager.prototype = {
     create: function() {
         //initialize the keys for each player
         this.initializeKeys();
-
 	},
 
 	update: function() {

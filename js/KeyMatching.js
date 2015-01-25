@@ -60,10 +60,8 @@ KeyMatching.prototype = {
                 gm.p1Resp.responded = true;
 
                 if (i == this.players[0].answer) {
-                    console.log("p1 pass") 
                     this.hud.setRight(0);
                 } else {
-                    console.log("p1 fail");
                     this.hud.setWrong(0);
                     gm.levelMaster.decreaseLife();
                 }
@@ -73,10 +71,8 @@ KeyMatching.prototype = {
                 gm.p2Resp.responded = true;
 
                 if (i == this.players[1].answer) {
-                    console.log("p2 pass") 
                     this.hud.setRight(1);
                 } else {
-                    console.log("p2 fail");
                     this.hud.setWrong(1);
                     gm.levelMaster.decreaseLife();
                 }
@@ -86,10 +82,8 @@ KeyMatching.prototype = {
                 gm.p3Resp.responded = true;
 
                 if (i == this.players[2].answer) {
-                    console.log("p3 pass") 
                     this.hud.setRight(2);
                 } else {
-                    console.log("p3 fail");
                     gm.levelMaster.decreaseLife();
                     this.hud.setWrong(2);
                 }
@@ -99,10 +93,8 @@ KeyMatching.prototype = {
                 gm.p4Resp.responded = true;
 
                 if (i == this.players[3].answer) {
-                    console.log("p4 pass") 
                     this.hud.setRight(3);
                 } else {
-                    console.log("p4 fail");
                     gm.levelMaster.decreaseLife();
                     this.hud.setWrong(3);
                 }
@@ -118,14 +110,9 @@ KeyMatching.prototype = {
 
     create: function() {
         var gm = GetGameManager(this.game)
-        console.log("creating multi player key matching");
 
         // choose correct answer
         this.createAnswers();
-        console.log("p1: " + this.players[0].answer);
-        console.log("p2: " + this.players[1].answer);
-        console.log("p3: " + this.players[2].answer);
-        console.log("p4: " + this.players[3].answer);
 
         // choose order of player iteration
         var p = [0, 1, 2, 3];
@@ -169,7 +156,6 @@ KeyMatching.prototype = {
         this.ans3 = this.players[this.displayOrder[2]].answer;
         this.ans4 = this.players[this.displayOrder[3]].answer;
 
-        console.log([this.ans1, this.ans2, this.ans3, this.ans4]);
 
 
         this.dir1Sprite = this.game.add.sprite(this.game.world.width*this.firstPlayerX, this.directionsY, this.directionsSpriteSheet, this.ans1);
