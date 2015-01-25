@@ -1,8 +1,12 @@
 /**
  * Created by Ro on 24/01/2015.
  */
-ColorTile = function(game) {
-    this.game = game;
+ColorTile = function(game, data) {
+    console.log("ColorTile constructor")
+    console.log(game)
+    console.log(data)
+	this.game = game;
+    this.data = data;
 
     this.word1 = -1;
     this.word2 = -1;
@@ -22,10 +26,10 @@ ColorTile = function(game) {
     this.frameWidth = 128;
     this.frameHeight = 64;
 
-    this.wordSprite1X = 0.33 * game.world.width;
-    this.wordSprite2X = 0.5 * game.world.width;
-    this.wordSprite3X = 0.67 * game.world.width;
-    this.wordSpriteY = 0.4 * game.world.height;
+    this.wordSprite1X = 0.33 * game.width;
+    this.wordSprite2X = 0.5 * game.width;
+    this.wordSprite3X = 0.67 * game.width;
+    this.wordSpriteY = 0.4 * game.height;
 
     // constants
     this.MAX_FRAME = 5;
@@ -37,52 +41,53 @@ ColorTile = function(game) {
 ColorTile.prototype = {
 
     checkResponse: function() {
+        var gm = GetGameManager(self.game);
         for (var i=0; i < 3 ; i++) {
-            if (!this.game.p1Resp.responded && this.game.p1Resp[i].isDown) {
-                this.game.p1Resp.responded = true;
+            if (!gm.p1Resp.responded && gm.p1Resp[i].isDown) {
+                gm.p1Resp.responded = true;
 
                 if (i == this.apos) {
                     console.log("p1 pass")
-                    this.game.hud.setRight(0);
+                    gm.hud.setRight(0);
                 } else {
                     console.log("p1 fail");
-                    this.game.hud.setWrong(0);
+                    gm.hud.setWrong(0);
                 }
             }
 
-            if (!this.game.p2Resp.responded && this.game.p2Resp[i].isDown) {
-                this.game.p2Resp.responded = true;
+            if (!gm.p2Resp.responded && gm.p2Resp[i].isDown) {
+                gm.p2Resp.responded = true;
 
                 if (i == this.apos) {
                     console.log("p2 pass")
-                    this.game.hud.setRight(1);
+                    gm.hud.setRight(1);
                 } else {
                     console.log("p2 fail");
-                    this.game.hud.setWrong(1);
+                    gm.hud.setWrong(1);
                 }
             }
 
-            if (!this.game.p3Resp.responded && this.game.p3Resp[i].isDown) {
-                this.game.p3Resp.responded = true;
+            if (!gm.p3Resp.responded && gm.p3Resp[i].isDown) {
+                gm.p3Resp.responded = true;
 
                 if (i == this.apos) {
                     console.log("p3 pass")
-                    this.game.hud.setRight(2);
+                    gm.hud.setRight(2);
                 } else {
                     console.log("p3 fail");
-                    this.game.hud.setWrong(2);
+                    gm.hud.setWrong(2);
                 }
             }
 
-            if (!this.game.p4Resp.responded && this.game.p4Resp[i].isDown) {
-                this.game.p4Resp.responded = true;
+            if (!gm.p4Resp.responded && gm.p4Resp[i].isDown) {
+                gm.p4Resp.responded = true;
 
                 if (i == this.apos) {
                     console.log("p4 pass")
-                    this.game.hud.setRight(3);
+                    gm.hud.setRight(3);
                 } else {
                     console.log("p4 fail");
-                    this.game.hud.setWrong(3);
+                    gm.hud.setWrong(3);
                 }
             }
         }
@@ -94,8 +99,6 @@ ColorTile.prototype = {
     },
 
     create: function(){
-        console.log("create answer and orders");
-
         // generate answer between 0 and 5
         this.answer = getRandomInt(this.MIN_FRAME, this.MAX_FRAME);
 
@@ -124,12 +127,15 @@ ColorTile.prototype = {
         this.drawLayout();
 
         // start timer
-        this.game.timer.setTimeout(this.timeout, this.transition);
+        var gm = GetGameManager(self.game);
+        gm.timer.setTimeout(this.timeout, this.transition);
 
     },
 
     update: function(){
+        var gm = GetGameManager(self.game);
         this.checkResponse();
+        gm.update();
 
     },
 

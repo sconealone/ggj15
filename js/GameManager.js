@@ -9,7 +9,9 @@ GetGameManager = function(game) {
 }
 
 GameManager = function(game) {
+    console.log("GameManager constructor")
 	this.game = game;
+    console.log(this.game)
     var _this = this;
 	this.miniGame = null;
     this.hud = new Hud(_this, 4);
@@ -17,10 +19,12 @@ GameManager = function(game) {
     this.MAX_KEY_VAL = 2;
     this.timer = new Timer(_this);
     this.lives = new Lives(_this);
+
 }
 
 GameManager.prototype = {
     initializeKeys: function() {
+        console.log("Initialize keys");
         this.p1Resp = {
             0: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),
             1: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
@@ -173,10 +177,10 @@ Hud.prototype = {
         this.timerBar.anchor.setTo(0, 0.5);
 
         // initialize lives
-        for(var i = 0; i < this.game.lives.MAX_LIFE; ++i){
+        for(var i = 0; i < this.gameManager.lives.MAX_LIFE; ++i){
             var x = (10 + i * 30);
             var y = 0;
-            this.lifeCount.push(this.game.add.sprite(x, y, 'life'));
+            this.lifeCount.push(this.gameManager.game.add.sprite(x, y, 'life'));
 
         }
     },
