@@ -236,9 +236,11 @@ ButtonMashingRun = function(game, data) {
 
 ButtonMashingRun.prototype = {
     preload : function() {
+		this.game.load.image('cellar', 'assets/cellar.png');
     },
 
     create : function() {
+		this.game.add.sprite(0,0,'cellar');
         this.p1.create();
         this.p2.create();
         this.p3.create();
