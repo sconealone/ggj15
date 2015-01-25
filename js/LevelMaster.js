@@ -2,7 +2,7 @@ LevelMaster = function(game, data) {
 
     console.log("LEVEL MASTER CONSTRUCTOR")
     this.game = game;
-    this.MAX_LIVES = 300;
+    this.MAX_LIVES = 5;
 	this.GAME_ARRAY_SHORT = ["keyMatching", "keyMatching", "keyMatching", 
 						"shapeMatching", "shapeMatching", "colourText", 
 						"jumping", "jumping", "jumping", 
@@ -36,7 +36,7 @@ LevelMaster = function(game, data) {
 	// set initial game data
 	if (true || !data) {
 		data = {
-		lives: 300,
+		lives: 5,
 		level: 1,
 		numGameTypes: 7,
 
