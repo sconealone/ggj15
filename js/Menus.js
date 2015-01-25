@@ -106,13 +106,39 @@ Menus.EndState.prototype = {
     },
 };
 
-Menus.NewGame = function(game) {
+Menus.NewGame = function(game, data) {
     this.game = game;
+    this.data = data;
 }
 Menus.NewGame.prototype = {
     preload: function() {
     },
     create: function() {
+        var bgFrame = 11;
+        this.game.add.sprite(0, 0, 'bg', bgFrame);
+        var _this = this;
+        setTimeout(function() {
+            _this.game.state.start('instructions', true, false, _this.game, _this.data)
+        }, 3000);
+    },
+    update: function() {
+    },
+};
+
+Menus.Instructions = function(game, data) {
+    this.game = game;
+    this.data = data;
+}
+Menus.Instructions.prototype = {
+    preload: function() {
+    },
+    create: function() {
+        var gm = GetGameManager(this.game);
+        var bgFrame = 10;
+        this.game.add.sprite(0, 0, 'bg', bgFrame);
+        setTimeout(function() {
+            gm.levelMaster.nextLevel();
+        }, 3000);
     },
     update: function() {
     },

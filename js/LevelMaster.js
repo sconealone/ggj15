@@ -76,9 +76,7 @@ LevelMaster.prototype = {
 		// if new game show intro transition
         if (this.data.newGame) {
 			this.data.newGame = false;
-            //this.newGameTransition();
-			this.data.needTransition = 0;
-            this.nextLevel();
+            this.newGameTransition();
 
 		// show transition if last state was a game state
         } else if (this.data.needTransition) {
