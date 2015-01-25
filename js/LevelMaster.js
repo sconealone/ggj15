@@ -116,6 +116,7 @@ LevelMaster.prototype = {
 
 		this.game.state.start(this.levelSequence[this.levelSequenceCounter], true, false, this.game, this.data);
 		this.levelSequenceCounter++;
+
 	},
 	
 }

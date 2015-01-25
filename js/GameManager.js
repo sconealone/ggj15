@@ -99,6 +99,7 @@ GameManager.prototype = {
     create: function() {
         //initialize the keys for each player
         this.initializeKeys();
+
 	},
 
 	update: function() {

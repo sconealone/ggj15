@@ -23,10 +23,13 @@ CollisionGame.prototype = {
         this.p3.preload();
         this.p4.preload();
 
-        this.game.load.spritesheet('enemy', 'assets/ghost.png', 32, 48);
+        //this.game.load.spritesheet('enemy', 'assets/ghost.png', 32, 48);
+        this.game.load.spritesheet('enemy', 'assets/ghostrun.png', 79, 100);
+        this.game.load.image('jumpbk', 'assets/jumpbg2.png');
     },
 
     create : function() {
+        this.game.add.sprite(0,0,'jumpbk');
         this.p1.create();
         this.p2.create();
         this.p3.create();
@@ -37,13 +40,15 @@ CollisionGame.prototype = {
         this.hud.timerFrame.visible = false;
         this.hud.timerBar.visible = false;
 
-        this.enemy = this.game.add.sprite(this.game.width, this.groundY, 'enemy', 0);
+        this.enemy = this.game.add.sprite(this.game.width, this.groundY, 'enemy', 3);
+        this.enemy.animations.add('left', [0, 1, 2], 20, true);
+        this.enemy.animations.add('right', [4, 5, 6],20, true);
         this.enemy.anchor.setTo(0, 1);
         this.enemy.scale.set(2, 2);
 
         var tween = this.game.add.tween(this.enemy);
         var timeout = 2000;
-        tween.to({x:-64}, timeout);
+        tween.to({x:-this.enemy.width}, timeout);
         tween.start();
 
         var _this = this;
@@ -51,6 +56,7 @@ CollisionGame.prototype = {
     },
 
     update : function() {
+        this.enemy.animations.play('left');
         this.checkResponse();
         this.p1.update();
         this.p2.update();
