@@ -9,7 +9,7 @@ CollisionGame = function(game, data) {
     this.p3 = new CollisionGame.Player(game, _this, 2, order[2]);
     this.p4 = new CollisionGame.Player(game, _this, 3, order[3]);
     this.gravity = -981;
-    this.groundY = 0.6 * this.game.height;
+    this.groundY = 0.6 * HEIGHT;
 
     var collided = false;
 }

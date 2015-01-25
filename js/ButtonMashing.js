@@ -1,5 +1,6 @@
-ButtonMashing = function(game) {
+ButtonMashing = function(game, data) {
     this.game = game;
+    this.data = data;
 
     this.displayOrder = [];
 
@@ -8,8 +9,8 @@ ButtonMashing = function(game) {
     this.frameWidth = 32;
     this.frameHeight = 32;
 
-    this.avatarsY = 0.25*game.world.height;
-    this.directionsY = 0.35*game.world.height;
+    this.avatarsY = 0.25*game.HEIGHT;
+    this.directionsY = 0.35*game.HEIGHT;
     this.firstPlayerX = 0.20,
     this.secondPlayerX = 0.40,
     this.thirdPlayerX = 0.60,
@@ -88,7 +89,6 @@ ButtonMashing.prototype = {
 
     incrementStroke: function(player) {
         player.strokeCount >= this.MIN_STROKE_BOUND ? this.game.hud.setRight(player.id) : player.strokeCount += 1;
-        console.log(player);
     },
 
     preload: function() {
@@ -98,14 +98,8 @@ ButtonMashing.prototype = {
     },
 
     create: function() {
-        console.log("creating multi player button mashing");
-
         // choose correct answer
         this.createAnswers();
-        console.log("p1: " + this.players[0].answer);
-        console.log("p2: " + this.players[1].answer);
-        console.log("p3: " + this.players[2].answer);
-        console.log("p4: " + this.players[3].answer);
 
         // choose order of player iteration
         var p = [0, 1, 2, 3];
@@ -154,10 +148,10 @@ ButtonMashing.prototype = {
         this.shape3 = this.players[this.displayOrder[2]].keyFrame;
         this.shape4 = this.players[this.displayOrder[3]].keyFrame;
 
-        this.p1AvatarSprite = this.game.add.sprite(this.game.world.width*this.firstPlayerX, this.avatarsY, this.avatarSpritesheet, this.shape1);
-        this.p2AvatarSprite = this.game.add.sprite(this.game.world.width*this.secondPlayerX, this.avatarsY, this.avatarSpritesheet, this.shape2);
-        this.p3AvatarSprite = this.game.add.sprite(this.game.world.width*this.thirdPlayerX, this.avatarsY, this.avatarSpritesheet, this.shape3);
-        this.p4AvatarSprite = this.game.add.sprite(this.game.world.width*this.fourthPlayerX, this.avatarsY, this.avatarSpritesheet, this.shape4);
+        this.p1AvatarSprite = this.game.add.sprite(WIDTH*this.firstPlayerX, this.avatarsY, this.avatarSpritesheet, this.shape1);
+        this.p2AvatarSprite = this.game.add.sprite(WIDTH*this.secondPlayerX, this.avatarsY, this.avatarSpritesheet, this.shape2);
+        this.p3AvatarSprite = this.game.add.sprite(WIDTH*this.thirdPlayerX, this.avatarsY, this.avatarSpritesheet, this.shape3);
+        this.p4AvatarSprite = this.game.add.sprite(WIDTH*this.fourthPlayerX, this.avatarsY, this.avatarSpritesheet, this.shape4);
 
         this.p1AvatarSprite.anchor.setTo(0.5, 0.5);
         this.p2AvatarSprite.anchor.setTo(0.5, 0.5);
@@ -171,13 +165,11 @@ ButtonMashing.prototype = {
         this.ans3 = this.players[this.displayOrder[2]].answer;
         this.ans4 = this.players[this.displayOrder[3]].answer;
 
-        console.log([this.ans1, this.ans2, this.ans3, this.ans4]);
 
-
-        this.dir1Sprite = this.game.add.sprite(this.game.world.width*this.firstPlayerX, this.directionsY, this.directionsSpriteSheet, this.ans1);
-        this.dir2Sprite = this.game.add.sprite(this.game.world.width*this.secondPlayerX, this.directionsY, this.directionsSpriteSheet, this.ans2);
-        this.dir3Sprite = this.game.add.sprite(this.game.world.width*this.thirdPlayerX, this.directionsY, this.directionsSpriteSheet, this.ans3);
-        this.dir4Sprite = this.game.add.sprite(this.game.world.width*this.fourthPlayerX, this.directionsY, this.directionsSpriteSheet, this.ans4);
+        this.dir1Sprite = this.game.add.sprite(WIDTH*this.firstPlayerX, this.directionsY, this.directionsSpriteSheet, this.ans1);
+        this.dir2Sprite = this.game.add.sprite(WIDTH*this.secondPlayerX, this.directionsY, this.directionsSpriteSheet, this.ans2);
+        this.dir3Sprite = this.game.add.sprite(WIDTH*this.thirdPlayerX, this.directionsY, this.directionsSpriteSheet, this.ans3);
+        this.dir4Sprite = this.game.add.sprite(WIDTH*this.fourthPlayerX, this.directionsY, this.directionsSpriteSheet, this.ans4);
 
         this.dir1Sprite.anchor.setTo(0.5, 0.5);
         this.dir2Sprite.anchor.setTo(0.5, 0.5);
@@ -189,8 +181,6 @@ ButtonMashing.prototype = {
     transition: function(_this) {
 
         for (var i=0; i < _this.players.length; i++) {
-            console.log(_this.players[i].strokeCount);
-            console.log(_this.MIN_STROKE_BOUND);
 
             if (_this.players[i].strokeCount < _this.MIN_STROKE_BOUND) {
                 _this.game.hud.setWrong(i);
@@ -198,15 +188,32 @@ ButtonMashing.prototype = {
             }
         }
 
-        console.log("transition");
     }
 
 }
 
 // Button mashing mini game where the fruits run away from something
-ButtonMashingRun = function(game) {
+ButtonMashingRun = function(game, data) {
+    this.data = data;
     this.game = game;
     this.numPlayerStrokes = [0, 0, 0, 0];
+    this.goal = 80;
+    this.timeout = 10;
+    this.x0 = WIDTH * 0.2;
+    this.y0 = HEIGHT * 0.4;
+
+    this.p1 = new ButtonMashing.Player(this.game, 0, this.x0, this.y0, 'blueberry');
+    this.p2 = new ButtonMashing.Player(this.game, 0, this.x0 - 10, this.y0 + 60, 'apple');
+    this.p3 = new ButtonMashing.Player(this.game, 0, this.x0 - 20, this.y0 + 120, 'pear');
+    this.p4 = new ButtonMashing.Player(this.game, 0, this.x0 - 30, this.y0 + 180, 'banana');
+
+    this.p1Count = null;
+    this.p2Count = null;
+    this.p3Count = null;
+    this.p4Count = null;
+
+    this.hud = new Hud(game);
+    this.timer = new Timer(game, this.hud);
 }
 
 ButtonMashingRun.prototype = {
@@ -214,28 +221,91 @@ ButtonMashingRun.prototype = {
     },
 
     create : function() {
+        this.p1.create();
+        this.p2.create();
+        this.p3.create();
+        this.p4.create();
+        var gm = GetGameManager(this.game);
+        var _this = this;
+        this.p1Count = function(e) {
+            _this.numPlayerStrokes[0] += 1;
+        };
+        this.p2Count = function(e) {
+            _this.numPlayerStrokes[1] += 1;
+        };
+        this.p3Count = function(e) {
+            _this.numPlayerStrokes[2] += 1;
+        };
+        this.p4Count = function(e) {
+            _this.numPlayerStrokes[3] += 1;
+        };
+        gm.p1Resp[0].onDown.add(this.p1Count);
+        gm.p1Resp[1].onDown.add(this.p1Count);
+        gm.p1Resp[2].onDown.add(this.p1Count);
+
+        gm.p2Resp[0].onDown.add(this.p2Count);
+        gm.p2Resp[1].onDown.add(this.p2Count);
+        gm.p2Resp[2].onDown.add(this.p2Count);
+
+        gm.p3Resp[0].onDown.add(this.p3Count);
+        gm.p3Resp[1].onDown.add(this.p3Count);
+        gm.p3Resp[2].onDown.add(this.p3Count);
+
+        gm.p4Resp[0].onDown.add(this.p4Count);
+        gm.p4Resp[1].onDown.add(this.p4Count);
+        gm.p4Resp[2].onDown.add(this.p4Count);
+            
+        this.hud.create()
+        this.timer.create()
+        this.timer.setTimeout(10, this.transition, _this);
     },
 
     update : function() {
-        checkResponse();
+        this.hud.update();
+        this.timer.update();
+        this.p1.percentDone(this.numPlayerStrokes[0]/(this.goal + 30));
+        this.p2.percentDone(this.numPlayerStrokes[1]/(this.goal + 30));
+        this.p3.percentDone(this.numPlayerStrokes[2]/(this.goal + 30));
+        this.p4.percentDone(this.numPlayerStrokes[3]/(this.goal + 30));
     },
 
-    checkResponse : function() {
-        for (var player = 0; i < 4; ++player) {
-            var ignoreKey  = [false, false, false];
-            for (var key = 0; i < 3; ++key) {
-                if (!ignoreKey[key] && this.game.getPlayerRespondKey(player, key).isDown) {
-                    ignoreKey[key] = true;
-                    this.numPlayerStrokes[player] += 1;
-                } else {
-                    ignoreKey[key] = false;
-                }
-            }
+    transition : function(_this) {
+        for (var i=0; i < 4; ++i) {
+            if (_this.numPlayerStrokes[i] < _this.goal)
+                _this.hud.setWrong(i);
+            else
+                _this.hud.setRight(i);
         }
-    },
+
+        var gm = GetGameManager();
+
+        gm.p1Resp[0].onDown.remove(_this.p1Count);
+        gm.p1Resp[1].onDown.remove(_this.p1Count);
+        gm.p1Resp[2].onDown.remove(_this.p1Count);
+
+        gm.p2Resp[0].onDown.remove(_this.p2Count);
+        gm.p2Resp[1].onDown.remove(_this.p2Count);
+        gm.p2Resp[2].onDown.remove(_this.p2Count);
+
+        gm.p3Resp[0].onDown.remove(_this.p3Count);
+        gm.p3Resp[1].onDown.remove(_this.p3Count);
+        gm.p3Resp[2].onDown.remove(_this.p3Count);
+
+        gm.p4Resp[0].onDown.remove(_this.p4Count);
+        gm.p4Resp[1].onDown.remove(_this.p4Count);
+        gm.p4Resp[2].onDown.remove(_this.p4Count);
+        
+    }
 }
 
-ButtonMashing.Player = function(game, buttonMashingGame, playerNumber) {
+ButtonMashing.Player = function(game, playerNumber, x, y, key) {
+    this.game = game;
+    this.playerNumber = playerNumber;
+    this.sprite = null;
+    this.x0 = x;
+    this.y0 = y;
+    this.key = key;
+    this.tween = null;
 }
 
 ButtonMashing.Player.prototype = {
@@ -243,8 +313,17 @@ ButtonMashing.Player.prototype = {
     },
 
     create : function() {
+        this.sprite = this.game.add.sprite(this.x0, this.y0, this.key, 3)
+        this.sprite.animations.add('right', [4, 5, 6], 20, true);
+        this.sprite.animations.play('right');
+        this.tween = this.game.add.tween(this.sprite);
     },
 
     update : function() {
     },
+
+    percentDone : function(percent) {
+        var distance = WIDTH + 100 - this.x0;
+        this.sprite.x = this.x0 + distance * percent;
+    }
 }

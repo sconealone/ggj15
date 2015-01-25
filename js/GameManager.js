@@ -16,10 +16,8 @@ GameManager = function(game) {
     this.WIDTH = 1280;
     this.HEIGHT = 720;
 	this.miniGame = null;
-    this.hud = new Hud(_this, 4);
     this.MIN_KEY_VAL = 0;
     this.MAX_KEY_VAL = 2;
-    this.timer = new Timer(_this);
     this.levelMaster = new LevelMaster(_this);
 
 }
@@ -103,33 +101,23 @@ GameManager.prototype = {
         //initialize the keys for each player
         this.initializeKeys();
 
-		this.hud.create();
-        
 	},
 
 	update: function() {
-        this.timer.update();
     },
 
-    reorderHud : function() {
-        this.hud.timerBar.bringToTop();
-        this.hud.timerFrame.bringToTop();
-        for (var i = 0; i < 4; ++i) {
-            this.hud.avatars[i].bringToTop();
-        }
-    },
 }
 
 // Hud is the player avatars + time countdown
-Hud = function(gameManager, numPlayers) {
-    this.gameManager = gameManager;
+Hud = function(game, numPlayers) {
+    this.game = game;
 
     // constants
     this.NO_ANSWER = 0;
     this.WRONG = 1;
     this.RIGHT = 2;
 
-    this.numPlayers = numPlayers;
+    this.numPlayers = numPlayers || 4;
 
     this.FRAME_BLUEBERRY_NO_ANSWER = 0;
     this.FRAME_BLUEBERRY_WRONG = 8;
@@ -158,12 +146,6 @@ Hud = function(gameManager, numPlayers) {
     this.timerBar = null;
 
     this.lifeCount = [];
-
-    /*this.blueberryRun = null;
-    this.appleRun = null;
-    this.pearRun = null;
-    this.bananaRun = null;*/
-
 }
 
 Hud.prototype = {
@@ -172,6 +154,8 @@ Hud.prototype = {
     create : function() {
         this.initialize();
     },
+    update : function() {
+    },
 
     initialize : function() {
         // initialize avatars
@@ -179,33 +163,30 @@ Hud.prototype = {
             var x = (1 + i) * 0.2 * WIDTH;
             var y = 0.85 * HEIGHT;
 
-            this.avatars.push(this.gameManager.game.add.sprite(x, y, 'avatars', this.frameForSprite(i)))
+            this.avatars.push(this.game.add.sprite(x, y, 'avatars', this.frameForSprite(i)))
             this.avatars[i].anchor.setTo(0.5, 0.5);
         }
 
         // initialize timer
         var x = 0.005 * WIDTH;
         var y = 0.1 * HEIGHT;
-        this.timerBar = this.gameManager.game.add.sprite(x+50, y, 'timers', 1);
-        this.timerFrame = this.gameManager.game.add.sprite(x, y, 'timers', 0);
+        this.timerBar = this.game.add.sprite(x+50, y, 'timers', 1);
+        this.timerFrame = this.game.add.sprite(x, y, 'timers', 0);
         this.timerBar.anchor.setTo(0, 0.5);
         this.timerFrame.anchor.setTo(0, 0.5);
 
 
         // initialize lives
-        for(var i = 0; i < this.gameManager.levelMaster.MAX_LIVES; ++i){
-            var x = 0.87 * this.gameManager.game.width - i * 125;
-            var y = 0.02 * this.gameManager.game.height;
-            this.lifeCount.push(this.gameManager.game.add.sprite(x, y, 'life'));
+        var gm = GetGameManager(this.game)
+        for(var i = 0; i < gm.levelMaster.MAX_LIVES; ++i){
+            var x = 0.87 * this.game.width - i * 125;
+            var y = 0.02 * this.game.height;
+            this.lifeCount.push(this.game.add.sprite(x, y, 'life'));
 
         }
 
-        // initialize animations for fruits
-        // dont know if should put it here or not
     },
 
-    // This function is dumb. I'm dumb. If the avatar sprite sheet had some
-    // semblence of order, this function wouldn't need to exist.
     frameForSprite : function(i) {
         if (i == this.APPLE) return this.FRAME_APPLE_NO_ANSWER;
         if (i == this.BANANA) return this.FRAME_BANANA_NO_ANSWER;
@@ -231,8 +212,9 @@ Hud.prototype = {
     },
 }
 
-Timer = function(gameManager) {
-    this.gameManager = gameManager;
+Timer = function(game, hud) {
+    this.game = game;
+    this.hud = hud || null;
     this.t0 = 0;
     this.timeout = -1;
     this.started = false;
@@ -240,7 +222,7 @@ Timer = function(gameManager) {
 }
 Timer.prototype = {
     dt : function() {
-        var dt = this.gameManager.game.time.totalElapsedSeconds() - this.t0;
+        var dt = this.game.time.totalElapsedSeconds() - this.t0;
         return dt;
     },
 
@@ -252,8 +234,11 @@ Timer.prototype = {
                     this.callback(this.param);
                 }
             }
-            this.gameManager.hud.setTimer(Math.max(0, 1 - this.percentTimedOut()));
+            if (this.hud)
+                this.hud.setTimer(Math.max(0, 1 - this.percentTimedOut()));
         }
+    },
+    create : function() {
     },
 
     setTimeout : function(timeout, callback, param) {
@@ -268,7 +253,7 @@ Timer.prototype = {
 
     start : function() {
         if (!this.started) {
-            this.t0 = this.gameManager.game.time.totalElapsedSeconds();
+            this.t0 = this.game.time.totalElapsedSeconds();
             this.started = true;
         }
     },

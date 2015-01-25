@@ -23,10 +23,6 @@ GiantCatch = function(game, data) {
 
 GiantCatch.prototype = {
     preload: function(){
-        this.game.load.spritesheet('blueberry', 'assets/blueberryrun.png', 89.71, 78);
-        this.game.load.spritesheet('apple', 'assets/applerun.png', 72.86, 91);
-        this.game.load.spritesheet('pear', 'assets/pearrun.png', 66.57, 91);
-        this.game.load.spritesheet('banana', 'assets/bananarun.png', 68.43, 96);
 
         this.game.load.image('ground', 'assets/ground.png');
     },

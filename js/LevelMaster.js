@@ -102,35 +102,34 @@ LevelMaster.prototype = {
 		
 		// pick a game type randomly
 		//var gameType = this.game.rnd.integerInRange(1, this.data.numGameTypes);
-		var gameType = this.game.rnd.integerInRange(4, 4);
+		var gameType = 7;//this.game.rnd.integerInRange(2, 2);
 		
 		switch(gameType) {
 		case 1: 
-			console.log("In case 1");
-			this.game.state.start('keyMatching', false, false, this.game, this.data);
+			this.game.state.start('keyMatching', true, false, this.game, this.data);
 			break;
 		case 2:
-		console.log("In case 2");
-			this.game.state.start('shapeMatching', false, false, this.game, this.data);
+			this.game.state.start('shapeMatching', true, false, this.game, this.data);
 			break;
 		case 3: 
-		console.log("In case 3");
-			this.game.state.start('colourText', false, false, this.game, this.data);
+			this.game.state.start('colourText', true, false, this.game, this.data);
 			break;
 		case 4:
-		console.log("In case 4");
-			this.game.state.start('jumping', false, false, this.game, this.data);
+			this.game.state.start('jumping', true, false, this.game, this.data);
 			break;
 		case 5:
-		console.log("In case 5");
-			this.game.state.start('hand', false, false, this.game, this.data);
+			this.game.state.start('hand', true, false, this.game, this.data);
 			break;
-		default:
-			this.game.state.start('jumping', false, false, this.game, this.data);
+		case 6:
+			this.game.state.start('oneMash', true, false, this.game, this.data);
 			break;
+		case 7:
+			this.game.state.start('twoMash', true, false, this.game, this.data);
+			break;
+        default:
+			this.game.state.start('twoMash', true, false, this.game, this.data);
+            
 		};
-        var gm = GetGameManager(this.game);
-        gm.reorderHud();
 		
 	},
 	
