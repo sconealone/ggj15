@@ -32,6 +32,7 @@ LevelMaster = function(game, data) {
 	//this.levelSequence = [4];
 
 
+
 	// set initial game data
 	if (true || !data) {
 		data = {
