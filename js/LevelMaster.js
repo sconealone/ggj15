@@ -120,7 +120,7 @@ LevelMaster.prototype = {
 		
 		// pick a game type randomly
 		var gameType = this.game.rnd.integerInRange(1, this.data.numGameTypes);
-		var gameType = this.game.rnd.integerInRange(1, 6);
+		var gameType = this.game.rnd.integerInRange(1, 1);
 
 
 		
@@ -143,11 +143,15 @@ LevelMaster.prototype = {
 			break;
 		case 5:
 			console.log("In case 5");
-			this.game.state.start('running', false, false, this.game, this.data);
+			this.game.state.start('hand', false, false, this.game, this.data);
 			break;
 		case 6:
 			console.log("In case 6");
 			this.game.state.start('buttonMashing', false, false, this.game, this.data);
+			break;
+		case 7:
+			console.log("In case 7");
+			this.game.state.start('running', false, false, this.game, this.data);
 			break;
 
 		default:
