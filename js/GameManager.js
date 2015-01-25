@@ -1,3 +1,13 @@
+_gameManager = null;
+GetGameManager = function(game) {
+    if (_gameManager == null) {
+        _gameManager = new GameManager(game);
+        _gameManager.preload();
+        _gameManager.create();
+    }
+    return _gameManager
+}
+
 GameManager = function(game) {
 	this.game = game;
 	miniGame = null;
@@ -44,7 +54,6 @@ GameManager.prototype = {
 	
 		// miniGame = new ShapeMatching(_this);
         // miniGame = new KeyMatching(_this);
-		miniGame = new LevelMaster(_this);
 
 		//miniGame.preload();
         this.hud.preload();
@@ -55,12 +64,10 @@ GameManager.prototype = {
         this.initializeKeys();
 
 		this.hud.create();
-		miniGame.create();
         
 	},
 
 	update: function() {
-		miniGame.update();
         this.timer.update();
 	}
 }
@@ -105,10 +112,6 @@ Hud = function(gameManager, numPlayers) {
 
 Hud.prototype = {
     preload : function() {
-        this.gameManager.game.load.spritesheet('avatars', 'assets/avatars.png', 32, 32);
-        this.gameManager.game.load.spritesheet('timer', 'assets/timer.png', 256, 32);
-        this.gameManager.game.load.spritesheet('directions', 'assets/directions.png', 32*3, 32);
-        this.gameManager.game.load.spritesheet('keys', 'assets/keys2.png', 256, 32);
     },
     create : function() {
         this.initialize();
@@ -127,8 +130,8 @@ Hud.prototype = {
         // initialize timer
         var x = 0.5 * (this.gameManager.game.world.width - 256);
         var y = 0.1 * this.gameManager.game.world.height;
-        this.timerFrame = this.gameManager.game.add.sprite(x, y, 'timer', 0);
-        this.timerBar = this.gameManager.game.add.sprite(x, y, 'timer', 1);
+        this.timerFrame = this.gameManager.game.add.sprite(x, y, 'timers', 0);
+        this.timerBar = this.gameManager.game.add.sprite(x, y, 'timers', 1);
         this.timerFrame.anchor.setTo(0, 0.5);
         this.timerBar.anchor.setTo(0, 0.5);
     },
@@ -169,7 +172,7 @@ Timer = function(gameManager) {
 }
 Timer.prototype = {
     dt : function() {
-        var dt = this.game.time.totalElapsedSeconds() - this.t0;
+        var dt = this.gameManager.game.time.totalElapsedSeconds() - this.t0;
         return dt;
     },
 
@@ -181,7 +184,7 @@ Timer.prototype = {
                     this.callback();
                 }
             }
-            this.game.hud.setTimer(Math.max(0, 1 - this.percentTimedOut()));
+            this.gameManager.hud.setTimer(Math.max(0, 1 - this.percentTimedOut()));
         }
     },
 
@@ -195,7 +198,7 @@ Timer.prototype = {
 
     start : function() {
         if (!this.started) {
-            this.t0 = this.game.time.totalElapsedSeconds();
+            this.t0 = this.gameManager.game.time.totalElapsedSeconds();
             this.started = true;
         }
     },

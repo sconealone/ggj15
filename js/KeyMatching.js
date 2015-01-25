@@ -24,24 +24,25 @@ KeyMatching = function(game, data) {
 
 KeyMatching.prototype = {
     createAnswers: function() {
+        var gm = GetGameManager(this.game);
 
         //players 0-3
         this.players  = [
             {
                 keyFrame: 0,
-                answer: getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL)
+                answer: getRandomInt(gm.MIN_KEY_VAL, gm.MAX_KEY_VAL)
             },
             {
                 keyFrame: 1,
-                answer: getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL)
+                answer: getRandomInt(gm.MIN_KEY_VAL, gm.MAX_KEY_VAL)
             },
             {
                 keyFrame: 6,
-                answer: getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL)
+                answer: getRandomInt(gm.MIN_KEY_VAL, gm.MAX_KEY_VAL)
             },
             {
                 keyFrame: 7,
-                answer: getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL)
+                answer: getRandomInt(gm.MIN_KEY_VAL, gm.MAX_KEY_VAL)
             },         
         ];
 
@@ -49,52 +50,53 @@ KeyMatching.prototype = {
     },
 
     checkResponse: function() {
+        var gm = GetGameManager(this.game);
         for (var i=0; i < 3 ; i++) {
-            if (!this.game.p1Resp.responded && this.game.p1Resp[i].isDown) {
-                this.game.p1Resp.responded = true;
+            if (!gm.p1Resp.responded && gm.p1Resp[i].isDown) {
+                gm.p1Resp.responded = true;
 
                 if (i == this.players[0].answer) {
                     console.log("p1 pass") 
-                    this.game.hud.setRight(0);
+                    gm.hud.setRight(0);
                 } else {
                     console.log("p1 fail");
-                    this.game.hud.setWrong(0);
+                    gm.hud.setWrong(0);
                 }
             }
 
-            if (!this.game.p2Resp.responded && this.game.p2Resp[i].isDown) {
-                this.game.p2Resp.responded = true;
+            if (!gm.p2Resp.responded && gm.p2Resp[i].isDown) {
+                gm.p2Resp.responded = true;
 
                 if (i == this.players[1].answer) {
                     console.log("p2 pass") 
-                    this.game.hud.setRight(1);
+                    gm.hud.setRight(1);
                 } else {
                     console.log("p2 fail");
-                    this.game.hud.setWrong(1);
+                    gm.hud.setWrong(1);
                 }
             }
 
-            if (!this.game.p3Resp.responded && this.game.p3Resp[i].isDown) {
-                this.game.p3Resp.responded = true;
+            if (!gm.p3Resp.responded && gm.p3Resp[i].isDown) {
+                gm.p3Resp.responded = true;
 
                 if (i == this.players[2].answer) {
                     console.log("p3 pass") 
-                    this.game.hud.setRight(2);
+                    gm.hud.setRight(2);
                 } else {
                     console.log("p3 fail");
-                    this.game.hud.setWrong(2);
+                    gm.hud.setWrong(2);
                 }
             }
 
-            if (!this.game.p4Resp.responded && this.game.p4Resp[i].isDown) {
-                this.game.p4Resp.responded = true;
+            if (!gm.p4Resp.responded && gm.p4Resp[i].isDown) {
+                gm.p4Resp.responded = true;
 
                 if (i == this.players[3].answer) {
                     console.log("p4 pass") 
-                    this.game.hud.setRight(3);
+                    gm.hud.setRight(3);
                 } else {
                     console.log("p4 fail");
-                    this.game.hud.setWrong(3);
+                    gm.hud.setWrong(3);
                 }
             }                                    
         }
@@ -108,6 +110,7 @@ KeyMatching.prototype = {
     },
 
     create: function() {
+        var gm = GetGameManager(this.game)
         console.log("creating multi player key matching");
 
         // choose correct answer
@@ -123,11 +126,13 @@ KeyMatching.prototype = {
 
         // draw the shapes each type of shape matching mini game needs to know its own layout
         this.drawLayout();
-        this.game.timer.setTimeout(this.timeout, this.transition);
+        gm.timer.setTimeout(this.timeout, this.transition);
     },
 
     update: function() {
+        var gm = GetGameManager(this.game);
         this.checkResponse();
+        gm.update();
     },
 
     drawLayout : function() {
