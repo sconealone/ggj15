@@ -10,8 +10,8 @@ KeyMatching = function(game, data) {
     this.dframeWidth = 74;
     this.dframeHeight = 74;
 
-    this.avatarsY = 0.45*game.height;
-    this.directionsY = 0.7*game.height;
+    this.avatarsY = 0.45*HEIGHT
+    this.directionsY = 0.7*HEIGHT
     this.firstPlayerX = 0.20,
     this.secondPlayerX = 0.40,
     this.thirdPlayerX = 0.60,
@@ -29,6 +29,32 @@ KeyMatching = function(game, data) {
 
 
 KeyMatching.prototype = {
+    reset : function () {
+        this.displayOrder = [];
+
+        this.avatarSpritesheet = 'avatars'
+        this.spritesheetPath = 'assets/avatars.png'
+        this.frameWidth = 180;
+        this.frameHeight = 200;
+        this.dframeWidth = 74;
+        this.dframeHeight = 74;
+
+        this.avatarsY = 0.45*HEIGHT
+        this.directionsY = 0.7*HEIGHT
+        this.firstPlayerX = 0.20,
+        this.secondPlayerX = 0.40,
+        this.thirdPlayerX = 0.60,
+        this.fourthPlayerX = 0.80;
+
+        this.directionsSpriteSheet = 'directions';
+        this.directionSpritesheetPath = 'assets/directions.png';
+
+        this.timeout = 5;
+        this.hud = new Hud(this.game);
+        this.timer = new Timer(this.game, this.hud);
+
+        this.blame = false;
+    },
     createAnswers: function() {
         var gm = GetGameManager(this.game);
 
@@ -121,6 +147,7 @@ KeyMatching.prototype = {
     },
 
     create: function() {
+        this.reset();
         this.game.add.sprite(0,0,'cellar');
         var gm = GetGameManager(this.game)
 

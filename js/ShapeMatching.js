@@ -98,6 +98,7 @@ ShapeMatching.prototype = {
             
             if (gm.p1Resp.responded && gm.p2Resp.responded && gm.p3Resp.responded && gm.p4Resp.responded
                 && this.blame) {
+                this.timer.stop();
                 gm.levelMaster.decreaseLife(null);
             }
 
@@ -110,7 +111,49 @@ ShapeMatching.prototype = {
         this.game.load.image('shapeMatchingBK', 'assets/ShapeMatchingbk.png');
     },
 
+    reset: function() {
+
+        this.shape1 = -1;
+        this.shape2 = -1;
+        this.shape3 = -1;
+        this.answer = -1;
+
+        this.order = []
+
+        this.shapeSprite1 = null;
+        this.shapeSprite2 = null;
+        this.shapeSprite3 = null;
+        this.answerSprite = null;
+
+        this.spritesheet = 'keys';
+        this.spritesheetPath = 'assets/keys.png';
+        this.frameWidth = 120;
+        this.frameHeight = 300;
+
+        var height = 720;
+        var width = 1280;
+        // override these
+        // Actually it would be better if we could pass in a struct for each type of mini game
+        this.shapeSpriteX1 = 0.25*width;
+        this.shapeSpriteY1 = 0.5*height;
+
+        this.shapeSpriteX2 = 0.5*width;
+        this.shapeSpriteY2 = 0.1*height;
+
+        this.shapeSpriteX3 = 0.75*width;
+        this.shapeSpriteY3 = 0.5*height;
+
+        this.answerSpriteX = 0.5*width;
+        this.answerSpriteY = 0.5*height;
+
+        this.timeout = 5;
+        this.hud = new Hud(this.game);
+        this.timer = new Timer(this.game, this.hud);
+
+        this.blame = false;
+    },
     create: function() {
+        this.reset();
         // choose correct answer
         var gm = GetGameManager(this.game)
         this.answer = getRandomInt(gm.MIN_KEY_VAL, gm.MAX_KEY_VAL);

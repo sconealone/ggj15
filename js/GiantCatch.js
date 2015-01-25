@@ -176,7 +176,9 @@ GiantCatch.prototype = {
     checkCollisions: function(){
         var gm = GetGameManager(this.game);
         var players = [this.blueberryRun, this.appleRun, this.pearRun, this.bananaRun];
-        for (var i = 0; i < players.length; ++i){;
+        var handRect = new Phaser.Rectangle(this.hand.x, this.hand.y, this.hand.width, this.hand.height);
+        for (var i = 0; i < players.length; ++i){
+
             if (players[i].overlap(this.hand)){
                 console.log("overlaps!" + i);
                 this.hud.setWrong(i);
