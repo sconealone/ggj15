@@ -9,11 +9,11 @@ ButtonMashing = function(game, data) {
     this.spritesheetPath = 'assets/avatars.png'
     this.frameWidth = 180;
     this.frameHeight = 200;
-    this.dframeWidth = 32;
-    this.dframeHeight = 32;
+    this.dframeWidth = 74;
+    this.dframeHeight = 74;
 
     this.avatarsY = 0.4*HEIGHT;
-    this.directionsY = 0.55*HEIGHT;
+    this.directionsY = 0.6*HEIGHT;
     this.firstPlayerX = 0.20,
     this.secondPlayerX = 0.40,
     this.thirdPlayerX = 0.60,
