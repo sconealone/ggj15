@@ -74,7 +74,7 @@ Menus.FailState.prototype = {
 
 
         setTimeout(function() {
-            gm.levelMaster.nextLevel()
+            gm.levelMaster.nextLevel();
         }, 3000);
     },
 };

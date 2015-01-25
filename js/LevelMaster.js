@@ -23,15 +23,15 @@ LevelMaster = function(game, data) {
         'colourText', // 2
         'jumping', // 3
         'hand', // 4
-        // 'buttonMashing', // 5
-        // 'running', // 6
+        'buttonMashing', // 5
+        'running', // 6
     ]
 	this.levelSequenceCounter = 0;
 	//this.levelSequence = generateOrder(this.GAME_ARRAY_LONG);
 
     // this.levelSequence = [0, 0, 0, 0, 0, 0];
 
-    this.levelSequence = [1, 1, 2, 3, 4, 5, 6];
+    this.levelSequence = [4, 4,2,3,4,5,6];
 
 
 	// set initial game data
@@ -110,7 +110,7 @@ LevelMaster.prototype = {
 
 	decreaseLife: function(blameList) {
         this.data.failFruits = blameList;
-		if (this.data.lives > 1 && !this.data.decreasedLife) {
+		if (this.data.lives > 1) {
 			this.data.lives--;
 			this.showFailed();
 		}
@@ -152,7 +152,11 @@ LevelMaster.prototype = {
 	},
 	
 	nextLevel: function() {
-
+		var gm = GetGameManager(this.game)
+		gm.p1Resp.responded = false;
+		gm.p2Resp.responded = false;
+		gm.p3Resp.responded = false;
+		gm.p4Resp.responded = false;
 
 		if (this.levelSequenceCounter < 1) {
 			this.data.bgm = this.bgmI2;
