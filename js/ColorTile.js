@@ -233,7 +233,10 @@ ColorTile.prototype = {
         if (!gm.p1Resp.responded || !gm.p2Resp.responded || !gm.p3Resp.responded ||
             !gm.p4Resp.responded) {
             gm.levelMaster.decreaseLife();
-        }
+        } else {
+console.log("color tile go to next level");
+gm.levelMaster.nextLevel();
+}
     }
 
 }

@@ -22,7 +22,7 @@ GiantCatch = function(game, data) {
     this.handframe = 0;
     this.count = 0;
 
-    this.timeout = 10;
+    this.timeout = 8;
 
     this.hud = new Hud(game);
     this.timer = new Timer(game, this.hud);
@@ -70,7 +70,7 @@ GiantCatch.prototype = {
     this.handframe = 0;
     this.count = 0;
 
-    this.timeout = 10;
+    this.timeout = 8;
 
     this.hud = new Hud(this.game);
     this.timer = new Timer(this.game, this.hud);
@@ -114,13 +114,13 @@ GiantCatch.prototype = {
         var tweenY = this.game.add.tween(this.hand);
         var time = 1000;
         tweenY.to({y: this.groundY}, time);
-        tweenY.repeat(4);
+        tweenY.repeat(2);
         tweenY.yoyo(true);
         tweenY.start();
         tweenY.killOnComplete;
 
         var _this = this;
-        this.timer.setTimeout(10, this.transition, _this);
+        this.timer.setTimeout(this.timeout, this.transition, _this);
 
         this.hud.create();
         this.timer.create();
