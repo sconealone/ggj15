@@ -15,6 +15,7 @@
 		<script type="text/javascript" src="js/ButtonMashing.js"></script>
 		<script type="text/javascript" src="js/LevelMaster.js"></script>
 		<script type="text/javascript" src="js/Menus.js"></script>
+		<script type="text/javascript" src="js/GiantCatch.js"></script>
 
 	    <style type="text/css">
 	        body {
@@ -40,6 +41,7 @@
             game.state.add('shapeMatching', ShapeMatching);
             game.state.add('colourText', ColorTile);
             game.state.add('jumping', CollisionGame);
+			game.state.add('hand', GiantCatch);
             game.state.add('failState', Menus);
 			game.state.add('levelMaster', LevelMaster);
 		    game.state.add('preloader', Preloader, true);

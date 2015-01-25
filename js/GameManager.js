@@ -158,6 +158,12 @@ Hud = function(gameManager, numPlayers) {
     this.timerBar = null;
 
     this.lifeCount = [];
+
+    /*this.blueberryRun = null;
+    this.appleRun = null;
+    this.pearRun = null;
+    this.bananaRun = null;*/
+
 }
 
 Hud.prototype = {
@@ -170,20 +176,20 @@ Hud.prototype = {
     initialize : function() {
         // initialize avatars
         for (var i = 0; i < this.numPlayers; ++i) {
-            var x = (1 + i) * 0.2 * this.gameManager.game.world.width;
-            var y = 0.85 * this.gameManager.game.world.height;
+            var x = (1 + i) * 0.2 * WIDTH;
+            var y = 0.85 * HEIGHT;
 
             this.avatars.push(this.gameManager.game.add.sprite(x, y, 'avatars', this.frameForSprite(i)))
             this.avatars[i].anchor.setTo(0.5, 0.5);
         }
 
         // initialize timer
-        var x = 0.005 * this.gameManager.game.world.width;
-        var y = 0.1 * this.gameManager.game.world.height;
+        var x = 0.005 * WIDTH;
+        var y = 0.1 * HEIGHT;
         this.timerBar = this.gameManager.game.add.sprite(x+50, y, 'timers', 1);
         this.timerFrame = this.gameManager.game.add.sprite(x, y, 'timers', 0);
-        this.timerFrame.anchor.setTo(0, 0.5);
         this.timerBar.anchor.setTo(0, 0.5);
+        this.timerFrame.anchor.setTo(0, 0.5);
 
 
         // initialize lives
@@ -191,7 +197,11 @@ Hud.prototype = {
             var x = 0.87 * this.gameManager.game.width - i * 125;
             var y = 0.02 * this.gameManager.game.height;
             this.lifeCount.push(this.gameManager.game.add.sprite(x, y, 'life'));
+
         }
+
+        // initialize animations for fruits
+        // dont know if should put it here or not
     },
 
     // This function is dumb. I'm dumb. If the avatar sprite sheet had some

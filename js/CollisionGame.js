@@ -3,8 +3,8 @@ CollisionGame = function(game, data) {
     this.data = data;
     var _this = this;
     order = generateOrder([0, 1, 2, 3]);
-
-    this.p1 = new CollisionGame.Player(game, _this, 0, order[0]);
+    //this.enemy = null;
+     this.p1 = new CollisionGame.Player(game, _this, 0, order[0]);
     this.p2 = new CollisionGame.Player(game, _this, 1, order[1]);
     this.p3 = new CollisionGame.Player(game, _this, 2, order[2]);
     this.p4 = new CollisionGame.Player(game, _this, 3, order[3]);
@@ -125,14 +125,16 @@ CollisionGame.Player = function(game, collisionGame, playerNumber, order) {
 
 CollisionGame.Player.prototype = {
     preload : function() {
+        this.game.load.spritesheet('collisionA', 'assets/collisionA.png', 73, 96);
     },
 
     create : function() {
         // This is bad, but I'm only doing it because I'm reusing the avatar
         // when i should be using the fruit sprites
-        var gm = GetGameManager(this.game);
-        this.x0 = this.game.width * 0.333 - this.order * 48;
-        this.sprite = this.game.add.sprite(this.x0, this.collisionGame.groundY, 'avatars', gm.hud.frameForSprite(this.playerNumber));
+
+        this.x0 = WIDTH * 0.333 - this.order * 48;
+        this.sprite = this.game.add.sprite(this.x0, this.collisionGame.groundY, 'collisionA', this.playerNumber);
+
         this.sprite.anchor.setTo(0, 1);
     },
 
@@ -150,7 +152,7 @@ CollisionGame.Player.prototype = {
     },
 
     jump: function() {
-        this.vy0 = 500;
+        this.vy0 = 600;
         this.t0 = this.game.time.totalElapsedSeconds();
     },
 

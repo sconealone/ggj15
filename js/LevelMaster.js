@@ -123,7 +123,7 @@ LevelMaster.prototype = {
 			break;
 		case 5:
 		console.log("In case 5");
-			this.game.state.start('running', false, false, this.game, this.data);
+			this.game.state.start('hand', false, false, this.game, this.data);
 			break;
 		default:
 			this.game.state.start('jumping', false, false, this.game, this.data);
