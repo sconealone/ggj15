@@ -28,9 +28,8 @@ LevelMaster = function(game, data) {
     ]
 	this.levelSequenceCounter = 0;
 
-    this.levelSequence = [6, 6, 6];
-    //this.levelSequence = [0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6, 6];
-    //this.levelSequence = generateOrder(this.levelSequence);
+    this.levelSequence = [0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6, 6];
+    this.levelSequence = generateOrder(this.levelSequence);
 	//this.levelSequence = [4];
 
 
