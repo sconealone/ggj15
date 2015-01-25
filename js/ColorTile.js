@@ -32,9 +32,10 @@ ColorTile = function(game, data) {
     this.MAX_FRAME = 5;
     this.MIN_FRAME = 0;
 
-    this.timeout = 2;
+    this.timeout = 5;
     this.hud = new Hud(game);
     this.timer = new Timer(game, this.hud);
+    this.blame = false;
 }
 
 ColorTile.prototype = {
@@ -51,7 +52,8 @@ ColorTile.prototype = {
                 } else {
                     console.log("p1 fail");
                     this.hud.setWrong(0);
-                    gm.levelMaster.decreaseLife();
+                    this.blame = true;
+                    //gm.levelMaster.decreaseLife();
                 }
             }
 
@@ -63,7 +65,8 @@ ColorTile.prototype = {
                     this.hud.setRight(1);
                 } else {
                     console.log("p2 fail");
-                    gm.levelMaster.decreaseLife();
+                    this.blame = true;
+                    //gm.levelMaster.decreaseLife();
                     this.hud.setWrong(1);
                 }
             }
@@ -76,7 +79,8 @@ ColorTile.prototype = {
                     this.hud.setRight(2);
                 } else {
                     console.log("p3 fail");
-                    gm.levelMaster.decreaseLife();
+                    this.blame = true;
+                    //gm.levelMaster.decreaseLife();
                     this.hud.setWrong(2);
                 }
             }
@@ -89,9 +93,14 @@ ColorTile.prototype = {
                     this.hud.setRight(3);
                 } else {
                     console.log("p4 fail");
-                    gm.levelMaster.decreaseLife();
+                    this.blame = true;
+                    //gm.levelMaster.decreaseLife();
                     this.hud.setWrong(3);
                 }
+            }
+            if (gm.p1Resp.responded && gm.p2Resp.responded && gm.p3Resp.responded && gm.p4Resp.responded
+                && this.blame) {
+                gm.levelMaster.decreaseLife(null);
             }
         }
 
@@ -102,6 +111,39 @@ ColorTile.prototype = {
 		this.game.load.image('unlocked', 'assets/buttonmashunlockedbg.png');
     },
 
+    reset: function() {
+
+    this.word1 = -1;
+    this.word2 = -1;
+    this.answer = -1;
+    this.apos = -1;
+
+    this.wordSprite1 = null;
+    this.wordSprite2 = null;
+    this.wordSprite3 = null;
+
+    this.question = '';
+    this.order = [];
+    this.qColor = '';
+
+    this.spritesheet = 'words';
+    this.spritesheetPath = 'assets/colorWords.png';
+    this.frameWidth = 128;
+    this.frameHeight = 64;
+
+    this.wordSprite1X = 0.33 * WIDTH
+    this.wordSprite2X = 0.5 * WIDTH
+    this.wordSprite3X = 0.67 * WIDTH
+    this.wordSpriteY = 0.4 * HEIGHT
+
+    // constants
+    this.MAX_FRAME = 5;
+    this.MIN_FRAME = 0;
+
+    this.timeout = 2;
+    this.hud = new Hud(this.game);
+    this.timer = new Timer(this.game, this.hud);
+    }, 
     create: function(){
 		
 	

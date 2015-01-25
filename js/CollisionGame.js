@@ -34,6 +34,21 @@ CollisionGame.prototype = {
 
     },
 
+    reset : function() {
+    var _this = this;
+    order = generateOrder([0, 1, 2, 3]);
+    //this.enemy = null;
+    this.p1 = new CollisionGame.Player(this.game, _this, 0, order[0]);
+    this.p2 = new CollisionGame.Player(this.game, _this, 1, order[1]);
+    this.p3 = new CollisionGame.Player(this.game, _this, 2, order[2]);
+    this.p4 = new CollisionGame.Player(this.game, _this, 3, order[3]);
+    this.gravity = -981;
+    this.groundY = 0.6 * HEIGHT;
+
+    var collided = false;
+    this.hud = new Hud(this.game);
+    this.timer = new Timer(this.game, this.hud);
+    },
     create : function() {
         this.game.add.sprite(0,0,'jumpbk');
         this.p1.create();
@@ -194,7 +209,7 @@ CollisionGame.Player.prototype = {
     },
 
     jump: function() {
-        this.vy0 = 600;
+        this.vy0 = 650;
         this.t0 = this.game.time.totalElapsedSeconds();
     },
 

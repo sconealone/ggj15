@@ -107,6 +107,34 @@ ButtonMashing.prototype = {
 
     },
 
+    reset: function () {
+        this.displayOrder = [];
+        this.question = '';
+        
+        this.avatarSpritesheet = 'avatars'
+        this.spritesheetPath = 'assets/avatars.png'
+        this.frameWidth = 180;
+        this.frameHeight = 200;
+        this.dframeWidth = 74;
+        this.dframeHeight = 74;
+
+        this.avatarsY = 0.4*HEIGHT;
+        this.directionsY = 0.6*HEIGHT;
+        this.firstPlayerX = 0.20,
+        this.secondPlayerX = 0.40,
+        this.thirdPlayerX = 0.60,
+        this.fourthPlayerX = 0.80;
+
+        this.directionsSpriteSheet = 'directions';
+        this.directionSpritesheetPath = 'assets/directions.png';
+
+        this.timeout = 20;
+
+        this.MIN_STROKE_BOUND = getRandomInt(10, 20);
+
+        this.hud = new Hud(this.game);
+        this.timer = new Timer(this.game, this.hud);
+    },
     create: function() {
         // choose correct answer
         this.game.add.sprite(0,0,'bmbackground');
@@ -203,12 +231,13 @@ ButtonMashing.prototype = {
     },
 
     transition: function(_this) {
+        var gm = GetGameManager();
 
         for (var i=0; i < _this.players.length; i++) {
 
             if (_this.players[i].strokeCount < _this.MIN_STROKE_BOUND) {
                 _this.hud.setWrong(i);
-                _this.game.levelMaster.decreaseLife();
+                gm.levelMaster.decreaseLife();
             }
         }
 
@@ -245,8 +274,35 @@ ButtonMashingRun = function(game, data) {
 ButtonMashingRun.prototype = {
     preload : function() {
 		this.game.load.image('cellar', 'assets/cellar.png');
+        this.load.audio('blueberryPanic', ['assets/sounds/blueBerryPanic.wav']);
+        this.load.audio('applePanic', ['assets/sounds/applePanic.wav']);
+        this.load.audio('pearPanic', ['assets/sounds/pearPanic.wav']);
+        this.load.audio('bananaPanic', ['assets/sounds/bananaPanic.wav']);
+        this.load.audio('footstep', ['assets/sounds/footstep.wav']);  
     },
 
+    reset : function() {
+        this.numPlayerStrokes = [0, 0, 0, 0];
+        this.goal = 80;
+        this.timeout = 10;
+        this.x0 = WIDTH * 0.2;
+        this.y0 = HEIGHT * 0.4;
+
+        this.question2 = '';
+        
+        this.p1 = new ButtonMashing.Player(this.game, 0, this.x0, this.y0, 'blueberry');
+        this.p2 = new ButtonMashing.Player(this.game, 0, this.x0 - 10, this.y0 + 60, 'apple');
+        this.p3 = new ButtonMashing.Player(this.game, 0, this.x0 - 20, this.y0 + 120, 'pear');
+        this.p4 = new ButtonMashing.Player(this.game, 0, this.x0 - 30, this.y0 + 180, 'banana');
+
+        this.p1Count = null;
+        this.p2Count = null;
+        this.p3Count = null;
+        this.p4Count = null;
+
+        this.hud = new Hud(this.game);
+        this.timer = new Timer(this.game, this.hud);
+    },
     create : function() {
 		this.game.add.sprite(0,0,'cellar');
         this.p1.create();
@@ -286,7 +342,13 @@ ButtonMashingRun.prototype = {
         this.hud.create()
         this.timer.create()
         this.timer.setTimeout(10, this.transition, _this);
-		
+
+        this.blueberryPanting = this.game.add.audio('blueberryPanic');
+        this.bananaPanting = this.game.add.audio('bananaPanic');
+        this.applePanting = this.game.add.audio('applePanic');
+        this.pearPanting = this.game.add.audio('pearPanic');
+        this.footstep = this.game.add.audio('footstep');
+
 		var x = this.game.world.width * 0.5;
         var y = this.game.world.height * 0.15;
         this.question2 = this.game.add.text(x, y, 'MASH THE BUTTONS!', { frontSize: '42px', fill: '#fff'});
@@ -297,15 +359,17 @@ ButtonMashingRun.prototype = {
     update : function() {
         this.hud.update();
         this.timer.update();
-        this.p1.percentDone(this.numPlayerStrokes[0]/(this.goal + 30));
-        this.p2.percentDone(this.numPlayerStrokes[1]/(this.goal + 30));
-        this.p3.percentDone(this.numPlayerStrokes[2]/(this.goal + 30));
-        this.p4.percentDone(this.numPlayerStrokes[3]/(this.goal + 30));
+
+        this.p1.percentDone(this.numPlayerStrokes[0]/(this.goal + 30), 1);
+        this.p2.percentDone(this.numPlayerStrokes[1]/(this.goal + 30), 2);
+        this.p3.percentDone(this.numPlayerStrokes[2]/(this.goal + 30), 3);
+        this.p4.percentDone(this.numPlayerStrokes[3]/(this.goal + 30), 4);
 
         var gm = GetGameManager();
         for (var i = 0; i < 4; ++i) {
             if (this.numPlayerStrokes[i] >= this.goal) this.hud.setRight(i)
         }
+
     },
 
     shutdown: function() {
@@ -362,6 +426,11 @@ ButtonMashing.Player = function(game, playerNumber, x, y, key) {
 
 ButtonMashing.Player.prototype = {
     preload : function() {
+        this.load.audio('blueberryPanic', ['assets/sounds/blueBerryPanic.wav']);
+        this.load.audio('applePanic', ['assets/sounds/applePanic.wav']);
+        this.load.audio('pearPanic', ['assets/sounds/pearPanic.wav']);
+        this.load.audio('bananaPanic', ['assets/sounds/bananaPanic.wav']);
+        this.load.audio('footstep', ['assets/sounds/footstep.wav']);
     },
 
     create : function() {
@@ -369,14 +438,34 @@ ButtonMashing.Player.prototype = {
         this.sprite.animations.add('right', [4, 5, 6], 20, true);
         this.sprite.animations.play('right');
         this.tween = this.game.add.tween(this.sprite);
+
+        this.blueberryPanting = this.game.add.audio('blueberryMad');
+        this.bananaPanting = this.game.add.audio('bananaPanic');
+        this.applePanting = this.game.add.audio('applePanic');
+        this.pearPanting = this.game.add.audio('pearPanic');
+        this.footstep = this.game.add.audio('footstep');
     },
 
     update : function() {
     },
 
 
-    percentDone : function(percent) {
+    percentDone : function(percent, player) {
         var distance = WIDTH + 100 - this.x0;
         this.sprite.x = this.x0 + distance * percent;
+        if (player == 1 && !this.blueberryPanting.isPlaying) {
+            this.blueberryPanting.play();
+        }
+        if (player == 2 && !this.applePanting.isPlaying) {
+            this.applePanting.play();
+        }
+        if (player == 3 && !this.pearPanting.isPlaying) {
+            this.pearPanting.play();
+        }
+        if (player == 4 && !this.bananaPanting.isPlaying) {
+            this.bananaPanting.play();
+        }
+
+        this.footstep.play();
     }
 }
