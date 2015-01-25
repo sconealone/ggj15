@@ -78,7 +78,7 @@ LevelMaster.prototype = {
 		
 		// pick a game type randomly
 		//var gameType = this.game.rnd.integerInRange(1, this.data.numGameTypes);
-		var gameType = this.game.rnd.integerInRange(1, 1);
+		var gameType = this.game.rnd.integerInRange(3, 3);
 		
 		switch(gameType) {
 		case 1: 
@@ -87,7 +87,7 @@ LevelMaster.prototype = {
 			break;
 		case 2:
 		console.log("In case 2");
-			this.game.state.start('shapeMatching', false, false, this.data);
+			this.game.state.start('shapeMatching', false, false, this.game, this.data);
 			break;
 		case 3: 
 		console.log("In case 3");

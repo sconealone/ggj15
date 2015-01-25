@@ -1,5 +1,6 @@
-ShapeMatching = function(game) {
+ShapeMatching = function(game, data) {
     this.game = game;
+    this.data = data;
 
     this.shape1 = -1;
     this.shape2 = -1;
@@ -20,17 +21,17 @@ ShapeMatching = function(game) {
 
     // override these
     // Actually it would be better if we could pass in a struct for each type of mini game
-    this.shapeSpriteX1 = 0.25*game.world.width;
-    this.shapeSpriteY1 = 0.5*game.world.height;
+    this.shapeSpriteX1 = 0.25*game.width;
+    this.shapeSpriteY1 = 0.5*game.height;
 
-    this.shapeSpriteX2 = 0.5*game.world.width;
-    this.shapeSpriteY2 = 0.25*game.world.height;
+    this.shapeSpriteX2 = 0.5*game.width;
+    this.shapeSpriteY2 = 0.25*game.height;
 
-    this.shapeSpriteX3 = 0.75*game.world.width;
-    this.shapeSpriteY3 = 0.5*game.world.height;
+    this.shapeSpriteX3 = 0.75*game.width;
+    this.shapeSpriteY3 = 0.5*game.height;
 
-    this.answerSpriteX = 0.5*game.world.width;
-    this.answerSpriteY = 0.5*game.world.height;
+    this.answerSpriteX = 0.5*game.width;
+    this.answerSpriteY = 0.5*game.height;
 
     this.timeout = 1;
 }
@@ -39,52 +40,53 @@ ShapeMatching = function(game) {
 ShapeMatching.prototype = {
 
     checkResponse: function() {
+        var gm = GetGameManager(self.game);
         for (var i=0; i < 3 ; i++) {
-            if (!this.game.p1Resp.responded && this.game.p1Resp[i].isDown) {
-                this.game.p1Resp.responded = true;
+            if (!gm.p1Resp.responded && gm.p1Resp[i].isDown) {
+                gm.p1Resp.responded = true;
 
                 if (this.order[i] == this.answer) {
                     console.log("p1 pass") 
-                    this.game.hud.setRight(0);
+                    gm.hud.setRight(0);
                 } else {
                     console.log("p1 fail");
-                    this.game.hud.setWrong(0);
+                    gm.hud.setWrong(0);
                 }
             }
 
-            if (!this.game.p2Resp.responded && this.game.p2Resp[i].isDown) {
-                this.game.p2Resp.responded = true;
+            if (!gm.p2Resp.responded && gm.p2Resp[i].isDown) {
+                gm.p2Resp.responded = true;
 
                 if (this.order[i] == this.answer) {
                     console.log("p2 pass") 
-                    this.game.hud.setRight(1);
+                    gm.hud.setRight(1);
                 } else {
                     console.log("p2 fail");
-                    this.game.hud.setWrong(1);
+                    gm.hud.setWrong(1);
                 }
             }
 
-            if (!this.game.p3Resp.responded && this.game.p3Resp[i].isDown) {
-                this.game.p3Resp.responded = true;
+            if (!gm.p3Resp.responded && gm.p3Resp[i].isDown) {
+                gm.p3Resp.responded = true;
 
                 if (this.order[i] == this.answer) {
                     console.log("p3 pass") 
-                    this.game.hud.setRight(2);
+                    gm.hud.setRight(2);
                 } else {
                     console.log("p3 fail");
-                    this.game.hud.setWrong(2);
+                    gm.hud.setWrong(2);
                 }
             }
 
-            if (!this.game.p4Resp.responded && this.game.p4Resp[i].isDown) {
-                this.game.p4Resp.responded = true;
+            if (!gm.p4Resp.responded && gm.p4Resp[i].isDown) {
+                gm.p4Resp.responded = true;
 
                 if (this.order[i] == this.answer) {
                     console.log("p4 pass") 
-                    this.game.hud.setRight(3);
+                    gm.hud.setRight(3);
                 } else {
                     console.log("p4 fail");
-                    this.game.hud.setWrong(3);
+                    gm.hud.setWrong(3);
                 }
             }                                    
         }
@@ -97,10 +99,9 @@ ShapeMatching.prototype = {
     },
 
     create: function() {
-        console.log("creating matching");
-
         // choose correct answer
-        this.answer = getRandomInt(this.game.MIN_KEY_VAL, this.game.MAX_KEY_VAL);
+        var gm = GetGameManager(this.game)
+        this.answer = getRandomInt(gm.MIN_KEY_VAL, gm.MAX_KEY_VAL);
         console.log(this.answer);
 
         // choose order of shapes
@@ -116,11 +117,13 @@ ShapeMatching.prototype = {
         this.drawLayout();
 
         // Start timer
-        this.game.timer.setTimeout(this.timeout, this.transition);
+        gm.timer.setTimeout(this.timeout, this.transition);
     },
 
     update: function() {
+        var gm = GetGameManager(this.game)
         this.checkResponse();
+        gm.update();
     },
 
 
