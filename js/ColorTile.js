@@ -111,6 +111,39 @@ ColorTile.prototype = {
 		this.game.load.image('unlocked', 'assets/buttonmashunlockedbg.png');
     },
 
+    reset: function() {
+
+    this.word1 = -1;
+    this.word2 = -1;
+    this.answer = -1;
+    this.apos = -1;
+
+    this.wordSprite1 = null;
+    this.wordSprite2 = null;
+    this.wordSprite3 = null;
+
+    this.question = '';
+    this.order = [];
+    this.qColor = '';
+
+    this.spritesheet = 'words';
+    this.spritesheetPath = 'assets/colorWords.png';
+    this.frameWidth = 128;
+    this.frameHeight = 64;
+
+    this.wordSprite1X = 0.33 * WIDTH
+    this.wordSprite2X = 0.5 * WIDTH
+    this.wordSprite3X = 0.67 * WIDTH
+    this.wordSpriteY = 0.4 * HEIGHT
+
+    // constants
+    this.MAX_FRAME = 5;
+    this.MIN_FRAME = 0;
+
+    this.timeout = 2;
+    this.hud = new Hud(this.game);
+    this.timer = new Timer(this.game, this.hud);
+    }, 
     create: function(){
 		
 	
