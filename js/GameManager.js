@@ -109,6 +109,7 @@ GameManager.prototype = {
 	},
 
 	update: function() {
+
     },
 
 }
@@ -192,7 +193,7 @@ Hud.prototype = {
             var y = 0.02 * this.game.height;
             this.lifeCount.push(this.game.add.sprite(x, y, 'life'));
         }*/
-        for(var i = 0; i < gm.levelMaster.MAX_LIVES; ++i){
+        for(var i = 0; i < gm.levelMaster.data.lives; ++i){
             var x = 0.87 * this.game.width - i * 125;
             var y = 0.02 * this.game.height;
             var l = this.lifegroup.create(x, y, 'life', 0);
