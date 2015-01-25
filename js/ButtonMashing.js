@@ -3,7 +3,8 @@ ButtonMashing = function(game, data) {
     this.data = data;
 
     this.displayOrder = [];
-
+	this.question = '';
+	
     this.avatarSpritesheet = 'avatars'
     this.spritesheetPath = 'assets/avatars.png'
     this.frameWidth = 180;
@@ -160,7 +161,12 @@ ButtonMashing.prototype = {
     },
 
     drawLayout : function() {
-
+		
+		var x = this.game.world.width * 0.5;
+        var y = this.game.world.height * 0.15;
+        this.question = this.game.add.text(x, y, 'Mash the button!', { frontSize: '42px', fill: '#fff'});
+        this.question.anchor.setTo(0.5, 0.5);
+		
         this.shape1 = this.players[this.displayOrder[0]].keyFrame;
         this.shape2 = this.players[this.displayOrder[1]].keyFrame;
         this.shape3 = this.players[this.displayOrder[2]].keyFrame;

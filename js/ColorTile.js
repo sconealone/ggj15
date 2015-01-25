@@ -156,7 +156,7 @@ ColorTile.prototype = {
 		this.game.add.sprite(0,0,'unlocked');
         var x = this.game.world.width * 0.5;
         var y = this.wordSpriteY - 80;
-        this.question = this.game.add.text(x, y, 'Pick the '+ this.qColor + ' word. :)', { frontSize: '32px', fill: '#fff'});
+        this.question = this.game.add.text(x, y, 'Pick the '+ this.qColor + ' word!', { frontSize: '32px', fill: '#fff'});
         this.question.anchor.setTo(0.5, 0.5);
 
         this.wordSprite1 = this.game.add.sprite(this.wordSprite1X, this.wordSpriteY, this.spritesheet, this.word1);
