@@ -107,8 +107,8 @@ LevelMaster.prototype = {
 	showFailed: function() {
 
 		// show failed ending
-		var _this = this;
-		this.game.state.start('failState', true, false, _this.game, _this.data);
+		//var _this = this;
+		this.game.state.start('failState', true, false, this.game, this.data);
 		this.data.decreasedLife = true;
 	},
 	
@@ -124,7 +124,11 @@ LevelMaster.prototype = {
 	},
 	
 	nextLevel: function() {
-
+		console.log(this.levelSequenceCounter);
+		if (this.levelSequenceCounter == 7) {
+			this.levelSequenceCounter = 0;
+		}
+		console.log(this.STATE_KEYS[this.levelSequence[this.levelSequenceCounter]]);
 		this.game.state.start(this.STATE_KEYS[this.levelSequence[this.levelSequenceCounter]], true, false, this.game, this.data);
 		this.levelSequenceCounter++;
 	},
