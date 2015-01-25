@@ -52,9 +52,9 @@ GameManager.prototype = {
         };
 
         this.p4Resp = {
-            0: this.game.input.keyboard.addKey(Phaser.Keyboard.J),
-            1: this.game.input.keyboard.addKey(Phaser.Keyboard.K),
-            2: this.game.input.keyboard.addKey(Phaser.Keyboard.L),
+            0: this.game.input.keyboard.addKey(Phaser.Keyboard.B),
+            1: this.game.input.keyboard.addKey(Phaser.Keyboard.N),
+            2: this.game.input.keyboard.addKey(Phaser.Keyboard.M),
             responded: false
         };
     },
