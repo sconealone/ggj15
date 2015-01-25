@@ -14,9 +14,9 @@ ShapeMatching = function(game) {
     this.answerSprite = null;
 
     this.spritesheet = 'keys';
-    this.spritesheetPath = 'assets/keys2.png';
-    this.frameWidth = 32;
-    this.frameHeight = 32;
+    this.spritesheetPath = 'assets/keys.png';
+    this.frameWidth = 120;
+    this.frameHeight = 300;
 
     // override these
     // Actually it would be better if we could pass in a struct for each type of mini game
@@ -24,7 +24,7 @@ ShapeMatching = function(game) {
     this.shapeSpriteY1 = 0.5*game.world.height;
 
     this.shapeSpriteX2 = 0.5*game.world.width;
-    this.shapeSpriteY2 = 0.25*game.world.height;
+    this.shapeSpriteY2 = 0.1*game.world.height;
 
     this.shapeSpriteX3 = 0.75*game.world.width;
     this.shapeSpriteY3 = 0.5*game.world.height;
@@ -93,7 +93,7 @@ ShapeMatching.prototype = {
 
     preload: function() {
         this.game.load.spritesheet(this.spritesheet, this.spritesheetPath, this.frameWidth, this.frameHeight)
-
+        this.game.load.image('shapeMatchingBK', 'assets/ShapeMatchingbk.png');
     },
 
     create: function() {
@@ -125,16 +125,22 @@ ShapeMatching.prototype = {
 
 
     drawLayout : function() {
+        this.game.add.sprite(0,0,'shapeMatchingBK');
         this.shapeSprite1 = this.game.add.sprite(this.shapeSpriteX1, this.shapeSpriteY1, this.spritesheet, this.shape1);
         this.shapeSprite2 = this.game.add.sprite(this.shapeSpriteX2, this.shapeSpriteY2, this.spritesheet, this.shape2);
         this.shapeSprite3 = this.game.add.sprite(this.shapeSpriteX3, this.shapeSpriteY3, this.spritesheet, this.shape3);
-        this.answerSprite = this.game.add.sprite(this.answerSpriteX, this.answerSpriteY, this.spritesheet, this.answer);
+        this.answerSprite = this.game.add.sprite(this.answerSpriteX, this.answerSpriteY, this.spritesheet, this.answer + 3);
 
         this.shapeSprite1.anchor.setTo(0.5, 0.5);
+        this.shapeSprite1.scale.set(0.7, 0.7);
         this.shapeSprite2.anchor.setTo(0.5, 0.5);
+        this.shapeSprite2.scale.set(0.7, 0.7);
+        this.shapeSprite2.angle = -90;
         this.shapeSprite3.anchor.setTo(0.5, 0.5);
+        this.shapeSprite3.scale.set(0.7, 0.7);
+        this.shapeSprite3.angle = 180;
         this.answerSprite.anchor.setTo(0.5, 0.5);
-        this.answerSprite.scale.set(2, 2);
+        //this.answerSprite.scale.set(2, 2);
     },
 
     transition: function() {
