@@ -101,7 +101,22 @@ Menus.EndState.prototype = {
                 fruit.y += 60;
         }
 
+        var _this = this;
+        this.key = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
+
+        var backText = this.game.add.text(WIDTH*.5, HEIGHT*.55, 'Press space to restart', { frontSize: '42px', fill: '#ffffff'});
+        backText.anchor.setTo(0.5, 0.5);
+
+        this.f = function(e) {
+            _this.game.state.start('newGame', true, false, _this.game, _this.data);
+        }
+        this.key.onDown.add(this.f)
+
     },
+    shutdown: function() {
+        this.key.onDown.remove(this.f)
+    },
+
     update: function() {
     },
 };
