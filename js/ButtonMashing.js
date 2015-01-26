@@ -22,7 +22,7 @@ ButtonMashing = function(game, data) {
     this.directionsSpriteSheet = 'directions';
     this.directionSpritesheetPath = 'assets/directions.png';
 
-    this.timeout = 10;
+    this.timeout = 8;
 
     this.MIN_STROKE_BOUND = getRandomInt(10, 20);
 
@@ -128,7 +128,7 @@ ButtonMashing.prototype = {
         this.directionsSpriteSheet = 'directions';
         this.directionSpritesheetPath = 'assets/directions.png';
 
-        this.timeout = 10;
+        this.timeout = 8;
 
         this.MIN_STROKE_BOUND = getRandomInt(10, 20);
 
