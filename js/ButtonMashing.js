@@ -22,7 +22,7 @@ ButtonMashing = function(game, data) {
     this.directionsSpriteSheet = 'directions';
     this.directionSpritesheetPath = 'assets/directions.png';
 
-    this.timeout = 20;
+    this.timeout = 10;
 
     this.MIN_STROKE_BOUND = getRandomInt(10, 20);
 
@@ -128,7 +128,7 @@ ButtonMashing.prototype = {
         this.directionsSpriteSheet = 'directions';
         this.directionSpritesheetPath = 'assets/directions.png';
 
-        this.timeout = 20;
+        this.timeout = 10;
 
         this.MIN_STROKE_BOUND = getRandomInt(10, 20);
 
@@ -136,6 +136,7 @@ ButtonMashing.prototype = {
         this.timer = new Timer(this.game, this.hud);
     },
     create: function() {
+        this.reset()
         // choose correct answer
         this.game.add.sprite(0,0,'bmbackground');
         this.createAnswers();
@@ -238,8 +239,9 @@ ButtonMashing.prototype = {
             if (_this.players[i].strokeCount < _this.MIN_STROKE_BOUND) {
                 _this.hud.setWrong(i);
                 gm.levelMaster.decreaseLife();
-            }
+            } 
         }
+        gm.levelMaster.nextLevel();
 
     }
 
@@ -250,7 +252,7 @@ ButtonMashingRun = function(game, data) {
     this.data = data;
     this.game = game;
     this.numPlayerStrokes = [0, 0, 0, 0];
-    this.goal = 80;
+    this.goal = 40;
     this.timeout = 10;
     this.x0 = WIDTH * 0.2;
     this.y0 = HEIGHT * 0.4;
@@ -283,7 +285,7 @@ ButtonMashingRun.prototype = {
 
     reset : function() {
         this.numPlayerStrokes = [0, 0, 0, 0];
-        this.goal = 80;
+        this.goal = 40;
         this.timeout = 10;
         this.x0 = WIDTH * 0.2;
         this.y0 = HEIGHT * 0.4;
@@ -304,6 +306,7 @@ ButtonMashingRun.prototype = {
         this.timer = new Timer(this.game, this.hud);
     },
     create : function() {
+        this.reset()
 		this.game.add.sprite(0,0,'cellar');
         this.p1.create();
         this.p2.create();

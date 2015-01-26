@@ -11,7 +11,7 @@ CollisionGame = function(game, data) {
     this.gravity = -981;
     this.groundY = 0.6 * HEIGHT;
 
-    var collided = false;
+    this.collided = false;
     this.hud = new Hud(game);
     this.timer = new Timer(game, this.hud);
 }
@@ -45,11 +45,12 @@ CollisionGame.prototype = {
     this.gravity = -981;
     this.groundY = 0.6 * HEIGHT;
 
-    var collided = false;
+    this.collided = false;
     this.hud = new Hud(this.game);
     this.timer = new Timer(this.game, this.hud);
     },
     create : function() {
+        this.reset()
         this.game.add.sprite(0,0,'jumpbk');
         this.p1.create();
         this.p2.create();
@@ -146,7 +147,7 @@ CollisionGame.prototype = {
             if (enemyRect.intersects(new Phaser.Rectangle(p.sprite.x, p.sprite.y, p.sprite.width, p.sprite.height))) {
                 p.goFlying() 
                 this.hud.setWrong(p.playerNumber);
-                collided = true;
+                this.collided = true;
             }
             if (enemyRect.x + enemyRect.width < p.sprite.x && !p.flownAway) {
                 this.hud.setRight(p.playerNumber);
@@ -159,9 +160,10 @@ CollisionGame.prototype = {
         var gm = GetGameManager();
         this.hud.timerFrame.visible = true;
         this.hud.timerBar.visible = true;
-        if (collided) {
+        if (this.collided) {
             gm.levelMaster.decreaseLife();
         } else {
+		console.log("jump go to next level");
             gm.levelMaster.nextLevel();
         }
     }
