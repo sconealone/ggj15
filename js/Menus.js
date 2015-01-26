@@ -117,8 +117,13 @@ Menus.NewGame.prototype = {
         var bgFrame = 11;
         var gm = GetGameManager(this.game);
 
+
+
         this.game.add.sprite(0, 0, 'bg', bgFrame);
         var _this = this;
+
+        var question2 = this.game.add.text(WIDTH*.65, HEIGHT/2, 'Press space to continue', { frontSize: '42px', fill: '#ffffff'});
+        question2.anchor.setTo(0.5, 0.5);
         this.key = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);   
         this.f = function(e) {
             _this.game.state.start('instructions', true, false, _this.game, _this.data);
@@ -145,8 +150,35 @@ Menus.Instructions.prototype = {
         this.game.add.sprite(0, 0, 'bg', bgFrame);
         this.key = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
 
+        var question2 = this.game.add.text(WIDTH*.5, HEIGHT*.55, 'Press space to continue', { frontSize: '42px', fill: '#ffffff'});
+        question2.anchor.setTo(0.5, 0.5);
         this.f = function(e) {
             gm.levelMaster.nextLevel();
+        }
+        this.key.onDown.add(this.f)
+    },
+    shutdown: function() {
+        this.key.onDown.remove(this.f)
+    },
+    update: function() {
+    },
+};
+Menus.Success = function(game, data) {
+    this.game = game;
+    this.data = data;
+}
+Menus.Success.prototype = {
+    preload: function() {
+        this.game.load.image('win', 'assets/Succ.png');
+    },
+    create: function() {
+        var gm = GetGameManager(this.game);
+        
+        this.game.add.sprite(0, 0, 'win');
+        this.key = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
+
+        this.f = function(e) {
+            gm.levelMaster.newGameTransition();
         }
         this.key.onDown.add(this.f)
     },

@@ -22,7 +22,7 @@ ButtonMashing = function(game, data) {
     this.directionsSpriteSheet = 'directions';
     this.directionSpritesheetPath = 'assets/directions.png';
 
-    this.timeout = 20;
+    this.timeout = 10;
 
     this.MIN_STROKE_BOUND = getRandomInt(10, 20);
 
@@ -128,7 +128,7 @@ ButtonMashing.prototype = {
         this.directionsSpriteSheet = 'directions';
         this.directionSpritesheetPath = 'assets/directions.png';
 
-        this.timeout = 20;
+        this.timeout = 10;
 
         this.MIN_STROKE_BOUND = getRandomInt(10, 20);
 
@@ -239,11 +239,9 @@ ButtonMashing.prototype = {
             if (_this.players[i].strokeCount < _this.MIN_STROKE_BOUND) {
                 _this.hud.setWrong(i);
                 gm.levelMaster.decreaseLife();
-            } else
-		{
-		gm.levelMaster.nextLevel();
-		}
+            } 
         }
+        gm.levelMaster.nextLevel();
 
     }
 

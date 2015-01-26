@@ -30,7 +30,7 @@ LevelMaster = function(game, data) {
 
     this.levelSequence = [0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6, 6];
     this.levelSequence = generateOrder(this.levelSequence);
-	//this.levelSequence = [4];
+    //this.levelSequence = [4];
 
 
 
@@ -178,7 +178,7 @@ LevelMaster.prototype = {
 
 
         if (this.levelSequenceCounter >= this.levelSequence.length) {
-            this.showEnding();
+            this.game.state.start('win', true ,false, this.game, this.data);
             return;
         }
 
